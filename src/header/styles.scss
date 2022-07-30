@@ -1,0 +1,91 @@
+@font-face {
+	font-family: strl-title;
+	src: url(../../fonts/Formula1-Regular.ttf);
+}
+
+.header {
+	background-color: #e10600;
+	color: #fff;
+	font-weight: 600;
+	padding: 16px;
+	display: flex;
+    gap: 5vw;
+    align-items: center;
+
+	&__title {
+		font-family: strl-title;
+		cursor: pointer;
+		font-size: 28px;
+		font-style: italic;
+	}
+
+	&__burger-menu {
+		display: none;
+	}
+
+	&__nav-links {
+		display: grid;
+        gap: 3.5vw;
+		grid-auto-flow: column;
+	}
+
+    &__chevron {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 820px) {
+	.header {
+		display: block;
+
+		&__responsive-bar {
+			display: grid;
+			grid-auto-flow: column;
+			width: 100%;
+			align-items: center;
+		}
+
+		&__title {
+			font-family: strl-title;
+			cursor: pointer;
+			margin: auto 0;
+		}
+
+		&__burger-menu {
+			order: -1;
+			float: left;
+			height: 32px;
+			width: 32px;
+			display: block;
+		}
+
+		&__nav-links {
+			display: none;
+
+			&--expanded {
+				margin-top: 8px;
+				grid-auto-flow: row;
+				display: grid;
+			}
+		}
+
+		&__nav-link {
+			padding: 5px 15px;
+		}
+
+		&__nav-link-label {
+			padding: 10px 10px 10px 0;
+			border: solid 1px #f08380;
+			border-top: 0;
+			border-left: 0;
+			border-bottom-right-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+		}
+        
+        &__chevron {
+            display: block;
+        }
+	}
+}

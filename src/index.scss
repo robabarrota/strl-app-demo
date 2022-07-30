@@ -1,0 +1,24 @@
+
+*, html {
+  margin: 0;
+  padding: 0;  
+}
+
+body {
+  font-family: titillium-web, sans-serif;
+  font-family: 400;
+}
+
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, button:focus, button:active{
+  outline: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: inherit;
+  cursor: pointer;
+}
