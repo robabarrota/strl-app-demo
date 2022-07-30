@@ -6,9 +6,9 @@ import { isEmpty } from 'lodash';
 
 const Qualifying = () => {
 	const dispatch = useDispatch();
-	const {content: qualifying} = useSelector(getQualifying);
+	const {content: qualifying, loading} = useSelector(getQualifying);
 
-	if(isEmpty(qualifying)) dispatch(fetchQualifying());
+	if(isEmpty(qualifying) && !loading) dispatch(fetchQualifying());
 
 	if (qualifying) {
 		return (
@@ -16,7 +16,7 @@ const Qualifying = () => {
 				<table>
 					<thead>
 						<tr>
-							{Object.keys(qualifying[0]).map((col) => (
+							{Object.keys(qualifying).map((col) => (
 								<th>{col}</th>
 							))}
 						</tr>
