@@ -22,7 +22,7 @@ const Tracks = () => {
 					<tbody>
 						{trackList.map((track) => (
 							<tr>
-								<td>{track}</td>
+								<td key={track}>{track}</td>
 							</tr>
 						))}
 					</tbody>

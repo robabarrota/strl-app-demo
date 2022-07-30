@@ -21,15 +21,15 @@ const Qualifying = () => {
 							<th>Driver</th>
 							<th>Team</th>
 							{trackList.map((track) => (
-								<th>{track}</th>
+								<th key={track}>{track}</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
 						{qualifying.map((row) => (
-							<tr>
-								{Object.values(row).map((value) => (
-									<td>{value}</td>
+							<tr key={row['Driver']}>
+								{Object.entries(row).map(([key, value]) => (
+									<td key={key}>{value}</td>
 								))}
 							</tr>
 						))}
