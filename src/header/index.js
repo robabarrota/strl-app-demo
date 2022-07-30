@@ -25,9 +25,9 @@ const Header = () => {
 						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 					</div>
 				</NavLink>
-				<NavLink className="header__nav-link" to="/qualifying">
+				<NavLink className="header__nav-link" to="/track-list">
 					<div className="header__nav-link-label">
-						<span>Qualifying</span>
+						<span>Tracks</span>
 						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 					</div>
 				</NavLink>

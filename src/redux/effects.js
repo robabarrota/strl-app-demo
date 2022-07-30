@@ -7,7 +7,7 @@ const fetchTrackList = (store, action) => {
 		service
 			.getTrackList()
 			.then((response) => {
-				const data = response[0].data;
+				const data = response[0].data.map(trackObject => trackObject['Tracks']);
 
 				store.dispatch(
 					actions.setTrackList({

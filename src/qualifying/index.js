@@ -1,14 +1,16 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQualifying } from 'src/redux/selectors';
-import { fetchQualifying } from 'src/redux/actions';
+import { getQualifying, getTrackList } from 'src/redux/selectors';
+import { fetchQualifying, fetchTrackList } from 'src/redux/actions';
 import { isEmpty } from 'lodash';
 
 const Qualifying = () => {
 	const dispatch = useDispatch();
-	const {content: qualifying, loading} = useSelector(getQualifying);
+	const {content: qualifying, loading: qualifyingLoading} = useSelector(getQualifying);
+	const {content: trackList, loading: trackListLoading} = useSelector(getTrackList);
 
-	if(isEmpty(qualifying) && !loading) dispatch(fetchQualifying());
+	if(isEmpty(qualifying) && !qualifyingLoading) dispatch(fetchQualifying());
+	if(isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
 
 	if (qualifying) {
 		return (
@@ -16,8 +18,10 @@ const Qualifying = () => {
 				<table>
 					<thead>
 						<tr>
-							{Object.keys(qualifying).map((col) => (
-								<th>{col}</th>
+							<th>Driver</th>
+							<th>Team</th>
+							{trackList.map((track) => (
+								<th>{track}</th>
 							))}
 						</tr>
 					</thead>
