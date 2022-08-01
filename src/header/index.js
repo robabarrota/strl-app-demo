@@ -21,13 +21,13 @@ const Header = () => {
 			<div className={`header__nav-links${expandedClass}`}>
 				<NavLink className="header__nav-link" to="/qualifying">
 					<div className="header__nav-link-label">
-						<span>Qualifying</span>
+						<span className='header__nav-link-text'>Qualifying</span>
 						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 					</div>
 				</NavLink>
 				<NavLink className="header__nav-link" to="/track-list">
 					<div className="header__nav-link-label">
-						<span>Tracks</span>
+						<span className='header__nav-link-text'>Tracks</span>
 						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 					</div>
 				</NavLink>

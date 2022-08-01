@@ -8,11 +8,16 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<Header />
-			<Routes>
-				<Route path="qualifying" element={<Qualifying />} />
-				<Route path="track-list" element={<Tracks />} />
-				<Route path="*" element={<Qualifying />} />
-			</Routes>
+			<div className="app">
+				<div className='app__content-card'>
+					<Routes>
+						<Route path="qualifying" element={<Qualifying />} />
+						<Route path="track-list" element={<Tracks />} />
+						<Route path="*" element={<Qualifying />} />
+					</Routes>
+				</div>
+			</div>
+
 		</BrowserRouter>
 	);
 };

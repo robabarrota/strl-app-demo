@@ -1,21 +1,41 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:400,600,600i');
 
-*, html {
+@font-face {
+	font-family: 'F1BoldRegular';
+	src: url(../fonts/Formula1-Bold.ttf);
+  font-weight: 500;
+}
+
+@font-face {
+	font-family: strl-font;
+	src: url(../fonts/Formula1-Regular.ttf);
+}
+
+*,
+html {
   margin: 0;
-  padding: 0;  
+  padding: 0;
+  line-height: 23px;
+  font-family: 'Titillium Web', Helvetica, sans-serif;
+  font-weight: 400;
+  letter-spacing: .2px;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: none;
 }
 
-body {
-  font-family: titillium-web, sans-serif;
-  font-family: 400;
-}
-
-
-a, a:hover, a:focus, a:active {
+a,
+a:hover,
+a:focus,
+a:active {
   text-decoration: none;
   color: inherit;
 }
 
-button, button:focus, button:active{
+button,
+button:focus,
+button:active {
   outline: none;
   background: transparent;
   border: 1px solid transparent;
