@@ -27,26 +27,28 @@ const Qualifying = () => {
 		return (
 			<>
 				<h1>Qualifying</h1>
-				<table>
-					<thead>
-						<tr>
-							{tableHeaders.map(header => <th key={header} className="qualifying__table-header">{header}</th>)}
-						</tr>
-					</thead>
-					<tbody>
-						{qualifying.map((row) => (
-							<tr key={row['Driver']}>
-								{tableHeaders.map((header, index) =>
-									<td
-										key={`${row['Driver']}-${index}`}
-										className={`qualifying__table-cell ${getClassName(header)}`}>
-										{row[header]}
-									</td>
-								)}
+				<div className="table-container">
+					<table>
+						<thead>
+							<tr>
+								{tableHeaders.map(header => <th key={header} className="qualifying__table-header">{header}</th>)}
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{qualifying.map((row) => (
+								<tr key={row['Driver']}>
+									{tableHeaders.map((header, index) =>
+										<td
+											key={`${row['Driver']}-${index}`}
+											className={`qualifying__table-cell ${getClassName(header)}`}>
+											{row[header]}
+										</td>
+									)}
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
 			</>
 		);
 	}
