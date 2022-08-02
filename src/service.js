@@ -6,6 +6,11 @@ const service = {
         ...constants.sheetConfig,
         sheetsOptions: [{ id: 'Track List' }],
     }),
+
+    getParticipants: async () => await fetchGoogleSheetsData({
+        ...constants.sheetConfig,
+        sheetsOptions: [{ id: 'Participants' }],
+    }),
     
     getQualifying: async () => await fetchGoogleSheetsData({
         ...constants.sheetConfig,

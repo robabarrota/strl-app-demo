@@ -1,10 +1,32 @@
 .qualifying {
+    &__table-container {
+        width: 100%;
+        display: flex;
+    }
+
+    &__end-subtable-container {
+        &--left {
+            border-right: solid 1px #ffc0bd;
+            flex-shrink: 0;
+        }
+        &--right {
+            border-left: solid 1px #ffc0bd;
+            flex-shrink: 0;
+        }
+    }
+
+    &__results-subtable-container {
+        overflow-x: auto;
+    }
+
     &__table-cell {
         padding: 18px 20px 14px;
+        white-space: nowrap;
     }
 
     &__table-header {
         padding: 18px 20px 14px;
+        white-space: nowrap;
     }
 
     &__driver {

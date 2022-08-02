@@ -6,6 +6,12 @@ export const setTrackList = trackList => ({ type: SET_TRACK_LIST, payload: { tra
 export const FETCH_TRACK_LIST = `${prefix}/FETCH_TRACK_LIST`;
 export const fetchTrackList = () => ({ type: FETCH_TRACK_LIST });
 
+export const SET_PARTICIPANTS = `${prefix}/SET_PARTICIPANTS`;
+export const setParticipants = participants => ({ type: SET_PARTICIPANTS, payload: { participants } });
+
+export const FETCH_PARTICIPANTS = `${prefix}/FETCH_PARTICIPANTS`;
+export const fetchParticipants = () => ({ type: FETCH_PARTICIPANTS });
+
 export const SET_QUALIFYING = `${prefix}/SET_QUALIFYING`;
 export const setQualifying = qualifying => ({ type: SET_QUALIFYING, payload: { qualifying } });
 
