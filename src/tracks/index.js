@@ -13,12 +13,8 @@ const Tracks = () => {
 	if (trackList) {
 		return (
 			<div>
+				<h1>Tracks</h1>
 				<table>
-					<thead>
-						<tr>
-							<th>Tracks</th>
-						</tr>
-					</thead>
 					<tbody>
 						{trackList.map((track) => (
 							<tr>

@@ -45,6 +45,28 @@ const fetchQualifying = (store, action) => {
 	}
 };
 
-const effects = [fetchTrackList, fetchQualifying];
+const fetchRaceResults = (store, action) => {
+	if (action.type === actions.FETCH_RACE_RESULTS) {
+		store.dispatch(actions.setRaceResults({ loading: true }));
+		service
+			.getQualifying()
+			.then((response) => {
+				const data = response[0].data;
+
+				store.dispatch(
+					actions.setRaceResults({
+						loading: false,
+						content: data,
+						error: null,
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setRaceResults({ loading: false, error }));
+			});
+	}
+};
+
+const effects = [fetchTrackList, fetchQualifying, fetchRaceResults];
 
 export default effects;

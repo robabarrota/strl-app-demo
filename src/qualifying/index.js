@@ -26,8 +26,8 @@ const Qualifying = () => {
 	if (qualifying) {
 		return (
 			<>
-				<h1 className='qualifying__title'>Qualifying</h1>
-				<table className="qualifying__table">
+				<h1>Qualifying</h1>
+				<table>
 					<thead>
 						<tr>
 							{tableHeaders.map(header => <th key={header} className="qualifying__table-header">{header}</th>)}

@@ -12,3 +12,9 @@ export const setQualifying = qualifying => ({ type: SET_QUALIFYING, payload: { q
 export const FETCH_QUALIFYING = `${prefix}/FETCH_QUALIFYING`;
 export const fetchQualifying = () => ({ type: FETCH_QUALIFYING });
 
+export const SET_RACE_RESULTS = `${prefix}/SET_RACE_RESULTS`;
+export const setRaceResults = raceResults => ({ type: SET_RACE_RESULTS, payload: { raceResults } });
+
+export const FETCH_RACE_RESULTS = `${prefix}/FETCH_RACE_RESULTS`;
+export const fetchRaceResults = () => ({ type: FETCH_RACE_RESULTS });
+
