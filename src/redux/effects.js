@@ -49,7 +49,7 @@ const fetchRaceResults = (store, action) => {
 	if (action.type === actions.FETCH_RACE_RESULTS) {
 		store.dispatch(actions.setRaceResults({ loading: true }));
 		service
-			.getQualifying()
+			.getRaceResults()
 			.then((response) => {
 				const data = response[0].data;
 

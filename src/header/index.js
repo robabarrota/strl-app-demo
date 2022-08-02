@@ -6,6 +6,7 @@ const Header = () => {
 	const [navLinksOpen, setNavLinksOpen] = useState(false);
 
 	const expandedClass = useMemo(() => (navLinksOpen ? '--expanded' : ''), [navLinksOpen]);
+	const labelClass = (isActive) => isActive ? 'header__nav-link-label header__nav-link--active' : 'header__nav-link-label header__nav-link--inactive';
 	return (
 		<div className="header">
 			<div className="header__responsive-bar">
@@ -19,17 +20,29 @@ const Header = () => {
 			</div>
 
 			<div className={`header__nav-links${expandedClass}`}>
+				<NavLink className="header__nav-link" to="/race-results">
+					{({ isActive }) => (
+						<div className={labelClass(isActive)}>
+							<span className='header__nav-link-text'>Race Results</span>
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</div>
+					)}
+				</NavLink>
 				<NavLink className="header__nav-link" to="/qualifying">
-					<div className="header__nav-link-label">
-						<span className='header__nav-link-text'>Qualifying</span>
-						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
-					</div>
+					{({ isActive }) => (
+						<div className={labelClass(isActive)}>
+							<span className='header__nav-link-text'>Qualifying</span>
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</div>
+					)}
 				</NavLink>
 				<NavLink className="header__nav-link" to="/track-list">
-					<div className="header__nav-link-label">
-						<span className='header__nav-link-text'>Tracks</span>
-						<i className={"fa-solid fa-chevron-right header__chevron"}></i>
-					</div>
+					{({ isActive }) => (
+						<div className={labelClass(isActive)}>
+							<span className='header__nav-link-text'>Tracks</span>
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</div>
+					)}
 				</NavLink>
 			</div>
 		</div>

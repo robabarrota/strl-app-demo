@@ -74,13 +74,23 @@
 
 		&__nav-link-label {
 			padding: 10px 10px 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+		}
+
+		&__nav-link--active {
+			border: solid 2px #fff;
+			border-top: 0;
+			border-left: 0;
+			border-bottom-right-radius: 10px;
+		}
+
+		&__nav-link--inactive {
 			border: solid 1px #f08380;
 			border-top: 0;
 			border-left: 0;
 			border-bottom-right-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
 		}
         
         &__chevron {

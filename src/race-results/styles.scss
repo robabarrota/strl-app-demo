@@ -1,0 +1,26 @@
+.race-results {
+    &__table-cell {
+        padding: 18px 20px 14px;
+    }
+
+    &__table-header {
+        padding: 18px 20px 14px;
+    }
+
+    &__driver {
+        color: #4a4a4a;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    &__car {
+        color: gray;
+        font-weight: 600;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    &__track {
+        color: #4a4a4a;
+    }
+}
