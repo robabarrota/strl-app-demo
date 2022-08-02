@@ -4,8 +4,8 @@
 	font-weight: 600;
 	padding: 16px;
 	display: flex;
-    gap: 5vw;
-    align-items: center;
+	gap: 5vw;
+	align-items: center;
 
 	&__title {
 		font-family: strl-font;
@@ -20,16 +20,28 @@
 
 	&__nav-links {
 		display: grid;
-        gap: 3.5vw;
+		gap: 3.5vw;
 		grid-auto-flow: column;
 	}
 
-    &__chevron {
-        display: none;
-    }
+	&__chevron {
+		display: none;
+	}
 
 	&__nav-link-text {
 		font-family: strl-font;
+	}
+
+	&__nav-link-label {
+		padding-right: 14px;
+		padding-bottom: 7px;
+	}
+
+	&__nav-link--active {
+		border: solid 2px #fff;
+		border-top: 0;
+		border-left: 0;
+		border-bottom-right-radius: 10px;
 	}
 }
 
@@ -74,9 +86,9 @@
 
 		&__nav-link-label {
 			padding: 10px 10px 10px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
 		}
 
 		&__nav-link--active {
@@ -92,9 +104,9 @@
 			border-left: 0;
 			border-bottom-right-radius: 10px;
 		}
-        
-        &__chevron {
-            display: block;
-        }
+
+		&__chevron {
+			display: block;
+		}
 	}
 }
