@@ -1,0 +1,57 @@
+.constructor-badge {
+    border-radius: 100%;
+    width: 40px;
+    text-align: center;
+    margin-left: 4px;
+    font-size: 12px;
+    font-weight: 700;
+
+    @media screen and (max-width: 820px) {
+        font-size: 8px;
+        width: 30px;
+        font-weight: bolder;
+        border-radius: 100%;
+        margin-left: 4px;
+    }
+
+    &__mer {
+        background-color: rgba(0, 210, 190, 0.3);
+        ;
+    }
+
+    &__rb {
+        background-color: rgba(6, 0, 239, 0.3);
+    }
+
+    &__fer {
+        background-color: rgba(192, 0, 0, 0.3);
+    }
+
+    &__rp {
+        background-color: rgba(245, 150, 200, 0.3);
+    }
+
+    &__wil {
+        background-color: rgba(0, 130, 250, 0.3);
+    }
+
+    &__ren {
+        background-color: rgba(255, 245, 0, 0.3);
+    }
+
+    &__mcl {
+        background-color: rgba(255, 135, 0, 0.3);
+    }
+
+    &__alfa {
+        background-color: rgba(150, 0, 0, 0.3);
+    }
+
+    &__alph {
+        background-color: rgba(200, 200, 200, 0.3);
+    }
+
+    &__haas {
+        background-color: rgba(120, 120, 120, 0.3);
+    }
+}

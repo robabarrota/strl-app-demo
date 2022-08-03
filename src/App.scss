@@ -1,9 +1,15 @@
 .app {
     background-color: #f7f4f1;
     padding: 40px;
+    @media screen and (max-width: 820px) {
+        padding: 40px 0;
+    }
 
     &__content-card {
         background:  #fff;
         padding: 26px;
+        @media screen and (max-width: 820px) {
+            padding: 26px 0;
+        }
     }
 }

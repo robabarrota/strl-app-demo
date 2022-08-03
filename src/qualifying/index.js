@@ -3,10 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getQualifying, getTrackList, getParticipants } from 'src/redux/selectors';
 import { fetchQualifying, fetchTrackList, fetchParticipants } from 'src/redux/actions';
 import { isEmpty, groupBy, first } from 'lodash';
-import React, { useMemo } from 'react';
-
+import React, { useCallback, useMemo, useState } from 'react';
+import ConstructorBadge from 'src/components/constructor-badge';
+import useWindowDimensions from 'src/hooks/useWindowDimensions';
+import constants from 'src/utils/constants';
 const Qualifying = () => {
 	const dispatch = useDispatch();
+	const [showStats, setShowStats] = useState(false);
+	const { width } = useWindowDimensions();
+
 	const { content: qualifyingResults, loading: qualifyingLoading } = useSelector(getQualifying);
 	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
 	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
@@ -43,13 +48,14 @@ const Qualifying = () => {
 		track
 	), [trackList]);
 
-	const statHeaders = ['AVG', 'Races Missed'];
-
 	const getClassName = (header) => {
 		if (header === 'Driver') return 'qualifying__driver';
 		if (header === 'Car') return 'qualifying__car';
 		return 'qualifying__track'
 	}
+
+	const formatDriverName = useCallback((driver) => width > 820 ? driver : driver.split(' ')[0], [width])
+	const formatTrackName = useCallback((track) => width > 820 ? track : constants.trackAbbreviationMap[track], [width])
 
 	const renderDriverSubTable = () => (
 		<div className="qualifying__end-subtable-container--left">
@@ -57,14 +63,16 @@ const Qualifying = () => {
 				<thead>
 					<tr>
 						<th className="qualifying__table-header">Driver</th>
-						<th className="qualifying__table-header">Car</th>
 					</tr>
 				</thead>
 				<tbody>
 					{participants.map((row) => (
 						<tr key={row['Driver']}>
-							<td className={`qualifying__table-cell`}> {row["Driver"]}</td>
-							<td className={`qualifying__table-cell`}> {row["Car"]}</td>
+							<td className={`qualifying__table-cell`}>
+								<div className='qualifying__driver-label'>
+									{formatDriverName(row["Driver"])} <ConstructorBadge constructor={row["Car"]} />
+								</div>
+							</td>
 						</tr>
 					))}
 				</tbody>
@@ -77,7 +85,7 @@ const Qualifying = () => {
 			<table>
 				<thead>
 					<tr>
-						{resultHeaders.map(header => <th key={header} className="qualifying__table-header">{header}</th>)}
+						{resultHeaders.map(header => <th key={header} className="qualifying__table-header">{formatTrackName(header)}</th>)}
 					</tr>
 				</thead>
 				<tbody>
@@ -99,35 +107,41 @@ const Qualifying = () => {
 
 	const renderStatsSubTable = () => (
 		<div className="qualifying__end-subtable-container--right">
-			<table>
-				<thead>
-					<tr>
-						<th className="qualifying__table-header">AVG</th>
-						<th className="qualifying__table-header">Races Missed</th>
-					</tr>
-				</thead>
-				<tbody>
-					{qualifyingStats.map((driverStats) => (
-						<tr key={driverStats.driver}>
-							<td
-								className={`qualifying__table-cell`}>
-								{driverStats.average}
-							</td>
-							<td
-								className={`qualifying__table-cell`}>
-								{driverStats.racesMissed}
-							</td>
+			<div className={`qualifying__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(!showStats)}>
+				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
+				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
+			</div>
+			{showStats && (
+				<table>
+					<thead>
+						<tr>
+							<th className="qualifying__table-header">AVG</th>
+							<th className="qualifying__table-header">DNS's</th>
 						</tr>
-					))}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{qualifyingStats.map((driverStats) => (
+							<tr key={driverStats.driver}>
+								<td
+									className={`qualifying__table-cell`}>
+									{driverStats.average}
+								</td>
+								<td
+									className={`qualifying__table-cell`}>
+									{driverStats.racesMissed}
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			)}
 		</div>
 	);
 
 	if (qualifyingResults) {
 		return (
 			<>
-				<h1>Qualifying</h1>
+				<h1 className='qualifying__title'>Qualifying</h1>
 				<div className="qualifying__table-container">
 					{renderDriverSubTable()}
 					{renderResultsSubTable()}
