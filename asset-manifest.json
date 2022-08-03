@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.38605854.css",
-    "main.js": "/static/js/main.2af1f70c.js",
-    "static/media/Formula1-Regular.ttf": "/static/media/Formula1-Regular.0f4e3d54644717199c6f.ttf",
-    "static/media/Formula1-Bold.ttf": "/static/media/Formula1-Bold.a1d6ae91f3373c37e162.ttf",
-    "index.html": "/index.html",
-    "main.38605854.css.map": "/static/css/main.38605854.css.map",
-    "main.2af1f70c.js.map": "/static/js/main.2af1f70c.js.map"
+    "main.css": "/robabarrota/strl-app/static/css/main.a75ccdb0.css",
+    "main.js": "/robabarrota/strl-app/static/js/main.2af1f70c.js",
+    "static/media/Formula1-Regular.ttf": "/robabarrota/strl-app/static/media/Formula1-Regular.0f4e3d54644717199c6f.ttf",
+    "static/media/Formula1-Bold.ttf": "/robabarrota/strl-app/static/media/Formula1-Bold.a1d6ae91f3373c37e162.ttf",
+    "index.html": "/robabarrota/strl-app/index.html",
+    "main.a75ccdb0.css.map": "/robabarrota/strl-app/static/css/main.a75ccdb0.css.map",
+    "main.2af1f70c.js.map": "/robabarrota/strl-app/static/js/main.2af1f70c.js.map"
   },
   "entrypoints": [
-    "static/css/main.38605854.css",
+    "static/css/main.a75ccdb0.css",
     "static/js/main.2af1f70c.js"
   ]
 }
