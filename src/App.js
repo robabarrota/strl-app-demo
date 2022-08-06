@@ -3,11 +3,11 @@ import Header from './header';
 import Qualifying from './qualifying/index';
 import Tracks from './tracks/index';
 import RaceResults from './race-results/index';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 
 const App = () => {
 	return (
-		<BrowserRouter>
+		<HashRouter baseline='/'>
 			<Header />
 			<div className="app">
 				<div className='app__content-card'>
@@ -20,7 +20,7 @@ const App = () => {
 				</div>
 			</div>
 
-		</BrowserRouter>
+		</HashRouter>
 	);
 };
 
