@@ -1,3 +1,5 @@
+import {camelCase} from 'lodash';
+
 const sheetKey = 'AIzaSyDPv1vWH_NZcLchfs36RetwSC1c99xkFm8';
 const sheetId = '1r8vXuLNfUxgmRlQ67YKBzC6gc22irsdzlHI6DSyyWPc';
 
@@ -41,7 +43,31 @@ const constants = {
         'Mexico': 'MEX',
         'Brazil': 'BRA',
         'Abu Dhabi': 'ABU',
-    }
+    },
+    carColorMap: {
+        mercedesPrimary: 'rgba(0, 210, 190, 1)',
+        mercedesSecondary: 'rgba(0, 210, 190, 0.75)',
+        redBullPrimary: 'rgba(6, 0, 239, 1)',
+        redBullSecondary: 'rgba(6, 0, 239, 0.75)',
+        ferrariPrimary: 'rgba(192, 0, 0, 1)',
+        ferrariSecondary: 'rgba(192, 0, 0, 0.75)',
+        racingPointPrimary: 'rgba(245, 150, 200, 1)',
+        racingPointSecondary: 'rgba(245, 150, 200, 0.75)',
+        williamsPrimary: 'rgba(0, 130, 250, 1)',
+        williamsSecondary: 'rgba(0, 130, 250, 0.75)',
+        renaultPrimary: 'rgba(255, 245, 0, 1)',
+        renaultSecondary: 'rgba(255, 245, 0, 0.75)',
+        mclarenPrimary: 'rgba(255, 135, 0, 1)',
+        mclarenSecondary: 'rgba(255, 135, 0, 0.75)',
+        alfaRomeoPrimary: 'rgba(150, 0, 0, 1)',
+        alfaRomeoSecondary: 'rgba(150, 0, 0, 0.75)',
+        alphaTauriPrimary: 'rgba(200, 200, 200, 1)',
+        alphaTauriSecondary: 'rgba(200, 200, 200, 0.75)',
+        haasPrimary: 'rgba(120, 120, 120, 1)',
+        haasSecondary: 'rgba(120, 120, 120, 0.75)',
+    },
+    getCarColor: (car, isPrimaryDriver) =>
+        constants.carColorMap[`${camelCase(car)}${isPrimaryDriver ? 'Primary' : 'Secondary'}`],
 }
 
 export default constants;

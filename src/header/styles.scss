@@ -1,3 +1,5 @@
+@import '../variables';
+
 .header {
 	background-color: #e10600;
 	color: #fff;
@@ -45,7 +47,7 @@
 	}
 }
 
-@media screen and (max-width: 820px) {
+@media screen and (max-width: $mobile-width) {
 	.header {
 		display: block;
 
