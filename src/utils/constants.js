@@ -1,13 +1,15 @@
-import {camelCase} from 'lodash';
+import { camelCase } from 'lodash';
 
 const sheetKey = 'AIzaSyDPv1vWH_NZcLchfs36RetwSC1c99xkFm8';
 const sheetId = '1r8vXuLNfUxgmRlQ67YKBzC6gc22irsdzlHI6DSyyWPc';
 
 const constants = {
+
     sheetConfig: {
         apiKey: process.env.REACT_APP_LOCAL_SHEETS_API_KEY ?? sheetKey,
         sheetId: sheetId,
     },
+
     carAbbreviationMap: {
         'Mercedes': 'MER',
         'Red Bull': 'RB',
@@ -20,6 +22,7 @@ const constants = {
         'Alpha Tauri': 'ALPH',
         'Haas': 'HAAS',
     },
+
     trackAbbreviationMap: {
         'Australia': 'AUS',
         'Bahrain': 'BHR',
@@ -44,6 +47,7 @@ const constants = {
         'Brazil': 'BRA',
         'Abu Dhabi': 'ABU',
     },
+
     carColorMap: {
         mercedesPrimary: 'rgba(0, 210, 190, 1)',
         mercedesSecondary: 'rgba(0, 210, 190, 0.75)',
@@ -66,8 +70,22 @@ const constants = {
         haasPrimary: 'rgba(120, 120, 120, 1)',
         haasSecondary: 'rgba(120, 120, 120, 0.75)',
     },
+
     getCarColor: (car, isPrimaryDriver) =>
         constants.carColorMap[`${camelCase(car)}${isPrimaryDriver ? 'Primary' : 'Secondary'}`],
+
+    pointMap: {
+        1: 25,
+        2: 18,
+        3: 15,
+        4: 12,
+        5: 10,
+        6: 8,
+        7: 6,
+        8: 4,
+        9: 2,
+        10: 1
+    },
 }
 
 export default constants;
