@@ -68,8 +68,8 @@ const Qualifying = () => {
 		return driverStats;
 	}, [qualifyingResults]);
 
-	const resultHeaders = useMemo(() => trackList?.map((track) =>
-		track
+	const resultHeaders = useMemo(() => trackList?.map(({Track}) =>
+		Track
 	), [trackList]);
 
 	const lastPosition = useMemo(() => {

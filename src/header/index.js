@@ -20,6 +20,14 @@ const Header = () => {
 			</div>
 
 			<div className={`header__nav-links${expandedClass}`}>
+				<NavLink className="header__nav-link" to="/driver-standings">
+					{({ isActive }) => (
+						<div className={labelClass(isActive)}>
+							<span className='header__nav-link-text'>Driver Standings</span>
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</div>
+					)}
+				</NavLink>
 				<NavLink className="header__nav-link" to="/race-results">
 					{({ isActive }) => (
 						<div className={labelClass(isActive)}>
@@ -36,10 +44,10 @@ const Header = () => {
 						</div>
 					)}
 				</NavLink>
-				<NavLink className="header__nav-link" to="/track-list">
+				<NavLink className="header__nav-link" to="/schedule">
 					{({ isActive }) => (
 						<div className={labelClass(isActive)}>
-							<span className='header__nav-link-text'>Tracks</span>
+							<span className='header__nav-link-text'>Schedule</span>
 							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 						</div>
 					)}

@@ -24,3 +24,8 @@ export const setRaceResults = raceResults => ({ type: SET_RACE_RESULTS, payload:
 export const FETCH_RACE_RESULTS = `${prefix}/FETCH_RACE_RESULTS`;
 export const fetchRaceResults = () => ({ type: FETCH_RACE_RESULTS });
 
+export const SET_FASTEST_LAPS = `${prefix}/SET_FASTEST_LAPS`;
+export const setFastestLaps = fastestLaps => ({ type: SET_FASTEST_LAPS, payload: { fastestLaps } });
+
+export const FETCH_FASTEST_LAPS = `${prefix}/FETCH_FASTEST_LAPS`;
+export const fetchFastestLaps = () => ({ type: FETCH_FASTEST_LAPS });

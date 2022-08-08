@@ -20,7 +20,7 @@ import {
 	ResponsiveContainer
 } from "recharts";
 
-const RaceResults = () => {
+const DriverStandings = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
 	const { width } = useWindowDimensions();
@@ -243,4 +243,4 @@ const RaceResults = () => {
 
 }
 
-export default RaceResults;
+export default DriverStandings;

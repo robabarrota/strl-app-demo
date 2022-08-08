@@ -7,7 +7,7 @@ const fetchTrackList = (store, action) => {
 		service
 			.getTrackList()
 			.then((response) => {
-				const data = response[0].data.map(trackObject => trackObject['Tracks']);
+				const data = response[0].data;
 
 				store.dispatch(
 					actions.setTrackList({
@@ -89,6 +89,28 @@ const fetchRaceResults = (store, action) => {
 	}
 };
 
-const effects = [fetchTrackList, fetchParticipants, fetchQualifying, fetchRaceResults];
+const fetchFastestLaps = (store, action) => {
+	if (action.type === actions.FETCH_FASTEST_LAPS) {
+		store.dispatch(actions.setFastestLaps({ loading: true }));
+		service
+			.getFastestLaps()
+			.then((response) => {
+				const data = response[0].data;
+
+				store.dispatch(
+					actions.setFastestLaps({
+						loading: false,
+						content: data,
+						error: null,
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setFastestLaps({ loading: false, error }));
+			});
+	}
+};
+
+const effects = [fetchTrackList, fetchParticipants, fetchQualifying, fetchRaceResults, fetchFastestLaps];
 
 export default effects;

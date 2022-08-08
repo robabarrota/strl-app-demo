@@ -21,6 +21,11 @@ const service = {
         ...constants.sheetConfig,
         sheetsOptions: [{ id: 'Race Results' }],
     }),
+    
+    getFastestLaps: async () => await fetchGoogleSheetsData({
+        ...constants.sheetConfig,
+        sheetsOptions: [{ id: 'Fastest Lap' }],
+    }),
 }
 
 export default service;
