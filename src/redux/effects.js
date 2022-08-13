@@ -1,3 +1,4 @@
+import {first} from 'lodash';
 import service from 'src/service';
 import * as actions from './actions';
 
@@ -95,7 +96,7 @@ const fetchFastestLaps = (store, action) => {
 		service
 			.getFastestLaps()
 			.then((response) => {
-				const data = response[0].data;
+				const data = first(response[0].data);
 
 				store.dispatch(
 					actions.setFastestLaps({

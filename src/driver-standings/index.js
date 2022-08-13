@@ -1,7 +1,7 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRaceResults, getTrackList, getParticipants } from 'src/redux/selectors';
-import { fetchRaceResults, fetchTrackList, fetchParticipants } from 'src/redux/actions';
+import { getRaceResults, getFastestLaps, getTrackList, getParticipants } from 'src/redux/selectors';
+import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants } from 'src/redux/actions';
 import { isEmpty, groupBy, first } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
@@ -26,10 +26,12 @@ const DriverStandings = () => {
 	const { width } = useWindowDimensions();
 
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
+	const { content: fastestLaps, loading: fastestLapsLoading } = useSelector(getFastestLaps);
 	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
 	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
 
 	if (isEmpty(raceResults) && !raceResultsLoading) dispatch(fetchRaceResults());
+	if (isEmpty(fastestLaps) && !fastestLapsLoading) dispatch(fetchFastestLaps());
 	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
 	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
 
@@ -42,22 +44,39 @@ const DriverStandings = () => {
 	const formatDriverName = useCallback((driver) => width > 820 ? driver : driver.split(' ')[0], [width])
 	const formatTrackName = useCallback((track) => width > 820 ? track : constants.trackAbbreviationMap[track], [width])
 
+	const resultHeaders = useMemo(() => trackList?.map(({ Track }) =>
+		Track
+	), [trackList]);
+
+	const driverPoints = useMemo(() => raceResults.map(row => {
+		const driver = { 'Driver': row['Driver'] };
+		resultHeaders.forEach(header => {
+			let racePoints = constants.pointMap[row[header]];
+			if (racePoints && fastestLaps[header] === driver['Driver'] && row[header] <= 10) racePoints += 1;
+			driver[header] = racePoints;
+		});
+		return driver;
+	}), [raceResults, resultHeaders, fastestLaps]);
+
 	const stats = useMemo(() => {
 		const groupedDrivers = groupBy(raceResults, 'Driver');
 		if (isEmpty(groupedDrivers)) return [];
 		const driverStats = Object.entries(groupedDrivers).map(([driver, driverResults]) => {
 			const results = first(driverResults);
 			let racesMissed = 0;
-			let totalRaceFinish = 0;
 			let totalRaces = 0;
 			Object.entries(results).filter(([key, value]) => key !== 'Car' && key !== 'Driver').forEach(([track, result]) => {
 				if (result === 'DNS') racesMissed++;
-
-				if (result !== 'DNF' && result !== 'DNS') totalRaceFinish += parseInt(result);
 				totalRaces++;
 			});
-			
-			const average = totalRaceFinish / totalRaces;
+			const totalRacePoints = Object.entries(driverPoints.filter((driverPoint) => driverPoint['Driver'] === driver)[0])
+				.filter(([key, value]) => key !== 'Driver')
+				.reduce((acc, [track, points]) => {
+					if (Number.isInteger(points)) acc += Number(points);
+					return acc;
+			}, 0)
+
+			const average = totalRacePoints / totalRaces;
 
 			return {
 				driver,
@@ -66,11 +85,7 @@ const DriverStandings = () => {
 			}
 		})
 		return driverStats;
-	}, [raceResults]);
-
-	const resultHeaders = useMemo(() => trackList?.map(({Track}) =>
-		Track
-	), [trackList]);
+	}, [raceResults, driverPoints]);
 
 	const lastPosition = useMemo(() => {
 		return Math.max(...raceResults.map(row =>
@@ -132,7 +147,7 @@ const DriverStandings = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{raceResults.map((row) => (
+					{driverPoints.map((row) => (
 						<tr key={row['Driver']}>
 							{resultHeaders.map((header, index) =>
 								<td
@@ -150,36 +165,38 @@ const DriverStandings = () => {
 		</div>
 	);
 
+	const renderStatsSubTableData = useCallback(() => 
+		<table>
+			<thead>
+				<tr>
+					<th className="race-results__table-header">AVG</th>
+					<th className="race-results__table-header">DNS's</th>
+				</tr>
+			</thead>
+			<tbody>
+				{stats.map((driverStats) => (
+					<tr key={driverStats.driver}>
+						<td
+							className={`race-results__table-cell`}>
+							{driverStats.average}
+						</td>
+						<td
+							className={`race-results__table-cell`}>
+							{driverStats.racesMissed}
+						</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	, [stats]);
+
 	const renderStatsSubTable = () => (
 		<div className="race-results__end-subtable-container--right">
-			<div className={`race-results__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(!showStats)}>
+			<div className={`race-results__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
 				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 			</div>
-			{showStats && (
-				<table>
-					<thead>
-						<tr>
-							<th className="race-results__table-header">AVG</th>
-							<th className="race-results__table-header">DNS's</th>
-						</tr>
-					</thead>
-					<tbody>
-						{stats.map((driverStats) => (
-							<tr key={driverStats.driver}>
-								<td
-									className={`race-results__table-cell`}>
-									{driverStats.average}
-								</td>
-								<td
-									className={`race-results__table-cell`}>
-									{driverStats.racesMissed}
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			)}
+			{showStats && renderStatsSubTableData()}
 		</div>
 	);
 
@@ -224,7 +241,7 @@ const DriverStandings = () => {
 
 	return (
 		<div className="race-results">
-			<h1 className='race-results__title'>Race Results</h1>
+			<h1 className='race-results__title'>Driver Standings</h1>
 
 			{isDataReady && (
 				<>

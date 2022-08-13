@@ -1,7 +1,7 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRaceResults, getTrackList, getParticipants } from 'src/redux/selectors';
-import { fetchRaceResults, fetchTrackList, fetchParticipants } from 'src/redux/actions';
+import { getRaceResults, getFastestLaps, getTrackList, getParticipants } from 'src/redux/selectors';
+import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants } from 'src/redux/actions';
 import { isEmpty, groupBy, first } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
@@ -26,18 +26,27 @@ const RaceResults = () => {
 	const { width } = useWindowDimensions();
 
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
+	const { content: fastestLaps, loading: fastestLapsLoading } = useSelector(getFastestLaps);
 	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
 	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
 
 	if (isEmpty(raceResults) && !raceResultsLoading) dispatch(fetchRaceResults());
+	if (isEmpty(fastestLaps) && !fastestLapsLoading) dispatch(fetchFastestLaps());
 	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
 	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
 
 	const isDataReady = useMemo(() =>
-		!(isEmpty(raceResults) || raceResultsLoading
+		!(
+			isEmpty(raceResults) || raceResultsLoading
+			|| isEmpty(fastestLaps) || fastestLapsLoading
 			|| isEmpty(trackList) || trackListLoading
 			|| isEmpty(participants) || participantsLoading),
-		[raceResults, raceResultsLoading, trackList, trackListLoading, participants, participantsLoading])
+		[
+			raceResults, raceResultsLoading, 
+			fastestLaps, fastestLapsLoading, 
+			trackList, trackListLoading, 
+			participants, participantsLoading
+		])
 
 	const formatDriverName = useCallback((driver) => width > 820 ? driver : driver.split(' ')[0], [width])
 	const formatTrackName = useCallback((track) => width > 820 ? track : constants.trackAbbreviationMap[track], [width])
@@ -59,14 +68,17 @@ const RaceResults = () => {
 			
 			const average = totalRaceFinish / totalRaces;
 
+			const fastestLapsCount = Object.values(fastestLaps).filter(fastestDriver => fastestDriver === driver).length;
+
 			return {
 				driver,
 				average: average === 0 ? '-' : average,
-				racesMissed
+				racesMissed, 
+				fastestLapsCount,
 			}
 		})
 		return driverStats;
-	}, [raceResults]);
+	}, [raceResults, fastestLaps]);
 
 	const resultHeaders = useMemo(() => trackList?.map(({Track}) =>
 		Track
@@ -100,6 +112,10 @@ const RaceResults = () => {
 		if (header === 'Car') return 'race-results__car';
 		return 'race-results__track'
 	}
+
+	const fastestLapClass = (driverName, track) => {
+		if (fastestLaps[track] === driverName && fastestLaps[track] !== undefined) return 'race-results__fastest';
+	};
 	const renderDriverSubTable = () => (
 		<div className="race-results__end-subtable-container--left">
 			<table>
@@ -137,10 +153,10 @@ const RaceResults = () => {
 							{resultHeaders.map((header, index) =>
 								<td
 									key={`${row['Driver']}-${index}`}
-									className={`race-results__table-cell ${getClassName(header)}`}>
-									<Tooltip innerHtml={header}>
-										{row[header]}
-									</Tooltip>
+									className={`race-results__table-cell ${getClassName(header)} ${fastestLapClass(row['Driver'], header)}`}>
+										<Tooltip innerHtml={header}>
+											{row[header]}
+										</Tooltip>
 								</td>
 							)}
 						</tr>
@@ -162,7 +178,8 @@ const RaceResults = () => {
 						<tr>
 							<th className="race-results__table-header">AVG</th>
 							<th className="race-results__table-header">DNS's</th>
-						</tr>
+							<th className="race-results__table-header"><i class="fa-solid fa-stopwatch race-results__fastest-icon"></i></th>
+						</tr> 
 					</thead>
 					<tbody>
 						{stats.map((driverStats) => (
@@ -174,6 +191,10 @@ const RaceResults = () => {
 								<td
 									className={`race-results__table-cell`}>
 									{driverStats.racesMissed}
+								</td>
+								<td
+									className={`race-results__table-cell`}>
+									{driverStats.fastestLapsCount}
 								</td>
 							</tr>
 						))}
