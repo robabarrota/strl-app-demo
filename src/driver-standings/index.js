@@ -2,13 +2,12 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRaceResults, getFastestLaps, getTrackList, getParticipants } from 'src/redux/selectors';
 import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants } from 'src/redux/actions';
-import { isEmpty, groupBy, first } from 'lodash';
+import { isEmpty, groupBy, first, last, isNaN } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
 import useWindowDimensions from 'src/hooks/useWindowDimensions';
 import constants from 'src/utils/constants';
 import Tooltip from 'src/components/tooltip';
-import { isNaN } from 'lodash';
 import {
 	LineChart,
 	Line,
@@ -81,7 +80,8 @@ const DriverStandings = () => {
 			return {
 				driver,
 				average: average === 0 ? '-' : average,
-				racesMissed
+				total: totalRacePoints,
+				racesMissed,
 			}
 		})
 		return driverStats;
@@ -93,20 +93,22 @@ const DriverStandings = () => {
 		).flat()) ?? 0
 	}, [resultHeaders, raceResults]);
 
-	const data = useMemo(() => {
-		return resultHeaders.map(track => {
+	const data = useMemo(() => 
+		resultHeaders.reduce((acc, track) => {
 			const trackScores = {
 				name: formatTrackName(track)
 			};
-			raceResults.forEach(row => {
+			driverPoints.forEach(row => {
 				let result = row[track];
+				const previousScore = last(acc)?.[row['Driver']] ?? 0;
 				if (result === 'DNS' || result === 'DNF' || result === undefined) return;
 
-				trackScores[row['Driver']] = parseInt(result);
+				trackScores[row['Driver']] = parseInt(result) + previousScore;
 			});
-			return trackScores;
-		})
-	}, [resultHeaders, raceResults, formatTrackName])
+			acc.push(trackScores);
+			return acc;
+		}, [])
+	, [resultHeaders, raceResults, formatTrackName])
 
 	const graphTrackOrientation = useMemo(() => width > 820 ? 0 : 270, [width]);
 
@@ -169,6 +171,7 @@ const DriverStandings = () => {
 		<table>
 			<thead>
 				<tr>
+					<th className="race-results__table-header">TOTAL</th>
 					<th className="race-results__table-header">AVG</th>
 					<th className="race-results__table-header">DNS's</th>
 				</tr>
@@ -176,6 +179,10 @@ const DriverStandings = () => {
 			<tbody>
 				{stats.map((driverStats) => (
 					<tr key={driverStats.driver}>
+						<td
+							className={`race-results__table-cell`}>
+							{driverStats.total}
+						</td>
 						<td
 							className={`race-results__table-cell`}>
 							{driverStats.average}
@@ -215,7 +222,7 @@ const DriverStandings = () => {
 			>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
-				<YAxis reversed={true} domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
+				<YAxis domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
 				<Legend
 					wrapperStyle={{
