@@ -113,23 +113,23 @@ const DriverStandings = () => {
 	const graphTrackOrientation = useMemo(() => width > 820 ? 0 : 270, [width]);
 
 	const getClassName = (header) => {
-		if (header === 'Driver') return 'race-results__driver';
-		if (header === 'Car') return 'race-results__car';
-		return 'race-results__track'
+		if (header === 'Driver') return 'driver-standings__driver';
+		if (header === 'Car') return 'driver-standings__car';
+		return 'driver-standings__track'
 	}
 	const renderDriverSubTable = () => (
-		<div className="race-results__end-subtable-container--left">
+		<div className="driver-standings__end-subtable-container--left">
 			<table>
 				<thead>
 					<tr>
-						<th className="race-results__table-header">Driver</th>
+						<th className="driver-standings__table-header">Driver</th>
 					</tr>
 				</thead>
 				<tbody>
 					{participants.map((row) => (
 						<tr key={row['Driver']}>
-							<td className={`race-results__table-cell`}>
-								<div className='race-results__driver-label'>
+							<td className={`driver-standings__table-cell`}>
+								<div className='driver-standings__driver-label'>
 									{formatDriverName(row["Driver"])} <ConstructorBadge constructor={row["Car"]} />
 								</div>
 							</td>
@@ -141,11 +141,11 @@ const DriverStandings = () => {
 	);
 
 	const renderResultsSubTable = () => (
-		<div className="race-results__results-subtable-container">
+		<div className="driver-standings__results-subtable-container">
 			<table>
 				<thead>
 					<tr>
-						{resultHeaders.map(header => <th key={header} className="race-results__table-header">{formatTrackName(header)}</th>)}
+						{resultHeaders.map(header => <th key={header} className="driver-standings__table-header">{formatTrackName(header)}</th>)}
 					</tr>
 				</thead>
 				<tbody>
@@ -154,7 +154,7 @@ const DriverStandings = () => {
 							{resultHeaders.map((header, index) =>
 								<td
 									key={`${row['Driver']}-${index}`}
-									className={`race-results__table-cell ${getClassName(header)}`}>
+									className={`driver-standings__table-cell ${getClassName(header)}`}>
 									<Tooltip innerHtml={header}>
 										{row[header]}
 									</Tooltip>
@@ -171,24 +171,24 @@ const DriverStandings = () => {
 		<table>
 			<thead>
 				<tr>
-					<th className="race-results__table-header">TOTAL</th>
-					<th className="race-results__table-header">AVG</th>
-					<th className="race-results__table-header">DNS's</th>
+					<th className="driver-standings__table-header">TOTAL</th>
+					<th className="driver-standings__table-header">AVG</th>
+					<th className="driver-standings__table-header">DNS's</th>
 				</tr>
 			</thead>
 			<tbody>
 				{stats.map((driverStats) => (
 					<tr key={driverStats.driver}>
 						<td
-							className={`race-results__table-cell`}>
+							className={`driver-standings__table-cell`}>
 							{driverStats.total}
 						</td>
 						<td
-							className={`race-results__table-cell`}>
+							className={`driver-standings__table-cell`}>
 							{driverStats.average}
 						</td>
 						<td
-							className={`race-results__table-cell`}>
+							className={`driver-standings__table-cell`}>
 							{driverStats.racesMissed}
 						</td>
 					</tr>
@@ -198,8 +198,8 @@ const DriverStandings = () => {
 	, [stats]);
 
 	const renderStatsSubTable = () => (
-		<div className="race-results__end-subtable-container--right">
-			<div className={`race-results__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
+		<div className="driver-standings__end-subtable-container--right">
+			<div className={`driver-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
 				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 			</div>
@@ -247,17 +247,17 @@ const DriverStandings = () => {
 
 
 	return (
-		<div className="race-results">
-			<h1 className='race-results__title'>Driver Standings</h1>
+		<div className="driver-standings">
+			<h1 className='driver-standings__title'>Driver Standings</h1>
 
 			{isDataReady && (
 				<>
-					<div className="race-results__table-container">
+					<div className="driver-standings__table-container">
 						{renderDriverSubTable()}
 						{renderResultsSubTable()}
 						{renderStatsSubTable()}
 					</div>
-					<div className='race-results__graph-container'>
+					<div className='driver-standings__graph-container'>
 						{renderGraph()}
 					</div>
 				</>
