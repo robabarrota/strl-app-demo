@@ -29,3 +29,9 @@ export const setFastestLaps = fastestLaps => ({ type: SET_FASTEST_LAPS, payload:
 
 export const FETCH_FASTEST_LAPS = `${prefix}/FETCH_FASTEST_LAPS`;
 export const fetchFastestLaps = () => ({ type: FETCH_FASTEST_LAPS });
+
+export const SET_MEDAL_COUNT = `${prefix}/SET_MEDAL_COUNT`;
+export const setMedalCount = medalCount => ({ type: SET_MEDAL_COUNT, payload: { medalCount } });
+
+export const FETCH_MEDAL_COUNT = `${prefix}/FETCH_MEDAL_COUNT`;
+export const fetchMedalCount = () => ({ type: FETCH_MEDAL_COUNT });

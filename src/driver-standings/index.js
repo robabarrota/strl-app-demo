@@ -108,7 +108,7 @@ const DriverStandings = () => {
 			acc.push(trackScores);
 			return acc;
 		}, [])
-	, [resultHeaders, raceResults, formatTrackName])
+	, [resultHeaders, driverPoints, formatTrackName])
 
 	const graphTrackOrientation = useMemo(() => width > 820 ? 0 : 270, [width]);
 

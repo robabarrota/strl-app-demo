@@ -2,7 +2,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRaceResults, getFastestLaps, getTrackList, getParticipants } from 'src/redux/selectors';
 import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants } from 'src/redux/actions';
-import { isEmpty, groupBy, first, last, isNaN } from 'lodash';
+import { isEmpty, last, isNaN } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
 import useWindowDimensions from 'src/hooks/useWindowDimensions';
@@ -64,8 +64,8 @@ const ConstructorStandings = () => {
 			return acc;
 		}, []), [raceResults, resultHeaders, fastestLaps]);
 
-	const stats = useMemo(() => {
-		return constructorPoints.map(constructor => {
+	const stats = useMemo(() => 
+		constructorPoints.map(constructor => {
 			const name = constructor['Car'];
 			let totalRaces = 0;
 			const totalPoints = Object.entries(constructor)
@@ -81,35 +81,7 @@ const ConstructorStandings = () => {
 				total: totalPoints,
 			}
 		})
-		// const groupedDrivers = groupBy(raceResults, 'Driver');
-		// if (isEmpty(groupedDrivers)) return [];
-		// const driverStats = Object.entries(groupedDrivers).map(([driver, driverResults]) => {
-		// 	const results = first(driverResults);
-		// 	let racesMissed = 0;
-		// 	let totalRaces = 0;
-		// 	Object.entries(results).filter(([key, value]) => key !== 'Car' && key !== 'Driver').forEach(([track, result]) => {
-		// 		if (result === 'DNS') racesMissed++;
-		// 		totalRaces++;
-		// 	});
-		// 	const totalRacePoints = Object.entries(constructorPoints.filter((constructorPoint) => constructorPoint['Car'] === driver)[0])
-		// 		.filter(([key, value]) => key !== 'Car')
-		// 		.reduce((acc, [track, points]) => {
-		// 			if (Number.isInteger(points)) acc += Number(points);
-		// 			return acc;
-		// 	}, 0)
-
-		// 	const average = totalRacePoints / totalRaces;
-
-		// 	return {
-		// 		driver,
-		// 		average: average === 0 ? '-' : average,
-		// 		total: totalRacePoints,
-		// 		racesMissed,
-		// 	}
-		// })
-		// return driverStats;
-
-	}, [raceResults, constructorPoints]);
+	, [constructorPoints]);
 
 	const lastPosition = useMemo(() => {
 		return Math.max(...raceResults.map(row =>
@@ -134,7 +106,7 @@ const ConstructorStandings = () => {
 			return acc;
 		}, [])
 	}
-	, [resultHeaders, raceResults, formatTrackName])
+	, [resultHeaders, constructorPoints, formatTrackName])
 
 	const graphTrackOrientation = useMemo(() => width > 820 ? 0 : 270, [width]);
 

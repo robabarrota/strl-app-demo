@@ -112,6 +112,35 @@ const fetchFastestLaps = (store, action) => {
 	}
 };
 
-const effects = [fetchTrackList, fetchParticipants, fetchQualifying, fetchRaceResults, fetchFastestLaps];
+const fetchMedalCount = (store, action) => {
+	if (action.type === actions.FETCH_MEDAL_COUNT) {
+		store.dispatch(actions.setMedalCount({ loading: true }));
+		service
+			.getMedalCount()
+			.then((response) => {
+				const data = response[0].data;
+
+				store.dispatch(
+					actions.setMedalCount({
+						loading: false,
+						content: data,
+						error: null,
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setMedalCount({ loading: false, error }));
+			});
+	}
+};
+
+const effects = [
+	fetchTrackList, 
+	fetchParticipants, 
+	fetchQualifying, 
+	fetchRaceResults, 
+	fetchFastestLaps, 
+	fetchMedalCount
+];
 
 export default effects;

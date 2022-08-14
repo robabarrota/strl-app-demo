@@ -1,0 +1,49 @@
+@import '../variables';
+
+.medal-count {
+    display: grid;
+    gap: 2.5em;
+
+    &__title {
+        margin-left: 18px;
+        margin-bottom: 0;
+    }
+
+    &__table-container {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    &__table-cell {
+        padding: 18px 20px 14px;
+        white-space: nowrap;
+    }
+
+    &__table-header {
+        padding: 18px 20px 14px;
+        white-space: nowrap;
+    }
+
+    &__graph-container {
+        max-width: inherit;
+        height: 80vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+        @media screen and (max-width: $mobile-width) {
+            height: 60vh;
+        }
+    }
+
+    &__gold {
+        color: #C9B037;
+    }
+
+    &__silver {
+        color: #B4B4B4;
+    }
+
+    &__bronze {
+        color: #AD8A56;
+    }
+}

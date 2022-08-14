@@ -60,6 +60,14 @@ const Header = () => {
 						</div>
 					)}
 				</NavLink>
+				<NavLink className="header__nav-link" to="/medal-count">
+					{({ isActive }) => (
+						<div className={labelClass(isActive)}>
+							<span className='header__nav-link-text'>League Leaders</span>
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</div>
+					)}
+				</NavLink>
 			</div>
 		</div>
 	);
