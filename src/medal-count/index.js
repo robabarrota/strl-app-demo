@@ -13,7 +13,6 @@ import {
 	YAxis,
 	CartesianGrid,
 	Tooltip as ChartTooltip,
-	Legend,
 	ResponsiveContainer
 } from "recharts";
 
@@ -62,16 +61,18 @@ const MedalCount = () => {
 			<BarChart 
 				width={500} 
 				height={500} 
-				data={medalCount} 
+				data={medalCount}
+				layout="vertical"
 				margin={{
 					top: 5,
 					right: 30,
-					left: 0,
+					left: 20,
 					bottom: 5
-				}} >
+				}} 
+				>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="Driver" interval={0} tickMargin={10} tickFormatter={formatDriverName} />
-				<YAxis domain={['dataMin', 'dataMax']} interval={0} />
+				<XAxis type="number" interval={0} domain={['dataMin', 'dataMax']} tickMargin={0} minTickGap={0}/>
+				<YAxis type="category" dataKey="Driver" tickFormatter={formatDriverName} interval={0} />
 				<Bar dataKey="Gold" stackId="a" fill="#C9B037" />
 				<Bar dataKey="Silver" stackId="a" fill="#B4B4B4" />
 				<Bar dataKey="Bronze" stackId="a" fill="#AD8A56" />
