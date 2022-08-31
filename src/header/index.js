@@ -1,5 +1,5 @@
 import './styles.scss';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import useIsMobile from 'src/hooks/useIsMobile';
 import React, { useState, useMemo } from 'react';
 
@@ -7,6 +7,7 @@ const Header = () => {
 	const [navLinksOpen, setNavLinksOpen] = useState(false);
     const [showStandingsSublinks, setShowStandingsSublinks] = useState(false);
 	const isMobile = useIsMobile();
+	const location = useLocation();
 
 	const expandedClass = useMemo(() => (navLinksOpen ? 'header__nav-sub-links--expanded' : ''), [navLinksOpen]);
 	const labelClass = (isActive) => isActive ? 'header__nav-link-label header__nav-link--active' : 'header__nav-link-label header__nav-link--inactive';
@@ -36,6 +37,9 @@ const Header = () => {
 			</NavLink>
 		</div>
 	);
+
+	const isStandingsUrl = useMemo(() => location.pathname.includes('/standings/'), [location]);
+
 	return (
 		<div 
 			className="header" 
@@ -43,7 +47,7 @@ const Header = () => {
 		>
 			<div className="header__top">
 				<div className="header__responsive-bar">
-					<Link className="header__title" to="/" onClick={closeHeader}>
+					<Link className="header__title" to="/highlights" onClick={closeHeader}>
 						STRL
 					</Link>
 
@@ -58,7 +62,7 @@ const Header = () => {
 						onMouseEnter={() => setShowStandingsSublinks(true)}
 						onTouchStart={() => setShowStandingsSublinks(!showStandingsSublinks)}
 					>
-						<div className={labelClass(false)}>
+						<div className={labelClass(isStandingsUrl)}>
 							<span className='header__nav-link-text'>Standings</span>
 							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 							<i className={"fa-solid fa-chevron-down header__dropdown-chevron"}></i>
