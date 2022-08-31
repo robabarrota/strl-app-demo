@@ -18,8 +18,9 @@ const App = () => {
 						<Route path="schedule" element={<Schedule />} />
 						<Route path="race-results" element={<RaceResults />} />
 						<Route path="qualifying" element={<Qualifying />} />
-						<Route path="driver-standings" element={<DriverStandings />} />
-						<Route path="constructor-standings" element={<ConstructorStandings />} />
+						<Route path="standings/driver" element={<DriverStandings />} />
+						<Route path="standings" element={<DriverStandings />} />
+						<Route path="standings/constructor" element={<ConstructorStandings />} />
 						<Route path="medal-count" element={<MedalCount />} />
 						<Route path="*" element={<Qualifying />} />
 					</Routes>

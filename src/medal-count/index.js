@@ -36,20 +36,20 @@ const MedalCount = () => {
 			<thead>
 				<tr>
 					<th className="medal-count__table-header">Driver</th>
-					<th className="medal-count__table-header"><i class="fa-solid fa-trophy medal-count__gold"></i></th>
-					<th className="medal-count__table-header"><i class="fa-solid fa-trophy medal-count__silver"></i></th>
-					<th className="medal-count__table-header"><i class="fa-solid fa-trophy medal-count__bronze"></i></th>
+					<th className="medal-count__table-header"><i className="fa-solid fa-trophy medal-count__gold"></i></th>
+					<th className="medal-count__table-header"><i className="fa-solid fa-trophy medal-count__silver"></i></th>
+					<th className="medal-count__table-header"><i className="fa-solid fa-trophy medal-count__bronze"></i></th>
 					<th className="medal-count__table-header">Points</th>
 				</tr>
 			</thead>
 			<tbody>
 				{medalCount.map(({ Driver, Gold, Silver, Bronze, Points }) => (
-					<tr>
-						<td key={Driver} className='medal-count__table-cell'><div>{Driver}</div></td>
-						<td key={Driver} className='medal-count__table-cell'><div>{Gold}</div></td>
-						<td key={Driver} className='medal-count__table-cell'><div>{Silver}</div></td>
-						<td key={Driver} className='medal-count__table-cell'><div>{Bronze}</div></td>
-						<td key={Driver} className='medal-count__table-cell'><div>{Points}</div></td>
+					<tr key={Driver} >
+						<td className='medal-count__table-cell'><div>{Driver}</div></td>
+						<td className='medal-count__table-cell'><div>{Gold}</div></td>
+						<td className='medal-count__table-cell'><div>{Silver}</div></td>
+						<td className='medal-count__table-cell'><div>{Bronze}</div></td>
+						<td className='medal-count__table-cell'><div>{Points}</div></td>
 					</tr>
 				))}
 			</tbody>

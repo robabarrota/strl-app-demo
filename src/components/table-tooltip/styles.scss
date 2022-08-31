@@ -1,9 +1,9 @@
-.tooltip {
+.table-tooltip {
     position: relative;
     display: inline-block;
 }
 
-.tooltip .tooltiptext {
+.table-tooltip .table-tooltip__text {
     display: none;
     width: 120px;
     background-color: black;
@@ -16,7 +16,7 @@
     z-index: 1;
 }
 
-.tooltip:hover .tooltiptext,
-.tooltip:active .tooltiptext {
+.table-tooltip:hover .table-tooltip__text,
+.table-tooltip:active .table-tooltip__text {
     display: block;
 }

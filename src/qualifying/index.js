@@ -7,7 +7,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
 import useWindowDimensions from 'src/hooks/useWindowDimensions';
 import constants from 'src/utils/constants';
-import Tooltip from 'src/components/tooltip';
+import TableTooltip from 'src/components/table-tooltip';
 import { isNaN } from 'lodash';
 import {
 	LineChart,
@@ -138,9 +138,9 @@ const Qualifying = () => {
 								<td
 									key={`${row['Driver']}-${index}`}
 									className={`qualifying__table-cell ${getClassName(header)}`}>
-									<Tooltip innerHtml={header}>
+									<TableTooltip innerHtml={header}>
 										{row[header]}
-									</Tooltip>
+									</TableTooltip>
 								</td>
 							)}
 						</tr>

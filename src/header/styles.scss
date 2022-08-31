@@ -4,10 +4,17 @@
 	background-color: #e10600;
 	color: #fff;
 	font-weight: 600;
-	padding: 16px;
-	display: flex;
-	gap: 5vw;
 	align-items: center;
+
+	&__top {
+		display: flex;
+		gap: 5vw;
+		padding: 16px;
+	}
+
+	&__dropdown-chevron {
+		padding-left: 8px;
+	}
 
 	&__title {
 		font-family: strl-font;
@@ -32,6 +39,7 @@
 
 	&__nav-link-text {
 		font-family: strl-font;
+		white-space: nowrap;
 	}
 
 	&__nav-link-label {
@@ -45,17 +53,69 @@
 		border-left: 0;
 		border-bottom-right-radius: 10px;
 	}
+
+	&__nav-link--inactive {
+		border: solid 1px #f08380;
+		border-top: 0;
+		border-left: 0;
+		border-bottom-right-radius: 10px;
+	}
+
+	&__nav-bootstrap-dropdown {
+		> button, > button:active, > button:active, > button:focus, > button:hover, > button:after {
+			background-color: transparent;
+			border: none;
+			outline: none;
+			box-shadow: none;
+			--bs-btn-focus-box-shadow: none;
+			padding: 0;
+		}
+
+		> button:after {
+			display: none;
+		}
+	}
+
+	&__nav-sub-links {
+		margin: 0;
+		padding: 8px 16px;
+		background: black;
+		&--empty {
+			height: 0;
+			padding: 0;
+		}
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		& .header__nav-link--inactive {
+			border: solid 1px #fff;
+			border-top: 0;
+			border-left: 0;
+			border-bottom-right-radius: 10px;
+		}
+	}
+
+	&__nav-link {
+		cursor: pointer;
+	}
 }
 
 @media screen and (max-width: $mobile-width) {
 	.header {
-		display: block;
+
+		&__top {
+			display: block;
+		}
 
 		&__responsive-bar {
 			display: grid;
 			grid-auto-flow: column;
 			width: 100%;
 			align-items: center;
+		}
+
+		&__dropdown-chevron {
+			display: none;
 		}
 
 		&__title {
@@ -84,6 +144,7 @@
 
 		&__nav-link {
 			padding: 5px 15px;
+			width: 100%;
 		}
 
 		&__nav-link-label {
@@ -109,6 +170,9 @@
 
 		&__chevron {
 			display: block;
+		}
+		&__nav-sub-links {
+			margin: 0 -16px;
 		}
 	}
 }
