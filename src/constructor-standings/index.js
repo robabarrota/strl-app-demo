@@ -22,6 +22,7 @@ import {
 const ConstructorStandings = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
+	const [graphFilter, setGraphFilter] = useState([]);
 	const isMobile = useIsMobile();
 
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
@@ -115,7 +116,7 @@ const ConstructorStandings = () => {
 		if (header === 'Car') return 'constructor-standings__car';
 		return 'constructor-standings__track'
 	}
-	const renderConstructorSubTable = () => (
+	const renderConstructorSubTable = useMemo(() => (
 		<div className="constructor-standings__end-subtable-container--left">
 			<table>
 				<thead>
@@ -136,9 +137,9 @@ const ConstructorStandings = () => {
 				</tbody>
 			</table>
 		</div>
-	);
+	), [constructors, formatConstructorName]);
 
-	const renderResultsSubTable = () => (
+	const renderResultsSubTable = useMemo(() => (
 		<div className="constructor-standings__results-subtable-container">
 			<table>
 				<thead>
@@ -163,42 +164,83 @@ const ConstructorStandings = () => {
 				</tbody>
 			</table>
 		</div>
-	);
+	), [resultHeaders, formatTrackName, constructorPoints]);
 
-	const renderStatsSubTableData = useCallback(() => 
-		<table>
-			<thead>
-				<tr>
-					<th className="constructor-standings__table-header">TOTAL</th>
-					<th className="constructor-standings__table-header">AVG</th>
-				</tr>
-			</thead>
-			<tbody>
-				{stats.map((constructorStats) => (
-					<tr key={constructorStats.constructor}>
-						<td
-							className={`constructor-standings__table-cell`}>
-							{constructorStats.total}
-						</td>
-						<td
-							className={`constructor-standings__table-cell`}>
-							{constructorStats.average}
-						</td>
+	const renderStatsSubTable = useMemo(() => {
+		const renderStatsSubTableData = () => 
+			<table>
+				<thead>
+					<tr>
+						<th className="constructor-standings__table-header">TOTAL</th>
+						<th className="constructor-standings__table-header">AVG</th>
 					</tr>
-				))}
-			</tbody>
-		</table>
-	, [stats]);
+				</thead>
+				<tbody>
+					{stats.map((constructorStats) => (
+						<tr key={constructorStats.constructor}>
+							<td
+								className={`constructor-standings__table-cell`}>
+								{constructorStats.total}
+							</td>
+							<td
+								className={`constructor-standings__table-cell`}>
+								{constructorStats.average}
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		;
 
-	const renderStatsSubTable = () => (
-		<div className="constructor-standings__end-subtable-container--right">
-			<div className={`constructor-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
-				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
-				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
+		return (
+			<div className="constructor-standings__end-subtable-container--right">
+				<div className={`constructor-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
+					{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
+					{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
+				</div>
+				{showStats && renderStatsSubTableData()}
 			</div>
-			{showStats && renderStatsSubTableData()}
-		</div>
-	);
+		);
+	}, [stats, showStats]);
+
+	const getLineOpacity = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 1 : 0.1;
+	const getStrokeWidth = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 2 : 1;
+
+	const renderLines = () => constructors.map((name) => (
+		<Line
+			key={name}
+			type="monotone"
+			dataKey={name}
+			stroke={constants.getCarColor(name, true)}
+			strokeOpacity={getLineOpacity(name)}
+			connectNulls
+			strokeWidth={getStrokeWidth(name)}
+		/>
+	));
+
+	const renderLegend = useMemo(() => {
+		const toggleFilter = (item) => {
+			const { dataKey } = item;
+	
+			const index = graphFilter.indexOf(dataKey);
+			if (index > -1) {
+				setGraphFilter(graphFilter.filter(key => key !== dataKey));
+				return;
+			}
+			setGraphFilter((oldFilter) => [...oldFilter, dataKey]);
+		};
+
+		return (
+			<Legend
+				wrapperStyle={{
+					paddingTop: 20,
+					marginLeft: 20,
+				}}
+				formatter={(value, entry, index) => (formatConstructorName(value))}
+				onClick={toggleFilter}
+			/>
+		)
+	}, [formatConstructorName, graphFilter]);
 
 	const renderGraph = () => (
 		<ResponsiveContainer width="100%" height="100%">
@@ -217,23 +259,8 @@ const ConstructorStandings = () => {
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
 				<YAxis domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
-				<Legend
-					wrapperStyle={{
-						paddingTop: 20,
-						marginLeft: 20,
-					}}
-					formatter={(value, entry, index) => (formatConstructorName(value))}
-				/>
-				{
-					constructors.map((name) => (
-						<Line
-							key={name}
-							type="monotone"
-							dataKey={name}
-							stroke={constants.getCarColor(name, true)}
-						/>
-					))
-				}
+				{renderLegend}
+				{renderLines()}
 			</LineChart >
 		</ResponsiveContainer >
 	);
@@ -246,9 +273,9 @@ const ConstructorStandings = () => {
 			{isDataReady && (
 				<>
 					<div className="constructor-standings__table-container">
-						{renderConstructorSubTable()}
-						{renderResultsSubTable()}
-						{renderStatsSubTable()}
+						{renderConstructorSubTable}
+						{renderResultsSubTable}
+						{renderStatsSubTable}
 					</div>
 					<div className='constructor-standings__graph-container'>
 						{renderGraph()}

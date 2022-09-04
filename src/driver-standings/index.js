@@ -22,6 +22,7 @@ import {
 const DriverStandings = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
+	const [graphFilter, setGraphFilter] = useState([]);
 	const isMobile = useIsMobile();
 
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
@@ -117,7 +118,7 @@ const DriverStandings = () => {
 		if (header === 'Car') return 'driver-standings__car';
 		return 'driver-standings__track'
 	}
-	const renderDriverSubTable = () => (
+	const renderDriverSubTable = useMemo(() => (
 		<div className="driver-standings__end-subtable-container--left">
 			<table>
 				<thead>
@@ -138,9 +139,9 @@ const DriverStandings = () => {
 				</tbody>
 			</table>
 		</div>
-	);
+	), [participants, formatDriverName]);
 
-	const renderResultsSubTable = () => (
+	const renderResultsSubTable = useMemo(() => (
 		<div className="driver-standings__results-subtable-container">
 			<table>
 				<thead>
@@ -165,47 +166,87 @@ const DriverStandings = () => {
 				</tbody>
 			</table>
 		</div>
-	);
+	), [resultHeaders, formatTrackName, driverPoints]);
 
-	const renderStatsSubTableData = useCallback(() => 
-		<table>
-			<thead>
-				<tr>
-					<th className="driver-standings__table-header">TOTAL</th>
-					<th className="driver-standings__table-header">AVG</th>
-					<th className="driver-standings__table-header">DNS's</th>
-				</tr>
-			</thead>
-			<tbody>
-				{stats.map((driverStats) => (
-					<tr key={driverStats.driver}>
-						<td
-							className={`driver-standings__table-cell`}>
-							{driverStats.total}
-						</td>
-						<td
-							className={`driver-standings__table-cell`}>
-							{driverStats.average}
-						</td>
-						<td
-							className={`driver-standings__table-cell`}>
-							{driverStats.racesMissed}
-						</td>
+	const renderStatsSubTable = useMemo(() => {
+		const renderStatsSubTableData = () => 
+			<table>
+				<thead>
+					<tr>
+						<th className="driver-standings__table-header">TOTAL</th>
+						<th className="driver-standings__table-header">AVG</th>
+						<th className="driver-standings__table-header">DNS's</th>
 					</tr>
-				))}
-			</tbody>
-		</table>
-	, [stats]);
-
-	const renderStatsSubTable = () => (
-		<div className="driver-standings__end-subtable-container--right">
-			<div className={`driver-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
-				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
-				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
+				</thead>
+				<tbody>
+					{stats.map((driverStats) => (
+						<tr key={driverStats.driver}>
+							<td
+								className={`driver-standings__table-cell`}>
+								{driverStats.total}
+							</td>
+							<td
+								className={`driver-standings__table-cell`}>
+								{driverStats.average}
+							</td>
+							<td
+								className={`driver-standings__table-cell`}>
+								{driverStats.racesMissed}
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+		;
+		return (
+			<div className="driver-standings__end-subtable-container--right">
+				<div className={`driver-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
+					{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
+					{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
+				</div>
+				{showStats && renderStatsSubTableData()}
 			</div>
-			{showStats && renderStatsSubTableData()}
-		</div>
-	);
+		);
+	}, [stats, showStats]);
+
+	const getLineOpacity = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 1 : 0.1;
+	const getStrokeWidth = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 2 : 1;
+
+	const renderLines = () => participants.map((row) => (
+		<Line
+			key={row["Driver"]}
+			type="monotone"
+			dataKey={row["Driver"]}
+			stroke={constants.getCarColor(row['Car'], row['Primary'] === 'TRUE')}
+			strokeOpacity={getLineOpacity(row['Driver'])}
+			connectNulls
+			strokeWidth={getStrokeWidth(row['Driver'])}
+		/>
+	));
+
+	const renderLegend = useMemo(() => {
+		const toggleFilter = (item) => {
+			const { dataKey } = item;
+	
+			const index = graphFilter.indexOf(dataKey);
+			if (index > -1) {
+				setGraphFilter(graphFilter.filter(key => key !== dataKey));
+				return;
+			}
+			setGraphFilter((oldFilter) => [...oldFilter, dataKey]);
+		};
+
+		return (
+			<Legend
+				wrapperStyle={{
+					paddingTop: 20,
+					marginLeft: 20,
+				}}
+				formatter={(value, entry, index) => (formatDriverName(value))}
+				onClick={toggleFilter}
+			/>
+		)
+	}, [formatDriverName, graphFilter]);
 
 	const renderGraph = () => (
 		<ResponsiveContainer width="100%" height="100%">
@@ -224,23 +265,8 @@ const DriverStandings = () => {
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
 				<YAxis domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
-				<Legend
-					wrapperStyle={{
-						paddingTop: 20,
-						marginLeft: 20,
-					}}
-					formatter={(value, entry, index) => (formatDriverName(value))}
-				/>
-				{
-					participants.map((row) => (
-						<Line
-							key={row["Driver"]}
-							type="monotone"
-							dataKey={row["Driver"]}
-							stroke={constants.getCarColor(row['Car'], row['Primary'] === 'TRUE')}
-						/>
-					))
-				}
+				{renderLegend}
+				{renderLines()}
 			</LineChart >
 		</ResponsiveContainer >
 	);
@@ -253,9 +279,9 @@ const DriverStandings = () => {
 			{isDataReady && (
 				<>
 					<div className="driver-standings__table-container">
-						{renderDriverSubTable()}
-						{renderResultsSubTable()}
-						{renderStatsSubTable()}
+						{renderDriverSubTable}
+						{renderResultsSubTable}
+						{renderStatsSubTable}
 					</div>
 					<div className='driver-standings__graph-container'>
 						{renderGraph()}

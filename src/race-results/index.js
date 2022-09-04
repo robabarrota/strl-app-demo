@@ -23,6 +23,7 @@ import {
 const RaceResults = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
+	const [graphFilter, setGraphFilter] = useState([]);
 	const isMobile = useIsMobile();
 
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
@@ -113,10 +114,7 @@ const RaceResults = () => {
 		return 'race-results__track'
 	}
 
-	const fastestLapClass = (driverName, track) => {
-		if (fastestLaps[track] === driverName && fastestLaps[track] !== undefined) return 'race-results__fastest';
-	};
-	const renderDriverSubTable = () => (
+	const renderDriverSubTable = useMemo(() => (
 		<div className="race-results__end-subtable-container--left">
 			<table>
 				<thead>
@@ -137,36 +135,41 @@ const RaceResults = () => {
 				</tbody>
 			</table>
 		</div>
-	);
+	), [participants, formatDriverName]);
 
-	const renderResultsSubTable = () => (
-		<div className="race-results__results-subtable-container">
-			<table>
-				<thead>
-					<tr>
-						{resultHeaders.map(header => <th key={header} className="race-results__table-header">{formatTrackName(header)}</th>)}
-					</tr>
-				</thead>
-				<tbody>
-					{raceResults.map((row) => (
-						<tr key={row['Driver']}>
-							{resultHeaders.map((header, index) =>
-								<td
-									key={`${row['Driver']}-${index}`}
-									className={`race-results__table-cell ${getClassName(header)} ${fastestLapClass(row['Driver'], header)}`}>
-										<TableTooltip innerHtml={header}>
-											{row[header]}
-										</TableTooltip>
-								</td>
-							)}
+	const renderResultsSubTable = useMemo(() => {
+		const fastestLapClass = (driverName, track) => {
+			if (fastestLaps[track] === driverName && fastestLaps[track] !== undefined) return 'race-results__fastest';
+		};
+		return (
+			<div className="race-results__results-subtable-container">
+				<table>
+					<thead>
+						<tr>
+							{resultHeaders.map(header => <th key={header} className="race-results__table-header">{formatTrackName(header)}</th>)}
 						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
+					</thead>
+					<tbody>
+						{raceResults.map((row) => (
+							<tr key={row['Driver']}>
+								{resultHeaders.map((header, index) =>
+									<td
+										key={`${row['Driver']}-${index}`}
+										className={`race-results__table-cell ${getClassName(header)} ${fastestLapClass(row['Driver'], header)}`}>
+											<TableTooltip innerHtml={header}>
+												{row[header]}
+											</TableTooltip>
+									</td>
+								)}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		)
+	}, [resultHeaders, formatTrackName, raceResults, fastestLaps]);
 
-	const renderStatsSubTable = () => (
+	const renderStatsSubTable = useMemo(() => (
 		<div className="race-results__end-subtable-container--right">
 			<div className={`race-results__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(!showStats)}>
 				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
@@ -178,7 +181,7 @@ const RaceResults = () => {
 						<tr>
 							<th className="race-results__table-header">AVG</th>
 							<th className="race-results__table-header">DNS's</th>
-							<th className="race-results__table-header"><i class="fa-solid fa-stopwatch race-results__fastest-icon"></i></th>
+							<th className="race-results__table-header"><i className="fa-solid fa-stopwatch race-results__fastest-icon"></i></th>
 						</tr> 
 					</thead>
 					<tbody>
@@ -202,7 +205,46 @@ const RaceResults = () => {
 				</table>
 			)}
 		</div>
-	);
+	), [stats, showStats]);
+
+	const getLineOpacity = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 1 : 0.1;
+	const getStrokeWidth = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 2 : 1;
+
+	const renderLines = () => participants.map((row) => (
+		<Line
+			key={row["Driver"]}
+			type="monotone"
+			dataKey={row["Driver"]}
+			stroke={constants.getCarColor(row['Car'], row['Primary'] === 'TRUE')}
+			strokeOpacity={getLineOpacity(row['Driver'])}
+			connectNulls
+			strokeWidth={getStrokeWidth(row['Driver'])}
+		/>
+	));
+
+	const renderLegend = useMemo(() => {
+		const toggleFilter = (item) => {
+			const { dataKey } = item;
+	
+			const index = graphFilter.indexOf(dataKey);
+			if (index > -1) {
+				setGraphFilter(graphFilter.filter(key => key !== dataKey));
+				return;
+			}
+			setGraphFilter((oldFilter) => [...oldFilter, dataKey]);
+		};
+
+		return (
+			<Legend
+				wrapperStyle={{
+					paddingTop: 20,
+					marginLeft: 20,
+				}}
+				formatter={(value, entry, index) => (formatDriverName(value))}
+				onClick={toggleFilter}
+			/>
+		)
+	}, [formatDriverName, graphFilter]);
 
 	const renderGraph = () => (
 		<ResponsiveContainer width="100%" height="100%">
@@ -221,23 +263,8 @@ const RaceResults = () => {
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
 				<YAxis reversed={true} domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
-				<Legend
-					wrapperStyle={{
-						paddingTop: 20,
-						marginLeft: 20,
-					}}
-					formatter={(value, entry, index) => (formatDriverName(value))}
-				/>
-				{
-					participants.map((row) => (
-						<Line
-							key={row["Driver"]}
-							type="monotone"
-							dataKey={row["Driver"]}
-							stroke={constants.getCarColor(row['Car'], row['Primary'] === 'TRUE')}
-						/>
-					))
-				}
+				{renderLegend}
+				{renderLines()}
 			</LineChart >
 		</ResponsiveContainer >
 	);
@@ -250,9 +277,9 @@ const RaceResults = () => {
 			{isDataReady && (
 				<>
 					<div className="race-results__table-container">
-						{renderDriverSubTable()}
-						{renderResultsSubTable()}
-						{renderStatsSubTable()}
+						{renderDriverSubTable}
+						{renderResultsSubTable}
+						{renderStatsSubTable}
 					</div>
 					<div className='race-results__graph-container'>
 						{renderGraph()}
