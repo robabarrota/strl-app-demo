@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/strl-app/static/css/main.cb748ce6.css",
-    "main.js": "/strl-app/static/js/main.a7557fab.js",
+    "main.css": "/strl-app/static/css/main.3e98f46c.css",
+    "main.js": "/strl-app/static/js/main.2fcfffe8.js",
     "static/media/Formula1-Regular.ttf": "/strl-app/static/media/Formula1-Regular.0f4e3d54644717199c6f.ttf",
     "static/media/Formula1-Bold.ttf": "/strl-app/static/media/Formula1-Bold.a1d6ae91f3373c37e162.ttf",
     "index.html": "/strl-app/index.html",
-    "main.cb748ce6.css.map": "/strl-app/static/css/main.cb748ce6.css.map",
-    "main.a7557fab.js.map": "/strl-app/static/js/main.a7557fab.js.map"
+    "main.3e98f46c.css.map": "/strl-app/static/css/main.3e98f46c.css.map",
+    "main.2fcfffe8.js.map": "/strl-app/static/js/main.2fcfffe8.js.map"
   },
   "entrypoints": [
-    "static/css/main.cb748ce6.css",
-    "static/js/main.a7557fab.js"
+    "static/css/main.3e98f46c.css",
+    "static/js/main.2fcfffe8.js"
   ]
 }
