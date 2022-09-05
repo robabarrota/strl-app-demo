@@ -6,7 +6,7 @@ const NotFound = () => {
 	return (
 		<div className="not-found">
 			<div className="not-found__content">
-				<p>Looks like you spun out <i class="fa-solid fa-road-circle-exclamation"></i></p>
+				<p>Looks like you spun out <i className="fa-solid fa-road-circle-exclamation"></i></p>
 
 				<Link to="/" className='not-found__link'>
 					Get back on track
