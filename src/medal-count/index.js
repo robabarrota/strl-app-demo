@@ -62,10 +62,9 @@ const MedalCount = () => {
 			<thead>
 				<tr>
 					<th 
-						className="medal-count__table-header medal-count__table-header--sortable" 
-						onClick={() => sortByKey('Driver')}
+						className="medal-count__table-header"
 					>
-						Driver {getSortIcon('Driver')}
+						Driver
 					</th>
 					<th 
 						className="medal-count__table-header medal-count__table-header--sortable" 
