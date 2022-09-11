@@ -6,7 +6,7 @@ import { isEmpty, groupBy, first, last, isNaN } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
 import useIsMobile from 'src/hooks/useIsMobile';
-import constants from 'src/utils/constants';
+import {round} from 'src/utils/utils';
 import TableTooltip from 'src/components/table-tooltip';
 import {
 	LineChart,
@@ -276,7 +276,8 @@ const DriverStandings = () => {
 							</td>
 							<td
 								className={`driver-standings__table-cell`}>
-								{driverStats.average}
+								{round(driverStats.average)}
+								</TableTooltip>
 							</td>
 							<td
 								className={`driver-standings__table-cell`}>
