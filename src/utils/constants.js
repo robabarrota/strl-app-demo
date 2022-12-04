@@ -12,19 +12,18 @@ const carAbbreviationMap = {
     'Mercedes': 'MER',
     'Red Bull': 'RB',
     'Ferrari': 'FER',
-    'Racing Point': 'RP',
-    'Williams': 'WIL',
-    'Renault': 'REN',
     'McLaren': 'MCL',
+    'Alpine': 'ALP',
+    'AlphaTauri': 'ALPH',
+    'Aston Martin': 'AST',
+    'Williams': 'WILL',
     'Alfa Romeo': 'ALFA',
-    'Alpha Tauri': 'ALPH',
     'Haas': 'HAAS',
 };
 
 const trackAbbreviationMap = {
     'Australia': 'AUS',
     'Bahrain': 'BHR',
-    'Vietnam': 'VNM',
     'China': 'CHN',
     'Netherlands': 'NLD',
     'Spain': 'ESP',
@@ -38,64 +37,66 @@ const trackAbbreviationMap = {
     'Belgium': 'BEL',
     'Italy': 'ITA',
     'Singapore': 'SGP',
-    'Russia': 'RUS',
     'Japan': 'JPN',
     'USA': 'USA',
     'Mexico': 'MEX',
     'Brazil': 'BRA',
     'Abu Dhabi': 'ABU',
+    'EMILIA ROMAGNA': 'EMI',
+    'Miami': 'MIA',
+    'Portugal': 'POR'
 };
 
 const carColorMap = {
     mercedes: {
-        r: 0,
-        g: 210,
-        b:  190
+        r: 108,
+        g: 211,
+        b:  191
     },
     redBull: {
-        r: 6,
-        g: 0,
-        b:  239
+        r: 30,
+        g: 91,
+        b:  198
     },
     ferrari: {
-        r: 192,
-        g: 0,
-        b:  0
-    },
-    racingPoint: {
-        r: 245,
-        g: 150,
-        b:  200
-    },
-    williams: {
-        r: 0,
-        g: 130,
-        b:  250
-    },
-    renault: {
-        r: 219,
-        g: 210,
-        b:  0
+        r: 28,
+        g: 237,
+        b:  36
     },
     mcLaren: {
-        r: 255,
-        g: 135,
-        b:  0
+        r: 128,
+        g: 245,
+        b:  32
     },
-    alfaRomeo: {
-        r: 150,
-        g: 0,
-        b:  0
+    alpine: {
+        r: 34,
+        g: 147,
+        b:  209
     },
     alphaTauri: {
-        r: 200,
-        g: 200,
-        b:  200
+        r: 78,
+        g: 124,
+        b:  155
+    },
+    astonMartin: {
+        r: 45,
+        g: 130,
+        b:  109
+    },
+    williams: {
+        r: 55,
+        g: 190,
+        b:  221
+    },
+    alfaRomeo: {
+        r: 32,
+        g: 172,
+        b:  57
     },
     haas: {
-        r: 120,
-        g: 120,
-        b:  120
+        r: 182,
+        g: 186,
+        b:  189
     },
 };
 
