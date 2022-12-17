@@ -138,16 +138,16 @@ const Penalties = () => {
 
 	const data = useMemo(() => {
 		return resultHeaders.map(track => {
-			const trackScores = {
+			const trackPenalties = {
 				name: formatTrackName(track)
 			};
 			penalties.forEach(row => {
 				let result = row[track];
-				if (result === 'DNS' || result === 'DNF' || result === undefined) return;
+				if (result === '' || result === undefined) return;
 
-				trackScores[row['Driver']] = parseInt(result);
+				trackPenalties[row['Driver']] = parseInt(result);
 			});
-			return trackScores;
+			return trackPenalties;
 		})
 	}, [resultHeaders, penalties, formatTrackName])
 
