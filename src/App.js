@@ -8,6 +8,8 @@ import ConstructorStandings from './constructor-standings/index';
 import MedalCount from './medal-count/index';
 import Highlights from './highlights/index';
 import NotFound from './not-found';
+import Penalties from './penalties/index';
+
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 const App = () => {
@@ -25,6 +27,7 @@ const App = () => {
 						<Route path="standings/constructor" element={<ConstructorStandings />} />
 						<Route path="medal-count" element={<MedalCount />} />
 						<Route path="highlights" element={<Highlights />} />
+						<Route path="penalties" element={<Penalties />} />
 						<Route exact path="/" element={<Navigate replace to="/race-results" />}/>
 						<Route path="*" element={<NotFound />} />
 					</Routes>

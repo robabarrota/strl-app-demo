@@ -85,6 +85,14 @@ const Header = () => {
 							</div>
 						)}
 					</NavLink>
+					<NavLink className="header__nav-link" to="/penalties" onClick={closeHeader}>
+						{({ isActive }) => (
+							<div className={labelClass(isActive)}>
+								<span className='header__nav-link-text'>Penalties</span>
+								<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+							</div>
+						)}
+					</NavLink>
 					<NavLink className="header__nav-link" to="/schedule" onClick={closeHeader}>
 						{({ isActive }) => (
 							<div className={labelClass(isActive)}>
