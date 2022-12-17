@@ -97,7 +97,7 @@ const DriverStandings = () => {
 					
 					pointsPerRace[header] = racePoints;
 				});
-				return  { 'Driver': driverName, ...pointsPerRace };
+				return  { 'Driver': driverName, 'Car': row['Car'], ...pointsPerRace };
 			});
 			penalties.filter(row => Object.keys(row).length > 2).forEach(penaltyRow => {
 				resultHeaders.forEach(header => {

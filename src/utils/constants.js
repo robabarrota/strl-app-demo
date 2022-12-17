@@ -51,52 +51,52 @@ const carColorMap = {
     mercedes: {
         r: 108,
         g: 211,
-        b:  191
+        b: 191
     },
     redBull: {
         r: 30,
         g: 91,
-        b:  198
+        b: 198
     },
     ferrari: {
-        r: 28,
-        g: 237,
-        b:  36
+        r: 237,
+        g: 28,
+        b: 36
     },
     mcLaren: {
-        r: 128,
-        g: 245,
-        b:  32
+        r: 245,
+        g: 128,
+        b: 32
     },
     alpine: {
         r: 34,
         g: 147,
-        b:  209
+        b: 209
     },
     alphaTauri: {
         r: 78,
         g: 124,
-        b:  155
+        b: 155
     },
     astonMartin: {
         r: 45,
         g: 130,
-        b:  109
+        b: 109
     },
     williams: {
         r: 55,
         g: 190,
-        b:  221
+        b: 221
     },
     alfaRomeo: {
-        r: 32,
-        g: 172,
-        b:  57
+        r: 172,
+        g: 32,
+        b: 57
     },
     haas: {
         r: 182,
         g: 186,
-        b:  189
+        b: 189
     },
 };
 
