@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/strl-app/static/css/main.300a6b39.css",
-    "main.js": "/strl-app/static/js/main.2a57d0d5.js",
+    "main.js": "/strl-app/static/js/main.5e2ae3fa.js",
     "static/media/Formula1-Wide.ttf": "/strl-app/static/media/Formula1-Wide.8e2a3df21501da2e09fa.ttf",
     "static/media/Formula1-Regular.ttf": "/strl-app/static/media/Formula1-Regular.0f4e3d54644717199c6f.ttf",
     "static/media/Formula1-Bold.ttf": "/strl-app/static/media/Formula1-Bold.a1d6ae91f3373c37e162.ttf",
     "index.html": "/strl-app/index.html",
     "main.300a6b39.css.map": "/strl-app/static/css/main.300a6b39.css.map",
-    "main.2a57d0d5.js.map": "/strl-app/static/js/main.2a57d0d5.js.map"
+    "main.5e2ae3fa.js.map": "/strl-app/static/js/main.5e2ae3fa.js.map"
   },
   "entrypoints": [
     "static/css/main.300a6b39.css",
-    "static/js/main.2a57d0d5.js"
+    "static/js/main.5e2ae3fa.js"
   ]
 }
