@@ -11,17 +11,7 @@
     &__race-card-container {
         padding: 0 10px;
         display: grid;
-        grid-template-columns: auto auto auto auto;
-
-        @media screen and (max-width: 1360px) {
-            grid-template-columns: auto auto auto;
-		}
-        @media screen and (max-width: 1024px) {
-            grid-template-columns: auto auto;
-		}
-        @media screen and (max-width: 575px) {
-            grid-template-columns: auto;
-		}
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         column-gap: 20px;
     }
     &__race-card {
