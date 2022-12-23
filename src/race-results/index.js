@@ -326,6 +326,7 @@ const RaceResults = () => {
 		margin: 5px;
 		color: none;
 		white-space: nowrap;
+		cursor: pointer;
 	`;
 
 	const customLegend = useCallback(({payload}) => {

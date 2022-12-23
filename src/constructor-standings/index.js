@@ -23,6 +23,7 @@ import {
 	Legend,
 	ResponsiveContainer
 } from "recharts";
+import styled from 'styled-components';
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -307,7 +308,7 @@ const ConstructorStandings = () => {
 		);
 	}, [sortedStats, showStats, sortByKey, getSortIcon]);
 
-	const getCustomLineOpacity = (item) => isEmpty(graphFilter) ? null : graphFilter?.includes(item) ? 1 : 0.15;
+	const getCustomLineOpacity = (item) => isEmpty(graphFilter) ?  0.9 : graphFilter?.includes(item) ?  0.9 : 0.15;
 	const getStrokeWidth = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 2 : 1;
 
 	const renderLines = () => constructors.map((name) => (
@@ -321,7 +322,25 @@ const ConstructorStandings = () => {
 		/>
 	));
 
-	const renderLegend = useMemo(() => {
+	const LegendWrapper = styled.div`
+		padding: 20px;
+		padding-top: 30px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	`;
+
+	const LegendSpan = styled.span`
+		background-color: ${props => props.teamColor};
+		padding: 1px 10px;
+		border-radius: 12px;
+		margin: 5px;
+		color: none;
+		white-space: nowrap;
+		cursor: pointer;
+	`;
+
+	const customLegend = useCallback(({payload}) => {
 		const toggleFilter = (item) => {
 			const { dataKey } = item;
 	
@@ -334,14 +353,13 @@ const ConstructorStandings = () => {
 		};
 
 		return (
-			<Legend
-				wrapperStyle={{
-					paddingTop: 20,
-					marginLeft: 20,
-				}}
-				formatter={(value, entry, index) => (formatConstructorName(value))}
-				onClick={toggleFilter}
-			/>
+			<LegendWrapper>
+				{payload.map((entry, index) => (
+					<LegendSpan teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
+						{formatConstructorName(entry.value)}
+					</LegendSpan>
+				))}
+			</LegendWrapper>
 		)
 	}, [formatConstructorName, graphFilter]);
 
@@ -362,7 +380,7 @@ const ConstructorStandings = () => {
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
 				<YAxis domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
-				{renderLegend}
+				<Legend content={customLegend} />
 				{renderLines()}
 			</LineChart >
 		</ResponsiveContainer >

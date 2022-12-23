@@ -19,6 +19,7 @@ import {
 	Legend,
 	ResponsiveContainer
 } from "recharts";
+import styled from 'styled-components';
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -317,7 +318,7 @@ const DriverStandings = () => {
 		);
 	}, [sortedStats, showStats, sortByKey, getSortIcon]);
 
-	const getCustomLineOpacity = (item) => isEmpty(graphFilter) ? null : graphFilter?.includes(item) ? 1 : 0.15;
+	const getCustomLineOpacity = (item) => isEmpty(graphFilter) ? item['Primary'] === 'TRUE' ? 0.9 : 0.7 : graphFilter?.includes(item['Driver']) ? item['Primary'] === 'TRUE' ? 0.9 : 0.7 : 0.15;
 	const getStrokeWidth = (item) => isEmpty(graphFilter) ? 1 : graphFilter?.includes(item) ? 2 : 1;
 
 	const renderLines = () => participants.map((row) => (
@@ -325,13 +326,31 @@ const DriverStandings = () => {
 			key={row["Driver"]}
 			type="monotone"
 			dataKey={row["Driver"]}
-			stroke={getCarColor(row['Car'], row['Primary'] === 'TRUE', getCustomLineOpacity(row['Driver']))}
+			stroke={getCarColor(row['Car'], row['Primary'] === 'TRUE', getCustomLineOpacity(row))}
 			connectNulls
 			strokeWidth={getStrokeWidth(row['Driver'])}
 		/>
 	));
 
-	const renderLegend = useMemo(() => {
+	const LegendWrapper = styled.div`
+		padding: 20px;
+		padding-top: 30px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	`;
+
+	const LegendSpan = styled.span`
+		background-color: ${props => props.teamColor};
+		padding: 1px 10px;
+		border-radius: 12px;
+		margin: 5px;
+		color: none;
+		white-space: nowrap;
+		cursor: pointer;
+	`;
+
+	const customLegend = useCallback(({payload}) => {
 		const toggleFilter = (item) => {
 			const { dataKey } = item;
 	
@@ -344,14 +363,13 @@ const DriverStandings = () => {
 		};
 
 		return (
-			<Legend
-				wrapperStyle={{
-					paddingTop: 20,
-					marginLeft: 20,
-				}}
-				formatter={(value, entry, index) => (formatDriverName(value))}
-				onClick={toggleFilter}
-			/>
+			<LegendWrapper>
+				{payload.map((entry, index) => (
+					<LegendSpan teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
+						{formatDriverName(entry.value)}
+					</LegendSpan>
+				))}
+			</LegendWrapper>
 		)
 	}, [formatDriverName, graphFilter]);
 
@@ -372,7 +390,7 @@ const DriverStandings = () => {
 				<XAxis dataKey="name" interval={0} angle={graphTrackOrientation} tickMargin={20} />
 				<YAxis domain={['dataMin', 'dataMax']} interval={0} tickCount={lastPosition} />
 				<ChartTooltip />
-				{renderLegend}
+				<Legend content={customLegend} />
 				{renderLines()}
 			</LineChart >
 		</ResponsiveContainer >
