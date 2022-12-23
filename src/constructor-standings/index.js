@@ -11,7 +11,7 @@ import {
 	trackDetails,
 	pointMap
 } from 'src/utils/constants';
-import { round, getCarColor } from 'src/utils/utils';
+import { round, getCarColor, tableSortFunction } from 'src/utils/utils';
 import TableTooltip from 'src/components/table-tooltip';
 import {
 	LineChart,
@@ -50,35 +50,6 @@ const ConstructorStandings = () => {
 	if (isEmpty(penalties) && !penaltiesLoading) dispatch(fetchPenalties());
 	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
 	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
-
-	const trackSortFunction = useCallback((a, b) => {
-		if ( parseInt(a[sortBy.key]) < parseInt(b[sortBy.key]) ){
-			return sortBy.direction === 'desc' ? 1 : -1;
-		}
-		if ( parseInt(a[sortBy.key]) > parseInt(b[sortBy.key]) ){
-			return sortBy.direction === 'desc' ? -1 : 1;
-		}
-		return 0;
-	}, [sortBy]);
-
-	const statSortFunction = useCallback((a, b) => {
-		const getCorrectSortValue = (initialValue) => {
-			let sortModifier = 1;
-			sortModifier *= sortBy.direction === 'desc' ? -1 : 1;
-			sortModifier *= sortBy.key === 'racesMissed' ? -1 : 1;
-
-			return initialValue * sortModifier;
-		};
-		if (a[sortBy.key] === '-') return 1;
-		if (b[sortBy.key] === '-') return -1;
-		if ( a[sortBy.key] < b[sortBy.key] ){
-			return getCorrectSortValue(-1);
-		}
-		if ( a[sortBy.key] > b[sortBy.key] ){
-			return getCorrectSortValue(1);
-		}
-		return 0;
-	}, [sortBy]);
 
 	const formatConstructorName = useCallback((constructor) => isMobile ? constructor : carAbbreviationMap[constructor], [isMobile])
 	const formatTrackName = useCallback((track) => isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
@@ -143,17 +114,17 @@ const ConstructorStandings = () => {
 			setSortedConstructorPoints(constructorPointsCopy);
 		}
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
-			const sortedStats =  [...statsCopy.sort(statSortFunction)]
+			const sortedStats =  [...statsCopy.sort((a,b) => tableSortFunction(a, b, sortBy))]
 			setSortedStats(sortedStats);
 			const sortedConstructors = sortedStats.map(stat => stat.constructor);
 			setSortedConstructorPoints([...constructorPointsCopy.sort((a, b) => sortedConstructors.indexOf(a['Car']) - sortedConstructors.indexOf(b['Car']))]);
 		} else {
-			const sortedConstructorPointsCopy = [...constructorPointsCopy.sort(trackSortFunction)];
+			const sortedConstructorPointsCopy = [...constructorPointsCopy.sort((a,b) => tableSortFunction(a, b, sortBy))];
 			setSortedConstructorPoints(sortedConstructorPointsCopy);
 			const sortedConstructors = sortedConstructorPointsCopy.map((raceResult) => raceResult['Car']);
 			setSortedStats([...statsCopy.sort((a, b) => sortedConstructors.indexOf(a.constructor) - sortedConstructors.indexOf(b.constructor))]);
 		}
-	}, [constructorPoints, trackSortFunction, sortBy, statSortFunction, stats]);
+	}, [constructorPoints, sortBy, stats]);
 
 	const lastPosition = useMemo(() => {
 		return Math.max(...raceResults.map(row =>
