@@ -47,3 +47,6 @@ export const setHighlights = highlights => ({ type: SET_HIGHLIGHTS, payload: { h
 
 export const FETCH_HIGHLIGHTS = `${prefix}/FETCH_HIGHLIGHTS`;
 export const fetchHighlights = () => ({ type: FETCH_HIGHLIGHTS });
+
+export const SET_LAST_PLACE_POSITIONS = `${prefix}/SET_LAST_PLACE_POSITIONS`;
+export const setLastPlacePositions = lastPlacePositions => ({ type: SET_LAST_PLACE_POSITIONS, payload: { lastPlacePositions } });

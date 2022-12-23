@@ -1,6 +1,6 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQualifying, getTrackList, getParticipants, getRaceResults } from 'src/redux/selectors';
+import { getQualifying, getTrackList, getParticipants, getRaceResults, getLastPlacePositions } from 'src/redux/selectors';
 import { fetchQualifying, fetchTrackList, fetchParticipants, fetchRaceResults } from 'src/redux/actions';
 import { isEmpty, groupBy, first } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
@@ -41,6 +41,7 @@ const Qualifying = () => {
 	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
 	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
 	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
+	const { content: lastPlacePositions, loading: lastPlacePositionsLoading } = useSelector(getLastPlacePositions);
 
 	if (isEmpty(qualifyingResults) && !qualifyingLoading) dispatch(fetchQualifying());
 	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
@@ -52,20 +53,8 @@ const Qualifying = () => {
 
 	const getRaceFinishValue = (resultStr) => resultStr === 'DNF' || resultStr === 'DNS' ? -1 : parseInt(resultStr);
 
-	const lastPositions = useMemo(() => {
-			const positionMap = {};
-			qualifyingResults.forEach(row => {
-				Object.entries(row).forEach(([key, value]) => {
-					if (key !== 'Driver' && key !== 'Car' && value !== 'DNF' && value !== 'DNS') {
-						if (parseInt(value) > positionMap[key] || positionMap[key] === undefined) positionMap[key] = parseInt(value)
-					}
-				});
-			});
-			return positionMap;
-		}, [qualifyingResults])
-
 	const stats = useMemo(() => {
-		if (raceResults.length && qualifyingResults.length && lastPositions) {
+		if (!raceResultsLoading && !qualifyingLoading && !lastPlacePositionsLoading) {
 			const groupedDrivers = groupBy(qualifyingResults, 'Driver');
 			if (isEmpty(groupedDrivers)) return [];
 			const driverStats = Object.entries(groupedDrivers).map(([driver, driverResults]) => {
@@ -78,7 +67,7 @@ const Qualifying = () => {
 					if (result !== 'DNS') {
 						const raceFinishStr = raceResults.find(raceResult => raceResult['Driver'] === driver)[track];
 						const raceFinish = getRaceFinishValue(raceFinishStr);
-						difference += parseInt(result) - (raceFinish === -1 ? (lastPositions[track] + 1) : raceFinish);
+						difference += parseInt(result) - (raceFinish === -1 ? (lastPlacePositions[track] + 1) : raceFinish);
 						totalRaces++;
 					}
 
@@ -99,7 +88,7 @@ const Qualifying = () => {
 			return driverStats;
 		}
 		return [];
-	}, [qualifyingResults, raceResults, lastPositions]);
+	}, [qualifyingResults, raceResults, lastPlacePositions, raceResultsLoading, qualifyingLoading, lastPlacePositionsLoading]);
 
 	useEffect(() => {
 		const qualifyingResultsCopy = [...qualifyingResults];

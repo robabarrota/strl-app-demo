@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 	penalties: { loading: false, content: [], error: null },
 	medalCount: { loading: false, content: [], error: null },
 	highlights: { loading: false, content: [], error: null },
+	lastPlacePositions: { loading: false, content: {}, error: null },
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -29,6 +30,8 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return { ...state, medalCount: { ...state.medalCount, ...action.payload.medalCount } };
 		case actions.SET_HIGHLIGHTS:
 			return { ...state, highlights: { ...state.highlights, ...action.payload.highlights } };
+		case actions.SET_LAST_PLACE_POSITIONS:
+			return { ...state, lastPlacePositions: { ...state.lastPlacePositions, ...action.payload.lastPlacePositions } };
             
 		default:
 			return state;

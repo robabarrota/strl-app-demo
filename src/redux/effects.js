@@ -54,6 +54,15 @@ const fetchQualifying = (store, action) => {
 			.then((response) => {
 				const data = response[0].data;
 
+				const positionMap = {};
+				data.forEach(row => {
+					Object.entries(row).forEach(([key, value]) => {
+						if (key !== 'Driver' && key !== 'Car' && value !== 'DNF' && value !== 'DNS') {
+							if (parseInt(value) > positionMap[key] || positionMap[key] === undefined) positionMap[key] = parseInt(value)
+						}
+					});
+				});
+
 				store.dispatch(
 					actions.setQualifying({
 						loading: false,
@@ -61,9 +70,17 @@ const fetchQualifying = (store, action) => {
 						error: null,
 					}),
 				);
+				store.dispatch(
+					actions.setLastPlacePositions({
+						loading: false,
+						content: positionMap,
+						error: null,
+					}),
+				);
 			})
 			.catch((error) => {
 				store.dispatch(actions.setQualifying({ loading: false, error }));
+				store.dispatch(actions.setLastPlacePositions({ loading: false, error }));
 			});
 	}
 };

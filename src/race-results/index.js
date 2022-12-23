@@ -1,7 +1,7 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRaceResults, getFastestLaps, getTrackList, getParticipants } from 'src/redux/selectors';
-import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants } from 'src/redux/actions';
+import { getRaceResults, getFastestLaps, getTrackList, getParticipants, getLastPlacePositions } from 'src/redux/selectors';
+import { fetchRaceResults, fetchFastestLaps, fetchTrackList, fetchParticipants, fetchQualifying } from 'src/redux/actions';
 import { isEmpty, groupBy, first } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from 'src/components/constructor-badge';
@@ -41,50 +41,51 @@ const RaceResults = () => {
 	const { content: fastestLaps, loading: fastestLapsLoading } = useSelector(getFastestLaps);
 	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
 	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
+	const { content: lastPlacePositions, loading: lastPlacePositionsLoading } = useSelector(getLastPlacePositions);
 
 	if (isEmpty(raceResults) && !raceResultsLoading) dispatch(fetchRaceResults());
 	if (isEmpty(fastestLaps) && !fastestLapsLoading) dispatch(fetchFastestLaps());
 	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
 	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
+	if (isEmpty(lastPlacePositions) && !lastPlacePositionsLoading) dispatch(fetchQualifying());
 
 	const formatDriverName = useCallback((driver) => isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
 
 	const stats = useMemo(() => {
-		const groupedDrivers = groupBy(raceResults, 'Driver');
-		if (isEmpty(groupedDrivers)) return [];
-		const driverStats = Object.entries(groupedDrivers).map(([driver, driverResults]) => {
-			const results = first(driverResults);
-			let racesMissed = 0;
-			let totalRaceFinish = 0;
-			let totalRaces = 0;
-			Object.entries(results).filter(([key, value]) => key !== 'Car' && key !== 'Driver').forEach(([track, result]) => {
-				if (result === 'DNS') racesMissed++;
-				if (result === 'DNF') {
-					const activeDrivers = raceResults.reduce((acc, raceResult) => {
-						if (raceResult[track] !== 'DNS') acc++;
-						return acc;
-					}, 0);
-					totalRaceFinish+= activeDrivers;
+		if (!raceResultsLoading && !fastestLapsLoading && !lastPlacePositionsLoading){
+			const groupedDrivers = groupBy(raceResults, 'Driver');
+			if (isEmpty(groupedDrivers)) return [];
+			const driverStats = Object.entries(groupedDrivers).map(([driver, driverResults]) => {
+				const results = first(driverResults);
+				let racesMissed = 0;
+				let totalRaceFinish = 0;
+				let totalRaces = 0;
+				Object.entries(results).filter(([key, value]) => key !== 'Car' && key !== 'Driver').forEach(([track, result]) => {
+					if (result === 'DNS') racesMissed++;
+					if (result === 'DNF') {
+						totalRaceFinish += lastPlacePositions[track] + 1;
+					}
+					if (result !== 'DNF' && result !== 'DNS') totalRaceFinish += parseInt(result);
+					totalRaces++;
+				});
+				
+				const calculatedAverage = totalRaceFinish / (totalRaces - racesMissed);
+				const average = isNaN(calculatedAverage) ? '-' : calculatedAverage;
+
+				const fastestLapsCount = Object.values(fastestLaps).filter(fastestDriver => fastestDriver === driver).length;
+
+				return {
+					driver,
+					average: average === 0 ? '-' : average,
+					racesMissed, 
+					fastestLapsCount,
 				}
-				if (result !== 'DNF' && result !== 'DNS') totalRaceFinish += parseInt(result);
-				totalRaces++;
-			});
-			
-			const calculatedAverage = totalRaceFinish / (totalRaces - racesMissed);
-			const average = isNaN(calculatedAverage) ? '-' : calculatedAverage;
-
-			const fastestLapsCount = Object.values(fastestLaps).filter(fastestDriver => fastestDriver === driver).length;
-
-			return {
-				driver,
-				average: average === 0 ? '-' : average,
-				racesMissed, 
-				fastestLapsCount,
-			}
-		})
-		return driverStats;
-	}, [raceResults, fastestLaps]);
+			})
+			return driverStats;
+		}
+		return [];
+	}, [raceResults, fastestLaps, lastPlacePositions, raceResultsLoading, fastestLapsLoading, lastPlacePositionsLoading]);
 
 	useEffect(() => {
 		const raceResultsCopy = [...raceResults];
