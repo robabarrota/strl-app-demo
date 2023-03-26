@@ -45,7 +45,7 @@ const Schedule = () => {
 
 	const nextTrack = useMemo(() => {
 		const now = new Date();
-		return trackList.find(({ Date: date }) => new Date(date) > now)?.['Track'];
+		return trackList.find(({ Date: date }) => new Date(date) >= now)?.['Track'];
 	}, [trackList]);
 
 	const HeaderContainer = styled.fieldset`
