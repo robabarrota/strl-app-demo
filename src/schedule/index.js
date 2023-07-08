@@ -7,6 +7,38 @@ import React, { useMemo, useRef } from 'react';
 import { trackDetails } from 'src/utils/constants';
 import styled from 'styled-components';
 
+const HeaderContainer = styled.fieldset`
+	display: flex;
+	justify-content: space-between;
+`;
+
+const EventCard = styled.fieldset`
+	border-top: solid 2px #000;
+	border-right: solid 2px #000;
+	border-top-right-radius: 10px;
+	padding-top: 0;
+	padding-top: 0;
+	margin-top: 40px;
+	padding-right: 10px;
+	transition: .1s all ease;
+
+	&:hover, &:focus, &:active {
+		padding-top: 10px;
+		margin-top: 30px;
+		border-color: ${props => props.isNext ? "#00e10b" : "#e10600"};
+	}
+	`;
+
+const RoundTitle = styled.legend`
+	font-family: "Titillium Web";
+	font-size: 15px;
+	line-height: 20px;
+	font-weight: 700;
+	padding-right: 10px;
+	text-transform: uppercase;
+	color: ${props => props.isNext ? "#00e10b" : "#e10600"};
+`;
+
 const Schedule = () => {
 	const dispatch = useDispatch();
 	const nextRaceRef = useRef();
@@ -49,36 +81,6 @@ const Schedule = () => {
 		return trackList.find(({ Date: date }) => new Date(date) >= now)?.['Track'];
 	}, [trackList]);
 
-	const HeaderContainer = styled.fieldset`
-		display: flex;
-		justify-content: space-between;
-	`;
-	const EventCard = styled.fieldset`
-		border-top: solid 2px #000;
-		border-right: solid 2px #000;
-		border-top-right-radius: 10px;
-		padding-top: 0;
-		padding-top: 0;
-		margin-top: 40px;
-		padding-right: 10px;
-		transition: .1s all ease;
-
-		&:hover, &:focus, &:active {
-			padding-top: 10px;
-			margin-top: 30px;
-			border-color: ${props => props.isNext ? "#00e10b" : "#e10600"};
-		}
-	`;
-
-	const RoundTitle = styled.legend`
-		font-family: "Titillium Web";
-		font-size: 15px;
-		line-height: 20px;
-		font-weight: 700;
-		padding-right: 10px;
-		text-transform: uppercase;
-		color: ${props => props.isNext ? "#00e10b" : "#e10600"};
-	`;
 
 	if (isDataReady) {
 		return (
