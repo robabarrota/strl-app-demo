@@ -1,11 +1,8 @@
-const sheetKey = 'AIzaSyDPv1vWH_NZcLchfs36RetwSC1c99xkFm8';
-const sheetId = '1r8vXuLNfUxgmRlQ67YKBzC6gc22irsdzlHI6DSyyWPc';
-
 const mobileWidth = 920;
 
 const sheetConfig = {
-    apiKey: process.env.REACT_APP_LOCAL_SHEETS_API_KEY ?? sheetKey,
-    sheetId: sheetId,
+    apiKey: process.env.REACT_APP_LOCAL_SHEETS_API_KEY,
+    sheetId: process.env.REACT_APP_LOCAL_SHEETS_ID,
 };
 
 const carAbbreviationMap = {
