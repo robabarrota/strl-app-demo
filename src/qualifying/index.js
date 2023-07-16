@@ -37,16 +37,16 @@ const Qualifying = () => {
 	const [sortedStats, setSortedStats] = useState([]);
 	const isMobile = useIsMobile();
 
-	const { content: qualifyingResults, loading: qualifyingLoading } = useSelector(getQualifying);
-	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
-	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
-	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
+	const { content: qualifyingResults, loading: qualifyingLoading, error: qualifyingResultsError } = useSelector(getQualifying);
+	const { content: trackList, loading: trackListLoading, error: trackListError } = useSelector(getTrackList);
+	const { content: participants, loading: participantsLoading, error: participantsError } = useSelector(getParticipants);
+	const { content: raceResults, loading: raceResultsLoading, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: lastPlacePositions, loading: lastPlacePositionsLoading } = useSelector(getLastPlacePositions);
 
-	if (isEmpty(qualifyingResults) && !qualifyingLoading) dispatch(fetchQualifying());
-	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
-	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
-	if (isEmpty(raceResults) && !raceResultsLoading) dispatch(fetchRaceResults());
+	if (isEmpty(qualifyingResults) && !qualifyingLoading && qualifyingResultsError) dispatch(fetchQualifying());
+	if (isEmpty(trackList) && !trackListLoading && trackListError) dispatch(fetchTrackList());
+	if (isEmpty(participants) && !participantsLoading && participantsError) dispatch(fetchParticipants());
+	if (isEmpty(raceResults) && !raceResultsLoading && raceResultsError) dispatch(fetchRaceResults());
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])

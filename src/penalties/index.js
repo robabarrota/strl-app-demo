@@ -53,13 +53,13 @@ const Penalties = () => {
 	const [sortedStats, setSortedStats] = useState([]);
 	const isMobile = useIsMobile();
 
-	const { content: penalties, loading: penaltiesLoading } = useSelector(getPenalties);
-	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
-	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
+	const { content: penalties, loading: penaltiesLoading, error: penaltiesError } = useSelector(getPenalties);
+	const { content: trackList, loading: trackListLoading, error: trackListError } = useSelector(getTrackList);
+	const { content: participants, loading: participantsLoading, error: participantsError } = useSelector(getParticipants);
 
-	if (isEmpty(penalties) && !penaltiesLoading) dispatch(fetchPenalties());
-	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
-	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
+	if (isEmpty(penalties) && !penaltiesLoading && !penaltiesError) dispatch(fetchPenalties());
+	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
+	if (isEmpty(participants) && !participantsLoading && !participantsError) dispatch(fetchParticipants());
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])

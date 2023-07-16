@@ -17,9 +17,9 @@ import {
 
 const MedalCount = () => {
 	const dispatch = useDispatch();
-	const { content: medalCount, loading: medalCountLoading } = useSelector(getMedalCount);
+	const { content: medalCount, loading: medalCountLoading, error: medalCountError } = useSelector(getMedalCount);
 
-	if (isEmpty(medalCount) && !medalCountLoading) dispatch(fetchMedalCount());
+	if (isEmpty(medalCount) && !medalCountLoading && !medalCountError) dispatch(fetchMedalCount());
 
 	const [sortBy, setSortBy] = useState(null);
 

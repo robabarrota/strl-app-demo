@@ -56,17 +56,17 @@ const RaceResults = () => {
 	const [sortedStats, setSortedStats] = useState([]);
 	const isMobile = useIsMobile();
 
-	const { content: raceResults, loading: raceResultsLoading } = useSelector(getRaceResults);
-	const { content: fastestLaps, loading: fastestLapsLoading } = useSelector(getFastestLaps);
-	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
-	const { content: participants, loading: participantsLoading } = useSelector(getParticipants);
-	const { content: lastPlacePositions, loading: lastPlacePositionsLoading } = useSelector(getLastPlacePositions);
+	const { content: raceResults, loading: raceResultsLoading, error: raceResultsError } = useSelector(getRaceResults);
+	const { content: fastestLaps, loading: fastestLapsLoading, error: fastestLapsError } = useSelector(getFastestLaps);
+	const { content: trackList, loading: trackListLoading, error: trackListError } = useSelector(getTrackList);
+	const { content: participants, loading: participantsLoading, error: participantsError } = useSelector(getParticipants);
+	const { content: lastPlacePositions, loading: lastPlacePositionsLoading, error: lastPlacePositionsError } = useSelector(getLastPlacePositions);
 
-	if (isEmpty(raceResults) && !raceResultsLoading) dispatch(fetchRaceResults());
-	if (isEmpty(fastestLaps) && !fastestLapsLoading) dispatch(fetchFastestLaps());
-	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
-	if (isEmpty(participants) && !participantsLoading) dispatch(fetchParticipants());
-	if (isEmpty(lastPlacePositions) && !lastPlacePositionsLoading) dispatch(fetchQualifying());
+	if (isEmpty(raceResults) && !raceResultsLoading && !raceResultsError) dispatch(fetchRaceResults());
+	if (isEmpty(fastestLaps) && !fastestLapsLoading && !fastestLapsError) dispatch(fetchFastestLaps());
+	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
+	if (isEmpty(participants) && !participantsLoading && !participantsError) dispatch(fetchParticipants());
+	if (isEmpty(lastPlacePositions) && !lastPlacePositionsLoading && !lastPlacePositionsError) dispatch(fetchQualifying());
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])

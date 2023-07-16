@@ -10,8 +10,8 @@ const embedIdRegex = /\?v=(\w+)&/;
 
 const Highlights = () => {
 	const dispatch = useDispatch();
-	const { content: highlights, loading: highlightsLoading } = useSelector(getHighlights);
-	if (isEmpty(highlights) && !highlightsLoading) dispatch(fetchHighlights());
+	const { content: highlights, loading: highlightsLoading, error: highlightsError } = useSelector(getHighlights);
+	if (isEmpty(highlights) && !highlightsLoading && !highlightsError) dispatch(fetchHighlights());
 	
 	const isDataReady = useMemo(() =>
 		!(isEmpty(highlights) || highlightsLoading),
