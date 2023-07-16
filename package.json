@@ -3,18 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://robabarrota.github.io/strl-app",
-  "engines" : { 
-    "npm" : ">=9.0.0",
-    "node" : ">=18.0.0"
+  "engines": {
+    "npm": ">=9.0.0",
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.0",
-    "eslint": "^8.20.0",
-    "gh-pages": "^4.0.0",
     "google-sheets-mapper": "^2.0.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -27,8 +22,18 @@
     "redux": "^4.2.0",
     "sass": "^1.54.0",
     "styled-components": "^5.3.6",
-    "use-google-sheets": "^2.0.0",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.0.1",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "eslint": "^8.45.0",
+    "gh-pages": "^4.0.0"
+  },
+  "overrides": {
+    "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
     "predeploy": "npm run build",
