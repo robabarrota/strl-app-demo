@@ -61,6 +61,7 @@ const Header = () => {
 						className="header__nav-link" 
 						onMouseEnter={() => setShowStandingsSublinks(true)}
 						onTouchStart={() => setShowStandingsSublinks(!showStandingsSublinks)}
+						onClick={() => !isMobile && setShowStandingsSublinks(prev => !prev)}
 					>
 						<div className={labelClass(isStandingsUrl)}>
 							<span className='header__nav-link-text'>Standings</span>
@@ -119,7 +120,7 @@ const Header = () => {
 					</NavLink>
 				</div>
 			</div>
-			{isMobile && renderStandingsSubLinks()}
+			{!isMobile && renderStandingsSubLinks()}
 		</div>
 	);
 }
