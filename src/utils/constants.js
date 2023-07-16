@@ -1,8 +1,8 @@
 const mobileWidth = 920;
 
 const sheetConfig = {
-    apiKey: process.env.REACT_APP_LOCAL_SHEETS_API_KEY,
-    sheetId: process.env.REACT_APP_LOCAL_SHEETS_ID,
+    apiKey: process.env.REACT_APP_SHEETS_API_KEY,
+    sheetId: process.env.REACT_APP_SHEETS_ID,
 };
 
 const carAbbreviationMap = {
