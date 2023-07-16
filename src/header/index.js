@@ -57,7 +57,7 @@ const Header = () => {
 				</div>
 
 				<div className={`header__nav-links${expandedClass}`}>
-					<a 
+					<div 
 						className="header__nav-link" 
 						onMouseEnter={() => setShowStandingsSublinks(true)}
 						onTouchStart={() => setShowStandingsSublinks(!showStandingsSublinks)}
@@ -68,7 +68,7 @@ const Header = () => {
 							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
 							<i className={"fa-solid fa-chevron-down header__dropdown-chevron"}></i>
 						</div>
-					</a>
+					</div>
 					{isMobile && renderStandingsSubLinks()}
 					<NavLink className="header__nav-link" to="/race-results" onClick={closeHeader}>
 						{({ isActive }) => (
