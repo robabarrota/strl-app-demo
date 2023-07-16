@@ -28,9 +28,6 @@ jobs:
       env:
         REACT_APP_SHEETS_API_KEY: ${{ secrets.REACT_APP_SHEETS_API_KEY }}
         REACT_APP_SHEETS_ID: ${{ secrets.REACT_APP_SHEETS_ID }}
-        run: |
-          echo ${#REACT_APP_SHEETS_API_KEY}
-          echo ${#REACT_APP_SHEETS_ID}
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4
