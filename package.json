@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "https://robabarrota.github.io/strl-app",
   "engines" : { 
-    "npm" : "9.8.0",
-    "node" : "18.6.0"
+    "npm" : ">=9.0.0",
+    "node" : ">=18.0.0"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.3",
