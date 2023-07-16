@@ -28,6 +28,24 @@ const statHeaders = [
 	{key: 'poles', label: 'POLES'},
 ];
 
+const LegendWrapper = styled.div`
+	padding: 20px;
+	padding-top: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+`;
+
+const LegendSpan = styled.span`
+	background-color: ${props => props.teamColor};
+	padding: 1px 10px;
+	border-radius: 12px;
+	margin: 5px;
+	color: none;
+	white-space: nowrap;
+	cursor: pointer;
+`;
+
 const Qualifying = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
@@ -283,24 +301,6 @@ const Qualifying = () => {
 			strokeWidth={getStrokeWidth(row['Driver'])}
 		/>
 	));
-
-	const LegendWrapper = styled.div`
-		padding: 20px;
-		padding-top: 30px;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-	`;
-
-	const LegendSpan = styled.span`
-		background-color: ${props => props.teamColor};
-		padding: 1px 10px;
-		border-radius: 12px;
-		margin: 5px;
-		color: none;
-		white-space: nowrap;
-		cursor: pointer;
-	`;
 
 	const customLegend = useCallback(({payload}) => {
 		const toggleFilter = (item) => {

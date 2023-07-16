@@ -27,6 +27,24 @@ const statHeaders = [
 	{key: 'racesMissed', label: 'DNS\'s'},
 ];
 
+const LegendWrapper = styled.div`
+	padding: 20px;
+	padding-top: 30px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+`;
+
+const LegendSpan = styled.span`
+	background-color: ${props => props.teamColor};
+	padding: 1px 10px;
+	border-radius: 12px;
+	margin: 5px;
+	color: none;
+	white-space: nowrap;
+	cursor: pointer;
+`;
+
 const DriverStandings = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
@@ -302,24 +320,6 @@ const DriverStandings = () => {
 			strokeWidth={getStrokeWidth(row['Driver'])}
 		/>
 	));
-
-	const LegendWrapper = styled.div`
-		padding: 20px;
-		padding-top: 30px;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-	`;
-
-	const LegendSpan = styled.span`
-		background-color: ${props => props.teamColor};
-		padding: 1px 10px;
-		border-radius: 12px;
-		margin: 5px;
-		color: none;
-		white-space: nowrap;
-		cursor: pointer;
-	`;
 
 	const customLegend = useCallback(({payload}) => {
 		const toggleFilter = (item) => {

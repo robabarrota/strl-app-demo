@@ -62,11 +62,31 @@ const RaceResults = () => {
 	const { content: participants, loading: participantsLoading, error: participantsError } = useSelector(getParticipants);
 	const { content: lastPlacePositions, loading: lastPlacePositionsLoading, error: lastPlacePositionsError } = useSelector(getLastPlacePositions);
 
-	if (isEmpty(raceResults) && !raceResultsLoading && !raceResultsError) dispatch(fetchRaceResults());
-	if (isEmpty(fastestLaps) && !fastestLapsLoading && !fastestLapsError) dispatch(fetchFastestLaps());
-	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
-	if (isEmpty(participants) && !participantsLoading && !participantsError) dispatch(fetchParticipants());
-	if (isEmpty(lastPlacePositions) && !lastPlacePositionsLoading && !lastPlacePositionsError) dispatch(fetchQualifying());
+	useEffect(() => {
+		if (isEmpty(raceResults) && !raceResultsLoading && !raceResultsError) {
+			dispatch(fetchRaceResults());
+		}
+	}, [raceResults, raceResultsLoading, raceResultsError, dispatch]);
+	useEffect(() => {
+		if (isEmpty(fastestLaps) && !fastestLapsLoading && !fastestLapsError) {
+			dispatch(fetchFastestLaps());
+		}
+	}, [fastestLaps, fastestLapsLoading, fastestLapsError, dispatch]);
+	useEffect(() => {
+		if (isEmpty(trackList) && !trackListLoading && !trackListError) {
+			dispatch(fetchTrackList());
+		}
+	}, [trackList, trackListLoading, trackListError, dispatch]);
+	useEffect(() => {
+		if (isEmpty(participants) && !participantsLoading && !participantsError) {
+			dispatch(fetchParticipants());
+		}
+	}, [participants, participantsLoading, participantsError, dispatch]);
+	useEffect(() => {
+		if (isEmpty(lastPlacePositions) && !lastPlacePositionsLoading && !lastPlacePositionsError) {
+			dispatch(fetchQualifying());
+		}
+	}, [lastPlacePositions, lastPlacePositionsLoading, lastPlacePositionsError, dispatch]);
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
