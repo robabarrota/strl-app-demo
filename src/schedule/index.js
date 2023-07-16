@@ -88,9 +88,9 @@ const Schedule = () => {
 		}
 	};
 
-	const { content: trackList, loading: trackListLoading } = useSelector(getTrackList);
+	const { content: trackList, loading: trackListLoading, error: trackListError } = useSelector(getTrackList);
 
-	if (isEmpty(trackList) && !trackListLoading) dispatch(fetchTrackList());
+	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
 
 	const isDataReady = useMemo(() => !(isEmpty(trackList) || trackListLoading),
 		[trackList, trackListLoading])
