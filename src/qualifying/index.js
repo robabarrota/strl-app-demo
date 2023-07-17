@@ -61,10 +61,10 @@ const Qualifying = () => {
 	const { content: raceResults, loading: raceResultsLoading, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: lastPlacePositions, loading: lastPlacePositionsLoading } = useSelector(getLastPlacePositions);
 
-	if (isEmpty(qualifyingResults) && !qualifyingLoading && qualifyingResultsError) dispatch(fetchQualifying());
-	if (isEmpty(trackList) && !trackListLoading && trackListError) dispatch(fetchTrackList());
-	if (isEmpty(participants) && !participantsLoading && participantsError) dispatch(fetchParticipants());
-	if (isEmpty(raceResults) && !raceResultsLoading && raceResultsError) dispatch(fetchRaceResults());
+	if (isEmpty(qualifyingResults) && !qualifyingLoading && !qualifyingResultsError) dispatch(fetchQualifying());
+	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
+	if (isEmpty(participants) && !participantsLoading && !participantsError) dispatch(fetchParticipants());
+	if (isEmpty(raceResults) && !raceResultsLoading && !raceResultsError) dispatch(fetchRaceResults());
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
