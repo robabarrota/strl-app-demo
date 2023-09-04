@@ -98,7 +98,7 @@ const DriverStandings = () => {
 			})
 		}
 		return results;
-	}, [raceResults, resultHeaders, fastestLaps, penalties]);
+	}, [raceResults, resultHeaders, fastestLaps, penalties, raceResultsFetched, fastestLapsFetched, penaltiesFetched]);
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile]);
 	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile]);

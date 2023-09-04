@@ -102,7 +102,7 @@ const ConstructorStandings = () => {
 			}, []);
 		}
 		return results;
-	}, [raceResults, resultHeaders, fastestLaps, penalties]);
+	}, [raceResults, resultHeaders, fastestLaps, penalties, raceResultsFetched, fastestLapsFetched, penaltiesFetched]);
 
 	const stats = useMemo(() => 
 		constructorPoints.map(constructor => {
