@@ -4,7 +4,6 @@ import YoutubeEmbed from '../components/youtube-embed'
 import { useDispatch, useSelector } from 'react-redux';
 import { getHighlights} from 'src/redux/selectors';
 import { fetchHighlights} from 'src/redux/actions';
-import { isEmpty } from 'lodash';
 
 const embedIdRegex = /\?v=(\w+)&/;
 
