@@ -92,7 +92,7 @@ const WeatherPanel = ({trackInfo}) => {
         }, tbdWeatherIconTime);
         return () => clearTimeout(timer1);
         
-    }, [isTbdIconTransitioning, setIsTbdIconTransitioning])
+    }, [isTbdIconTransitioning, setIsTbdIconTransitioning, tbdWeatherIcon?.iconIndex])
 
 	return (
         <div className="weather-panel">
