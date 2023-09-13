@@ -27,7 +27,8 @@ const statHeaders = [
 	{key: 'fastestLaps', label: 'FASTEST'},
 	{key: 'poles', label: 'POLES'},
 	{key: 'racesMissed', label: 'DNS\'s'},
-	{key: 'penalties', label: 'PENALTIES'},
+	{key: 'totalPenalties', label: 'PENALTIES'},
+	{key: 'penaltiesPerRace', label: 'PENALTIES PER RACE'},
 ];
 
 const ConstructorStatistics = ({show}) => {
