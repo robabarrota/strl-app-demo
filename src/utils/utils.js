@@ -2,7 +2,8 @@ import { camelCase } from 'lodash';
 import { carColorMap } from './constants';
 
 const round = (number, decimalPlace = 2) => {
-    const result = parseFloat(number).toFixed(decimalPlace);
+    const magnitude = Math.pow(10, decimalPlace);
+    const result = Math.floor(+number * magnitude) / magnitude;
     return !isNaN(result) ? result : number;
 };
 

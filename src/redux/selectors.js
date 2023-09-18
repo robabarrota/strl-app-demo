@@ -1,3 +1,4 @@
+import { createSelector } from '@reduxjs/toolkit';
 
 const getDomainsState = state => state;
 
@@ -13,4 +14,18 @@ export const getDriverPoints = state => getDomainsState(state).driverPoints;
 export const getDriverStats = state => getDomainsState(state).driverStats;
 export const getConstructorPoints = state => getDomainsState(state).constructorPoints;
 export const getConstructorStats = state => getDomainsState(state).constructorStats;
+export const getArchives = state => getDomainsState(state).archives;
+export const getArchiveStats = state => getDomainsState(state).archiveStats;
+export const getSelectedSeason = state => getDomainsState(state).selectedSeason;
 
+export const selectedDriverArchiveStats = createSelector(
+    getArchiveStats,
+    getSelectedSeason,
+    ({content: archiveStats}, {content: selectedSeason}) => archiveStats?.[selectedSeason]?.driverData || []
+)
+  
+export const selectedConstructorArchiveStats = createSelector(
+    getArchiveStats,
+    getSelectedSeason,
+    ({content: archiveStats}, {content: selectedSeason}) => archiveStats?.[selectedSeason]?.constructorData || []
+)

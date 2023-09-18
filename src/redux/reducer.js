@@ -13,6 +13,9 @@ const INITIAL_STATE = {
 	driverStats: { loading: false, content: [], error: null, fetched: false },
 	constructorPoints: { loading: false, content: [], error: null, fetched: false },
 	constructorStats: { loading: false, content: [], error: null, fetched: false },
+	archives: { loading: false, content: [], error: null, fetched: false },
+	archiveStats: { loading: false, content: {}, error: null, fetched: false },
+	selectedSeason: { content: null },
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -40,7 +43,13 @@ const reducer = (state = INITIAL_STATE, action) => {
 		case actions.SET_CONSTRUCTOR_POINTS:
 			return { ...state, constructorPoints: { ...state.constructorPoints, ...action.payload.constructorPoints } };
 		case actions.SET_CONSTRUCTOR_STATS:
-			return { ...state, constructorStats: { ...state.driverStats, ...action.payload.constructorStats } };
+			return { ...state, constructorStats: { ...state.constructorStats, ...action.payload.constructorStats } };
+		case actions.SET_ARCHIVES:
+			return { ...state, archives: { ...state.archives, ...action.payload.archives } };
+		case actions.SET_ARCHIVE_STATS:
+			return { ...state, archiveStats: { ...state.archiveStats, ...action.payload.archiveStats } };
+		case actions.SET_SELECTED_SEASON:
+			return { ...state, selectedSeason: {...state.selectedSeason, ...action.payload.selectedSeason} };
 	
 		default:
 			return state;

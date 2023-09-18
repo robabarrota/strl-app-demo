@@ -71,3 +71,18 @@ export const setConstructorStats = constructorStats => ({ type: SET_CONSTRUCTOR_
 
 export const FETCH_CONSTRUCTOR_STATS = `${prefix}/FETCH_CONSTRUCTOR_STATS`;
 export const fetchConstructorStats = () => ({ type: FETCH_CONSTRUCTOR_STATS });
+
+export const SET_ARCHIVES = `${prefix}/SET_ARCHIVES`;
+export const setArchives = archives => ({ type: SET_ARCHIVES, payload: { archives } });
+
+export const FETCH_ARCHIVES = `${prefix}/FETCH_ARCHIVES`;
+export const fetchArchives = () => ({ type: FETCH_ARCHIVES });
+
+export const SET_ARCHIVE_STATS = `${prefix}/SET_ARCHIVE_STATS`;
+export const setArchiveStats = archiveStats => ({ type: SET_ARCHIVE_STATS, payload: { archiveStats } });
+
+export const FETCH_ARCHIVE_STATS = `${prefix}/FETCH_ARCHIVE_STATS`;
+export const fetchArchiveStats = (seasonNumber) => ({ type: FETCH_ARCHIVE_STATS, payload: { seasonNumber } });
+
+export const SET_SELECTED_SEASON = `${prefix}/SET_SELECTED_SEASON`;
+export const setSelectedSeason = selectedSeason => ({ type: SET_SELECTED_SEASON, payload: { selectedSeason: {content: selectedSeason} } });

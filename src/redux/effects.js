@@ -2,6 +2,8 @@ import service from '@/service';
 import * as actions from './actions';
 import { camelize, camelizeKeys } from '@/utils/utils';
 
+const DEFAULT_SHEET_ID = import.meta.env.VITE_MAIN_SHEET_ID;
+
 const fetchTrackList = (store, action) => {
 	if (action.type === actions.FETCH_TRACK_LIST) {
 		store.dispatch(actions.setTrackList({ loading: true }));
@@ -298,6 +300,79 @@ const fetchConstructorStats = (store, action) => {
 	}
 };
 
+const fetchArchives = (store, action) => {
+	if (action.type === actions.FETCH_ARCHIVES) {
+		store.dispatch(actions.setArchives({ loading: true }));
+		service
+			.getArchives()
+			.then((response) => {
+				const data = response[0].data;
+
+				const formattedData = camelizeKeys(data);
+
+				store.dispatch(actions.setSelectedSeason(formattedData.length));
+
+				store.dispatch(
+					actions.setArchives({
+						loading: false,
+						content: formattedData,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setArchives({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const fetchArchiveStats = (store, action) => {
+	if (action.type === actions.FETCH_ARCHIVE_STATS) {
+		store.dispatch(actions.setArchiveStats({ loading: true }));
+		const { selectedSeason, archiveStats, archives} = store.getState();
+
+		if (archiveStats.content[selectedSeason.content]) return;
+
+		const selectedArchiveSheetId = archives.content.find(({season}) => +season === +selectedSeason.content)?.sheetId || DEFAULT_SHEET_ID;
+
+		service
+			.getArchiveStats(selectedArchiveSheetId)
+			.then((response) => {
+				const driverData = response[0].data;
+				const constructorData = response[1].data;
+
+				const formattedDriverData = camelizeKeys(driverData);
+				const formattedConstructorData = camelizeKeys(constructorData);
+
+				store.dispatch(
+					actions.setArchiveStats({
+						loading: false,
+						content: {
+							...archiveStats.content,
+							[selectedSeason.content]: {
+								driverData: formattedDriverData,
+								constructorData: formattedConstructorData
+							}
+						},
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setArchiveStats({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const setSelectedSeason = (store, action) => {
+	if (action.type === actions.SET_SELECTED_SEASON) {
+		const selectedSeason = action.payload.selectedSeason.content;
+		store.dispatch(actions.fetchArchiveStats(selectedSeason));
+	}
+};
+
 const effects = [
 	fetchTrackList, 
 	fetchParticipants, 
@@ -311,6 +386,9 @@ const effects = [
 	fetchDriverStats,
 	fetchConstructorPoints,
 	fetchConstructorStats,
+	fetchArchives,
+	fetchArchiveStats,
+	setSelectedSeason,
 ];
 
 export default effects;

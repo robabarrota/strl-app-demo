@@ -1,9 +1,8 @@
 import './styles.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDriverStats } from '@/redux/selectors';
-import { fetchDriverStats } from '@/redux/actions';
+import { useSelector } from 'react-redux';
+import { selectedDriverArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction } from '@/utils/utils';
+import { tableSortFunction, round } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
@@ -29,27 +28,24 @@ const statHeaders = [
 ];
 
 const DriverStatistics = ({show}) => {
-	const dispatch = useDispatch();
-	const [sortedDriverStats, setSortedDriverStats] = useState([]);
+	const [sortedArchiveStats, setSortedArchiveStats] = useState([]);
 	const isMobile = useIsMobile();
 
-	const { content: driverStats, loading: driverStatsLoading, error: driverStatsError, fetched: driverStatsFetched } = useSelector(getDriverStats);
-
-	if (!driverStatsFetched && !driverStatsLoading && !driverStatsError) dispatch(fetchDriverStats());
+	const archiveStats = useSelector(selectedDriverArchiveStats);
 		
 	const [sortBy, setSortBy] = useState(null);
 
 	useEffect(() => {
-		const statsCopy = [...driverStats];
+		const statsCopy = [...archiveStats];
 		if (sortBy === null) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, defaultSortBy, ['averageFinish', 'averageQualifying']))];
-			setSortedDriverStats(sortedStats);
+			setSortedArchiveStats(sortedStats);
 		}
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish', 'averageQualifying']))];
-			setSortedDriverStats(sortedStats);
+			setSortedArchiveStats(sortedStats);
 		}
-	}, [driverStats, sortBy]);
+	}, [archiveStats, sortBy]);
 
 	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 
@@ -80,7 +76,7 @@ const DriverStatistics = ({show}) => {
 					</tr>
 				</thead>
 				<tbody>
-					{sortedDriverStats.map((row) => (
+					{sortedArchiveStats.map((row) => (
 						<tr key={row.driver} >
 							<td className='driver-statistics__table-cell'>
 								<div className='driver-statistics__driver-label'>
@@ -92,7 +88,7 @@ const DriverStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedDriverStats, formatDriverName]);
+	), [sortedArchiveStats, formatDriverName]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
@@ -112,7 +108,7 @@ const DriverStatistics = ({show}) => {
 						</tr>
 					</thead>
 					<tbody>
-						{sortedDriverStats.map((row) => (
+						{sortedArchiveStats.map((row) => (
 							<tr key={row.driver}>
 								{statHeaders.map((stat, index) =>
 									<td
@@ -120,7 +116,7 @@ const DriverStatistics = ({show}) => {
 										className={`driver-statistics__table-cell`}
 									>
 										<TableTooltip innerHtml={stat.label}>
-											{row[stat.key]}
+											{round(row[stat.key])}
 										</TableTooltip>
 									</td>
 								)}
@@ -130,9 +126,9 @@ const DriverStatistics = ({show}) => {
 				</table>
 			</div>
 		)
-	}, [sortedDriverStats, sortByKey, getSortIcon]);
+	}, [sortedArchiveStats, sortByKey, getSortIcon]);
 
-	const isDataReady = driverStatsFetched && !driverStatsLoading;
+	const isDataReady = !!archiveStats;
 
 	if (isDataReady) {
 		return show && (

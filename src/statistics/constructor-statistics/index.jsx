@@ -1,9 +1,8 @@
 import './styles.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { getConstructorStats } from '@/redux/selectors';
-import { fetchConstructorStats } from '@/redux/actions';
+import { useSelector } from 'react-redux';
+import { selectedConstructorArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction } from '@/utils/utils';
+import { tableSortFunction, round } from '@/utils/utils';
 import {
 	carAbbreviationMap,
 } from '@/utils/constants';
@@ -32,27 +31,24 @@ const statHeaders = [
 ];
 
 const ConstructorStatistics = ({show}) => {
-	const dispatch = useDispatch();
-	const [sortedConstructorStats, setSortedConstructorStats] = useState([]);
+	const [sortedArchiveStats, setSortedArchiveStats] = useState([]);
 	const isMobile = useIsMobile();
 
-	const { content: constructorStats, loading: constructorStatsLoading, error: constructorStatsError, fetched: constructorStatsFetched } = useSelector(getConstructorStats);
-
-	if (!constructorStatsFetched && !constructorStatsLoading && !constructorStatsError) dispatch(fetchConstructorStats());
+	const archiveStats = useSelector(selectedConstructorArchiveStats);
 		
 	const [sortBy, setSortBy] = useState(null);
 
 	useEffect(() => {
-		const statsCopy = [...constructorStats];
+		const statsCopy = [...archiveStats];
 		if (sortBy === null) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, defaultSortBy, ['averageFinish', 'averageQualifying']))];
-			setSortedConstructorStats(sortedStats);
+			setSortedArchiveStats(sortedStats);
 		}
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish', 'averageQualifying']))];
-			setSortedConstructorStats(sortedStats);
+			setSortedArchiveStats(sortedStats);
 		}
-	}, [constructorStats, sortBy]);
+	}, [archiveStats, sortBy]);
 
 	const formatConstructorName = useCallback((constructor) => !isMobile ? constructor : carAbbreviationMap[constructor], [isMobile])
 
@@ -83,7 +79,7 @@ const ConstructorStatistics = ({show}) => {
 					</tr>
 				</thead>
 				<tbody>
-					{sortedConstructorStats.map((row) => (
+					{sortedArchiveStats.map((row) => (
 						<tr key={row.car} >
 							<td className='constructor-statistics__table-cell'>
 								<div className='constructor-statistics__driver-label'>
@@ -95,7 +91,7 @@ const ConstructorStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedConstructorStats, formatConstructorName]);
+	), [sortedArchiveStats, formatConstructorName]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
@@ -115,7 +111,7 @@ const ConstructorStatistics = ({show}) => {
 						</tr>
 					</thead>
 					<tbody>
-						{sortedConstructorStats.map((row) => (
+						{sortedArchiveStats.map((row) => (
 							<tr key={row.car}>
 								{statHeaders.map((stat, index) =>
 									<td
@@ -123,7 +119,7 @@ const ConstructorStatistics = ({show}) => {
 										className={`constructor-statistics__table-cell`}
 									>
 										<TableTooltip innerHtml={stat.label}>
-											{row[stat.key]}
+											{round(row[stat.key])}
 										</TableTooltip>
 									</td>
 								)}
@@ -133,9 +129,9 @@ const ConstructorStatistics = ({show}) => {
 				</table>
 			</div>
 		)
-	}, [sortedConstructorStats, sortByKey, getSortIcon]);
+	}, [sortedArchiveStats, sortByKey, getSortIcon]);
 
-	const isDataReady = constructorStatsFetched && !constructorStatsLoading;
+	const isDataReady = !!sortedArchiveStats;
 
 	if (isDataReady) {
 		return show && (

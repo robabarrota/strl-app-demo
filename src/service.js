@@ -61,6 +61,20 @@ const service = {
         ...seasonSheetConfig,
         sheetsOptions: [{ id: 'Constructor Stats' }],
     }),
+
+    getArchives: async () => await fetchGoogleSheetsData({
+        ...seasonSheetConfig,
+        sheetsOptions: [{ id: 'Archives' }],
+    }),
+
+    getArchiveStats: async (sheetId) => await fetchGoogleSheetsData({
+        apiKey: seasonSheetConfig.apiKey,
+        sheetId,
+        sheetsOptions: [
+            { id: 'Driver Stats' },
+            { id: 'Constructor Stats' }
+        ],
+    }),
 }
 
 export default service;

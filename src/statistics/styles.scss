@@ -16,6 +16,15 @@
         display: grid;
         grid-auto-flow: row;
         gap: 0.5em;
-        margin-left: 18px;
+        margin: 0 18px;
+    }
+
+    &__filter-bar {
+        display: flex;
+        justify-content: space-between;
+        @media screen and (max-width: $mobile-width) {
+            display: grid;
+            gap: 1rem;
+        }
     }
 }
