@@ -15,7 +15,11 @@ const getCarColor = (car, isPrimaryDriver, customOpacity = null) => {
 
 const badRaceResults = ['DNF', 'DNS', '', '-', undefined];
 
-const tableSortFunction = (a, b, sortBy, lowIsPriority) => {
+const tableSortFunction = (a, b, sortBy, lowIsPriority, zeroToBottom = false) => {
+    const negativeResults = [
+        ...badRaceResults,
+        ...zeroToBottom ? ['0', 0] : [],
+    ]
     const getCorrectSortValue = (initialValue) => {
         let sortModifier = 1;
         sortModifier *= sortBy.direction === 'desc' ? -1 : 1;
@@ -28,8 +32,8 @@ const tableSortFunction = (a, b, sortBy, lowIsPriority) => {
 
     if (a[sortBy.key] === 'DNF' && b[sortBy.key] === 'DNS' ) return -1;
     if (a[sortBy.key] === 'DNS' && b[sortBy.key] === 'DNF') return  1;
-    if (badRaceResults.includes(a[sortBy.key])) return 1;
-    if (badRaceResults.includes(b[sortBy.key])) return -1;
+    if (negativeResults.includes(a[sortBy.key])) return 1;
+    if (negativeResults.includes(b[sortBy.key])) return -1;
     
     const aVal = typeof a[sortBy.key] === 'number' ? a[sortBy.key] : +a[sortBy.key];
     const bVal = typeof b[sortBy.key] === 'number' ? b[sortBy.key] : +b[sortBy.key];
@@ -61,10 +65,20 @@ const camelizeKeys = (data) => {
     return data;
 }
 
+const groupBy = (arr, key) => {
+    const result = arr.reduce(function (r, a) {
+        r[a[key]] = r[a[key]] || [];
+        r[a[key]].push(a);
+        return r;
+    }, Object.create(null));
+    return result;
+}
+
 export {
     round, 
     getCarColor,
     tableSortFunction,
     camelize,
     camelizeKeys,
+    groupBy,
 }

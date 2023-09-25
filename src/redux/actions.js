@@ -86,3 +86,15 @@ export const fetchArchiveStats = (seasonNumber) => ({ type: FETCH_ARCHIVE_STATS,
 
 export const SET_SELECTED_SEASON = `${prefix}/SET_SELECTED_SEASON`;
 export const setSelectedSeason = selectedSeason => ({ type: SET_SELECTED_SEASON, payload: { selectedSeason: {content: selectedSeason} } });
+
+export const SET_DRIVER_TRACK_STATS = `${prefix}/SET_DRIVER_TRACK_STATS`;
+export const setDriverTrackStats = driverTrackStats => ({ type: SET_DRIVER_TRACK_STATS, payload: { driverTrackStats } });
+
+export const FETCH_DRIVER_TRACK_STATS = `${prefix}/FETCH_DRIVER_TRACK_STATS`;
+export const fetchDriverTrackStats = () => ({ type: FETCH_DRIVER_TRACK_STATS });
+
+export const SET_SELECTED_TRACK = `${prefix}/SET_SELECTED_TRACK`;
+export const setSelectedTrack = selectedTrack => ({ type: SET_SELECTED_TRACK, payload: { selectedTrack: {content: selectedTrack} } });
+
+export const SET_ALL_TRACKS = `${prefix}/SET_ALL_TRACKS`;
+export const setAllTracks = allTracks => ({ type: SET_ALL_TRACKS, payload: { allTracks: {content: allTracks} } });

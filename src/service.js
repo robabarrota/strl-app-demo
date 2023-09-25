@@ -75,6 +75,18 @@ const service = {
             { id: 'Constructor Stats' }
         ],
     }),
+
+    getDriverTrackStats: async () => await fetchGoogleSheetsData({
+        ...seasonSheetConfig,
+        sheetsOptions: [
+            { id: 'Driver Track Stats - Total Races' },
+            { id: 'Driver Track Stats - Average Finish' },
+            { id: 'Driver Track Stats - DNFs' },
+            { id: 'Driver Track Stats - Fastest Laps' },
+            { id: 'Driver Track Stats - Poles' },
+            { id: 'Driver Track Stats - Total Penalties' },
+        ],
+    }),
 }
 
 export default service;

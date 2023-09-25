@@ -3,7 +3,7 @@
 		"baseUrl": "./src",
 		"allowSyntheticDefaultImports": true,
 		"paths": {
-			"src/*": ["./src/*"]
+			"@/*": ["./src/*"],
 		}
 	}
 }

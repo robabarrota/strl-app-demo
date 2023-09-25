@@ -16,6 +16,9 @@ const INITIAL_STATE = {
 	archives: { loading: false, content: [], error: null, fetched: false },
 	archiveStats: { loading: false, content: {}, error: null, fetched: false },
 	selectedSeason: { content: null },
+	driverTrackStats: { loading: false, content: {}, error: null, fetched: false },
+	selectedTrack: { content: {} },
+	allTracks: { content: [] },
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -50,6 +53,12 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return { ...state, archiveStats: { ...state.archiveStats, ...action.payload.archiveStats } };
 		case actions.SET_SELECTED_SEASON:
 			return { ...state, selectedSeason: {...state.selectedSeason, ...action.payload.selectedSeason} };
+		case actions.SET_DRIVER_TRACK_STATS:
+			return { ...state, driverTrackStats: { ...state.driverTrackStats, ...action.payload.driverTrackStats } };
+		case actions.SET_SELECTED_TRACK:
+			return { ...state, selectedTrack: {...state.selectedTrack, ...action.payload.selectedTrack} };
+		case actions.SET_ALL_TRACKS:
+			return { ...state, allTracks: {...state.allTracks, ...action.payload.allTracks} };
 	
 		default:
 			return state;

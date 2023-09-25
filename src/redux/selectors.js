@@ -17,6 +17,9 @@ export const getConstructorStats = state => getDomainsState(state).constructorSt
 export const getArchives = state => getDomainsState(state).archives;
 export const getArchiveStats = state => getDomainsState(state).archiveStats;
 export const getSelectedSeason = state => getDomainsState(state).selectedSeason;
+export const getDriverTrackStats = state => getDomainsState(state).driverTrackStats;
+export const getAllTracks = state => getDomainsState(state).allTracks;
+export const getSelectedTrack = state => getDomainsState(state).selectedTrack;
 
 export const selectedDriverArchiveStats = createSelector(
     getArchiveStats,
@@ -28,4 +31,10 @@ export const selectedConstructorArchiveStats = createSelector(
     getArchiveStats,
     getSelectedSeason,
     ({content: archiveStats}, {content: selectedSeason}) => archiveStats?.[selectedSeason]?.constructorData || []
+)
+  
+export const selectedDriverTrackStats = createSelector(
+    getDriverTrackStats,
+    getSelectedTrack,
+    ({content: driverTrackStats}, {content: selectedTrack}) => driverTrackStats?.[selectedTrack?.value] || []
 )
