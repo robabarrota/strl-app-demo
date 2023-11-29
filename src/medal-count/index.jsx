@@ -2,7 +2,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getMedalCount } from '@/redux/selectors';
 import { fetchMedalCount } from '@/redux/actions';
-import useIsMobile from '@/hooks/useIsMobile';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
 import React, { useMemo, useState, useCallback } from 'react';
 
 import {
@@ -18,7 +18,7 @@ import {
 const MedalCount = () => {
 	const dispatch = useDispatch();
 	const { content: medalCount, loading: medalCountLoading, error: medalCountError, fetched: medalCountFetched } = useSelector(getMedalCount);
-	const isMobile = useIsMobile();
+	const formatDriverName = useFormatDriverName();
 
 	if (!medalCountFetched && !medalCountLoading && !medalCountError) dispatch(fetchMedalCount());
 
@@ -38,8 +38,6 @@ const MedalCount = () => {
 		const medalCountCopy = [...medalCount];
 		return sortBy === null ? medalCountCopy: [...medalCountCopy.sort(medalSortFunction)];
 	}, [medalCount, medalSortFunction, sortBy]);
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 
 	const sortByKey = useCallback((key) => {
 		if (sortBy?.key === key) {

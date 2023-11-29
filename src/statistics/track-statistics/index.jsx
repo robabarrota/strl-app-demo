@@ -4,7 +4,7 @@ import { selectedDriverTrackStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round } from '@/utils/utils';
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import useIsMobile from '@/hooks/useIsMobile';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
 
 const defaultSortBy = {
 	key: 'total',
@@ -13,16 +13,20 @@ const defaultSortBy = {
 
 const statHeaders = [
 	{key: 'totalRaces', label: 'RACES'},
-	{key: 'averageFinish', label: 'AVG FINISH'},
+	{key: 'wins', label: 'WINS'},
+	{key: 'averageFinish', label: 'AVG FINISHING POS'},
+	{key: 'poles', label: 'POLES'},
+	{key: 'averageQualifying', label: 'AVG QUALIFYING'},
 	{key: 'totalDnfs', label: 'DNFS'},
 	{key: 'fastestLaps', label: 'FASTEST LAPS'},
-	{key: 'poles', label: 'POLES'},
 	{key: 'totalPenalties', label: 'PENALTIES'},
 ];
 
+const reverseOrderStatKeys = ['averageFinish', 'averageQualifying'];
+
 const TrackStatistics = ({show}) => {
 	const [sortedTrackStats, setSortedTrackStats] = useState([]);
-	const isMobile = useIsMobile();
+	const formatDriverName = useFormatDriverName();
 
 	const driverStats = useSelector(selectedDriverTrackStats);
 		
@@ -31,16 +35,14 @@ const TrackStatistics = ({show}) => {
 	useEffect(() => {
 		const statsCopy = [...driverStats];
 		if (sortBy === null) {
-			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, defaultSortBy, ['averageFinish'], defaultSortBy.key === 'averageFinish'))];
+			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, defaultSortBy, reverseOrderStatKeys, reverseOrderStatKeys.includes(defaultSortBy.key)))];
 			setSortedTrackStats(sortedStats);
 		}
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
-			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish'], sortBy.key === 'averageFinish'))];
+			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, reverseOrderStatKeys, reverseOrderStatKeys.includes(sortBy.key)))];
 			setSortedTrackStats(sortedStats);
 		}
 	}, [driverStats, sortBy]);
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 
 	const sortByKey = useCallback((key) => {
 		if (sortBy?.key === key) {
@@ -72,9 +74,9 @@ const TrackStatistics = ({show}) => {
 					{sortedTrackStats.map((row) => (
 						<tr key={row.driver} >
 							<td className='track-statistics__table-cell'>
-								<div className='track-statistics__driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='track-statistics__driver-label'>
 									{formatDriverName(row.driver)}
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

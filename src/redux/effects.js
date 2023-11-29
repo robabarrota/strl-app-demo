@@ -382,10 +382,12 @@ const fetchDriverTrackStats = (store, action) => {
 				const [
 					{data: totalRacesData},
 					{data: avgFinishData},
+					{data: avgQualifyingData},
 					{data: totalDnfData},
 					{data: fastestLapsData},
 					{data: polesData},
 					{data: totalPenaltiesData},
+					{data: winsData},
 				] = response;
 
 				const trackList = Object.keys(totalRacesData[0] || {})
@@ -406,21 +408,28 @@ const fetchDriverTrackStats = (store, action) => {
 
 				const formattedTotalRacesData = camelizeKeys(totalRacesData);
 				const formattedAvgFinishData = camelizeKeys(avgFinishData);
+				const formattedAvgQualifyingData = camelizeKeys(avgQualifyingData);
 				const formattedTotalDnfData = camelizeKeys(totalDnfData);
 				const formattedFastestLapsData = camelizeKeys(fastestLapsData);
 				const formattedPolesData = camelizeKeys(polesData);
 				const formattedTotalPenaltiesData = camelizeKeys(totalPenaltiesData);
+				const formattedWinsData = camelizeKeys(winsData);
 
 				const driverTrackData = {};
 
+				const reserveRegex = /^Reserve/;
 				for (let driverIndex = 0; driverIndex < formattedTotalRacesData.length; driverIndex++) {
 					const driverTotalRaceStats = Object.values(formattedTotalRacesData[driverIndex]) || [];
+					const driver = driverTotalRaceStats[0];
+					if (driver.match(reserveRegex)) continue;
 					const avgFinishesStats = Object.values(formattedAvgFinishData[driverIndex]) || [];
+					const avgQualifyingStats = Object.values(formattedAvgQualifyingData[driverIndex]) || [];
 					const totalDnfDataStats = Object.values(formattedTotalDnfData[driverIndex]) || [];
 					const fastestLapsDataStats = Object.values(formattedFastestLapsData[driverIndex]) || [];
 					const polesDataStats = Object.values(formattedPolesData[driverIndex]) || [];
 					const totalPenaltiesDataStats = Object.values(formattedTotalPenaltiesData[driverIndex]) || [];
-					const driver = driverTotalRaceStats[0];
+					const winsDataStats = Object.values(formattedWinsData[driverIndex]) || [];
+
 
 					for (let trackIndex = 1; trackIndex < driverTotalRaceStats.length; trackIndex++) {
 						const trackKey = trackList[trackIndex - 1]?.value;
@@ -431,74 +440,16 @@ const fetchDriverTrackStats = (store, action) => {
 								driver,
 								totalRaces: driverTotalRaceStats[trackIndex],
 								averageFinish: avgFinishesStats[trackIndex],
+								averageQualifying: avgQualifyingStats[trackIndex],
 								totalDnfs: totalDnfDataStats[trackIndex],
 								fastestLaps: fastestLapsDataStats[trackIndex],
 								poles: polesDataStats[trackIndex],
 								totalPenalties: totalPenaltiesDataStats[trackIndex],
+								wins: winsDataStats[trackIndex],
+
 							}
 						];
 					}
-
-					// for (const [track, value] of Object.entries(driverTotalRaceStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			totalRaces: value,
-					// 		}
-					// 	}
-					// }
-					// for (const [track, value] of Object.entries(avgFinishesStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			averageFinish: value,
-					// 		}
-					// 	}
-					// }
-					// for (const [track, value] of Object.entries(totalDnfDataStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			totalDnfs: value,
-					// 		}
-					// 	}
-					// }
-					// for (const [track, value] of Object.entries(fastestLapsDataStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			fastestLaps: value,
-					// 		}
-					// 	}
-					// }
-					// for (const [track, value] of Object.entries(polesDataStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			poles: value,
-					// 		}
-					// 	}
-					// }
-					// for (const [track, value] of Object.entries(totalPenaltiesDataStats)) {
-					// 	if (track !== 'driver') {
-					// 		const existingTrackData = driverData[track] || {};
-					// 		driverData[track] = {
-					// 			...existingTrackData,
-					// 			driver: driverTotalRaceStats.driver,
-					// 			totalPenalties: value,
-					// 		}
-					// 	}
-					// }
 				}
 
 				store.dispatch(

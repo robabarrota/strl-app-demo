@@ -5,8 +5,9 @@ import { fetchQualifying, fetchTrackList, fetchParticipants, fetchDriverStats } 
 import { isEmpty } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from '@/components/constructor-badge';
-import useIsMobile from '@/hooks/useIsMobile';
-import { trackDetails } from '@/utils/constants';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
+import useFormatTrackName from '@/hooks/useFormatTrackName';
+import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import { isNaN } from 'lodash';
@@ -58,7 +59,9 @@ const Qualifying = () => {
 	const [sortBy, setSortBy] = useState(null);
 	const [sortedQualifyingResults, setSortedQualifyingResults] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
-	const isMobile = useIsMobile();
+	const formatDriverName = useFormatDriverName();
+	const formatTrackName = useFormatTrackName();
+	const graphTrackOrientation = useGraphTrackOrientation();
 
 	const { content: qualifyingResults, loading: qualifyingLoading, error: qualifyingResultsError } = useSelector(getQualifying);
 	const { content: trackList, loading: trackListLoading, error: trackListError } = useSelector(getTrackList);
@@ -69,9 +72,6 @@ const Qualifying = () => {
 	if (isEmpty(trackList) && !trackListLoading && !trackListError) dispatch(fetchTrackList());
 	if (isEmpty(participants) && !participantsLoading && !participantsError) dispatch(fetchParticipants());
 	if (isEmpty(driverStats) && !driverStatsLoading && !driverStatsError) dispatch(fetchDriverStats());
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
-	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
 
 	useEffect(() => {
 		const qualifyingResultsCopy = [...qualifyingResults];
@@ -116,8 +116,6 @@ const Qualifying = () => {
 		})
 	}, [trackList, qualifyingResults, formatTrackName])
 
-	const graphTrackOrientation = useMemo(() => !isMobile ? 0 : 270, [isMobile]);
-
 	const getClassName = (header) => {
 		if (header === 'Driver') return 'qualifying__driver';
 		if (header === 'Car') return 'qualifying__car';
@@ -135,9 +133,9 @@ const Qualifying = () => {
 					{sortedQualifyingResults.map((row) => (
 						<tr key={row.driver}>
 							<td className={`qualifying__table-cell`}>
-								<div className='qualifying__driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='qualifying__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

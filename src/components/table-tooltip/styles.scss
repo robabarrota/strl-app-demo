@@ -1,8 +1,9 @@
 .table-tooltip {
     display: inline-block;
-
+    position: relative;
+    
     &__text {
-        display: none;
+        display: block;
         width: 120px;
         background-color: black;
         color: #fff;
@@ -12,11 +13,6 @@
     
         position: absolute;
         z-index: 1;
-    }
-
-    &:hover &__text,
-    &:active &__text {
-        display: block;
     }
 
     &__hang-left {

@@ -5,8 +5,9 @@ import { fetchDriverStats, fetchRaceResults, fetchDriverPoints, fetchTrackList, 
 import { isEmpty, isNaN, last } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from '@/components/constructor-badge';
-import useIsMobile from '@/hooks/useIsMobile';
-import { trackDetails } from '@/utils/constants';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
+import useFormatTrackName from '@/hooks/useFormatTrackName';
+import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import {
@@ -57,8 +58,10 @@ const DriverStandings = ({show}) => {
 	const [sortBy, setSortBy] = useState(null);
 	const [sortedDriverPoints, setSortedDriverPoints] = useState([]);
 	const [sortedDriverStats, setSortedDriverStats] = useState([]);
-	const isMobile = useIsMobile();
-	
+	const formatDriverName = useFormatDriverName();
+	const formatTrackName = useFormatTrackName();
+	const graphTrackOrientation = useGraphTrackOrientation();
+
 	const { content: driverStats, loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);
 	const { content: raceResults, loading: raceResultsLoading, fetched: raceResultsFetched, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: driverPoints, loading: driverPointsLoading, fetched: driverPointsFetched, error: driverPointsError } = useSelector(getDriverPoints);
@@ -70,9 +73,6 @@ const DriverStandings = ({show}) => {
 	if (!driverPointsFetched && !driverPointsLoading && !driverPointsError) dispatch(fetchDriverPoints());
 	if (!trackListFetched && !trackListLoading && !trackListError) dispatch(fetchTrackList());
 	if (!participantsFetched && !participantsLoading && !participantsError) dispatch(fetchParticipants());
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile]);
-	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile]);
 
 	useEffect(() => {
 		if (driverPoints.length && driverStats.length) {
@@ -121,8 +121,6 @@ const DriverStandings = ({show}) => {
 		}, [])
 	, [trackList, driverPoints, formatTrackName])
 
-	const graphTrackOrientation = useMemo(() => !isMobile ? 0 : 270, [isMobile]);
-
 	const getClassName = (header) => {
 		if (header === 'Driver') return 'driver-standings__driver';
 		if (header === 'Car') return 'driver-standings__car';
@@ -141,9 +139,9 @@ const DriverStandings = ({show}) => {
 					{sortedDriverPoints.map((row) => (
 						<tr key={row.driver}>
 							<td className={`driver-standings__table-cell`}>
-								<div className='driver-standings__driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='driver-standings__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

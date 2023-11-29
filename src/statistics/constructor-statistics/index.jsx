@@ -3,13 +3,9 @@ import { useSelector } from 'react-redux';
 import { selectedConstructorArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round } from '@/utils/utils';
-import {
-	carAbbreviationMap,
-} from '@/utils/constants';
 import ConstructorBadge from '@/components/constructor-badge';
-
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import useIsMobile from '@/hooks/useIsMobile';
+import useFormatConstructorName from '@/hooks/useFormatConstructorName';
 
 const defaultSortBy = {
 	key: 'total',
@@ -18,13 +14,14 @@ const defaultSortBy = {
 
 const statHeaders = [
 	{key: 'total', label: 'POINTS'},
+	{key: 'poles', label: 'POLES'},
+	{key: 'wins', label: 'WINS'},
 	{key: 'averageFinish', label: 'AVG FINISH'},
 	{key: 'averagePoints', label: 'AVG POINTS'},
 	{key: 'averageQualifying', label: 'AVG QUAL'},
 	{key: 'averageDifference', label: 'AVG DIFF'},
 	{key: 'dNFs', label: 'DNF\'s'},
 	{key: 'fastestLaps', label: 'FASTEST'},
-	{key: 'poles', label: 'POLES'},
 	{key: 'racesMissed', label: 'DNS\'s'},
 	{key: 'totalPenalties', label: 'PENALTIES'},
 	{key: 'penaltiesPerRace', label: 'PENALTIES PER RACE'},
@@ -32,12 +29,12 @@ const statHeaders = [
 
 const ConstructorStatistics = ({show}) => {
 	const [sortedArchiveStats, setSortedArchiveStats] = useState([]);
-	const isMobile = useIsMobile();
 
 	const archiveStats = useSelector(selectedConstructorArchiveStats);
 		
 	const [sortBy, setSortBy] = useState(null);
-
+	const formatConstructorName = useFormatConstructorName();
+	
 	useEffect(() => {
 		const statsCopy = [...archiveStats];
 		if (sortBy === null) {
@@ -49,8 +46,6 @@ const ConstructorStatistics = ({show}) => {
 			setSortedArchiveStats(sortedStats);
 		}
 	}, [archiveStats, sortBy]);
-
-	const formatConstructorName = useCallback((constructor) => !isMobile ? constructor : carAbbreviationMap[constructor], [isMobile])
 
 	const sortByKey = useCallback((key) => {
 		if (sortBy?.key === key) {
@@ -82,9 +77,9 @@ const ConstructorStatistics = ({show}) => {
 					{sortedArchiveStats.map((row) => (
 						<tr key={row.car} >
 							<td className='constructor-statistics__table-cell'>
-								<div className='constructor-statistics__driver-label'>
+								<TableTooltip innerHtml={row.car} customClass='constructor-statistics__driver-label'>
 									{formatConstructorName(row.car)} <ConstructorBadge constructor={row.car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

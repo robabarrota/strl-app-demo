@@ -6,7 +6,7 @@ import { tableSortFunction, round } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import useIsMobile from '@/hooks/useIsMobile';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
 
 const defaultSortBy = {
 	key: 'total',
@@ -15,13 +15,14 @@ const defaultSortBy = {
 
 const statHeaders = [
 	{key: 'total', label: 'POINTS'},
+	{key: 'poles', label: 'POLES'},
+	{key: 'wins', label: 'WINS'},
 	{key: 'averageFinish', label: 'AVG FINISH'},
 	{key: 'averagePoints', label: 'AVG POINTS'},
 	{key: 'averageQualifying', label: 'AVG QUAL'},
 	{key: 'averageDifference', label: 'AVG DIFF'},
 	{key: 'dNFs', label: 'DNF\'s'},
 	{key: 'fastestLaps', label: 'FASTEST'},
-	{key: 'poles', label: 'POLES'},
 	{key: 'racesMissed', label: 'DNS\'s'},
 	{key: 'totalPenalties', label: 'PENALTIES'},
 	{key: 'penaltiesPerRace', label: 'PENALTIES PER RACE'},
@@ -29,7 +30,7 @@ const statHeaders = [
 
 const DriverStatistics = ({show}) => {
 	const [sortedArchiveStats, setSortedArchiveStats] = useState([]);
-	const isMobile = useIsMobile();
+	const formatDriverName = useFormatDriverName();
 
 	const archiveStats = useSelector(selectedDriverArchiveStats);
 		
@@ -46,8 +47,6 @@ const DriverStatistics = ({show}) => {
 			setSortedArchiveStats(sortedStats);
 		}
 	}, [archiveStats, sortBy]);
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
 
 	const sortByKey = useCallback((key) => {
 		if (sortBy?.key === key) {
@@ -79,9 +78,9 @@ const DriverStatistics = ({show}) => {
 					{sortedArchiveStats.map((row) => (
 						<tr key={row.driver} >
 							<td className='driver-statistics__table-cell'>
-								<div className='driver-statistics__driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='driver-statistics__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

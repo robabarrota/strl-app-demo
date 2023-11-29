@@ -5,8 +5,9 @@ import { fetchRaceResults, fetchFastestLaps, fetchDriverStats, fetchTrackList, f
 import { isEmpty } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from '@/components/constructor-badge';
-import useIsMobile from '@/hooks/useIsMobile';
-import { trackDetails } from '@/utils/constants';
+import useFormatDriverName from '@/hooks/useFormatDriverName';
+import useFormatTrackName from '@/hooks/useFormatTrackName';
+import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import { isNaN } from 'lodash';
@@ -58,7 +59,9 @@ const RaceResults = () => {
 	const [sortBy, setSortBy] = useState(null);
 	const [sortedRaceResults, setSortedRaceResults] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
-	const isMobile = useIsMobile();
+	const formatDriverName = useFormatDriverName();
+	const formatTrackName = useFormatTrackName();
+	const graphTrackOrientation = useGraphTrackOrientation();
 
 	const { content: raceResults, loading: raceResultsLoading, fetched: raceResultsFetched, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: driverStats, loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);
@@ -91,9 +94,6 @@ const RaceResults = () => {
 			dispatch(fetchParticipants());
 		}
 	}, [participantsFetched, participantsLoading, participantsError, dispatch]);
-
-	const formatDriverName = useCallback((driver) => !isMobile ? driver : driver.split(' ')[0], [isMobile])
-	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
 
 	useEffect(() => {
 		const raceResultsCopy = [...raceResults];
@@ -138,8 +138,6 @@ const RaceResults = () => {
 		})
 	, [trackList, raceResults, formatTrackName])
 
-	const graphTrackOrientation = useMemo(() => !isMobile ? 0 : 270, [isMobile]);
-
 	const getClassName = (header) => {
 		if (header === 'Driver') return 'race-results__driver';
 		if (header === 'Car') return 'race-results__car';
@@ -158,9 +156,9 @@ const RaceResults = () => {
 					{sortedRaceResults.map((row) => (
 						<tr key={row.driver}>
 							<td className={`race-results__table-cell`}>
-								<div className='race-results__driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='race-results__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}

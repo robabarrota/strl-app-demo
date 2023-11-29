@@ -81,10 +81,12 @@ const service = {
         sheetsOptions: [
             { id: 'Driver Track Stats - Total Races' },
             { id: 'Driver Track Stats - Average Finish' },
+            { id: 'Driver Track Stats - Avg Qualifying' },
             { id: 'Driver Track Stats - DNFs' },
             { id: 'Driver Track Stats - Fastest Laps' },
             { id: 'Driver Track Stats - Poles' },
             { id: 'Driver Track Stats - Total Penalties' },
+            { id: 'Driver Track Stats - Wins' },
         ],
     }),
 }

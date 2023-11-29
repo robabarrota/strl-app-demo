@@ -5,11 +5,9 @@ import { fetchConstructorPoints, fetchConstructorStats, fetchRaceResults, fetchT
 import { isEmpty, last, isNaN } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from '@/components/constructor-badge';
-import useIsMobile from '@/hooks/useIsMobile';
-import {
-	carAbbreviationMap,
-	trackDetails,
-} from '@/utils/constants';
+import useFormatTrackName from '@/hooks/useFormatTrackName';
+import useFormatConstructorName from '@/hooks/useFormatConstructorName';
+import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import {
@@ -59,7 +57,9 @@ const ConstructorStandings = ({show}) => {
 	const [sortBy, setSortBy] = useState(null);
 	const [sortedConstructorPoints, setSortedConstructorPoints] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
-	const isMobile = useIsMobile();
+	const formatTrackName = useFormatTrackName();
+	const formatConstructorName = useFormatConstructorName();
+	const graphTrackOrientation = useGraphTrackOrientation();
 
 	const { content: raceResults, loading: raceResultsLoading, fetched: raceResultsFetched, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: constructorPoints, loading: constructorPointsLoading, fetched: constructorPointsFetched, error: constructorPointsError } = useSelector(getConstructorPoints);
@@ -72,9 +72,6 @@ const ConstructorStandings = ({show}) => {
 	if (!constructorStatsFetched && !constructorStatsLoading && !constructorStatsError) dispatch(fetchConstructorStats());
 	if (!trackListFetched && !trackListLoading && !trackListError) dispatch(fetchTrackList());
 	if (!participantsFetched && !participantsLoading && !participantsError) dispatch(fetchParticipants());
-
-	const formatConstructorName = useCallback((constructor) => !isMobile ? constructor : carAbbreviationMap[constructor], [isMobile])
-	const formatTrackName = useCallback((track) => !isMobile ? track : trackDetails[track]?.abbreviation, [isMobile])
 
 	const constructors = useMemo(() => [...new Set(participants?.map(({ car }) => car))], [participants])
 
@@ -123,8 +120,6 @@ const ConstructorStandings = ({show}) => {
 		}, [])
 	, [trackList, constructorPoints, formatTrackName])
 
-	const graphTrackOrientation = useMemo(() => !isMobile ? 0 : 270, [isMobile]);
-
 	const getClassName = (header) => {
 		if (header === 'Driver') return 'constructor-standings__driver';
 		if (header === 'Car') return 'constructor-standings__car';
@@ -143,9 +138,9 @@ const ConstructorStandings = ({show}) => {
 					{sortedConstructorPoints.map(({car}) => (
 						<tr key={car}>
 							<td className={`constructor-standings__table-cell`}>
-								<div className='constructor-standings__driver-label'>
+								<TableTooltip innerHtml={car} customClass='constructor-standings__driver-label'>
 									{formatConstructorName(car)} <ConstructorBadge constructor={car} />
-								</div>
+								</TableTooltip>
 							</td>
 						</tr>
 					))}
