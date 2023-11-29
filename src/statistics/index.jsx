@@ -40,8 +40,12 @@ const Statistics = () => {
 		[archives]
 	);
 
-	const handleSelectedSeason = useDropdownInUrlParams('season', selectedSeason, onSeasonSelect, seasonDropdownOptions);
-	const handleSelectedTrack = useDropdownInUrlParams('track', selectedTrack, onTrackSelect, allTracks);
+	const handleSelection = useDropdownInUrlParams(
+		activeTabIndex === 2 ? 'track' : 'season', 
+		activeTabIndex === 2 ? selectedTrack : selectedSeason, 
+		activeTabIndex === 2 ? onTrackSelect : onSeasonSelect, 
+		activeTabIndex === 2 ? allTracks : seasonDropdownOptions
+	);
 
 	const renderDriverStatistics = useMemo(() => <DriverStatistics show={activeTabIndex === 0}/>, [activeTabIndex]);
 	const renderConstructorStatistics = useMemo(() => <ConstructorStatistics show={activeTabIndex === 1}/>, [activeTabIndex]);
@@ -58,7 +62,7 @@ const Statistics = () => {
 							isLoading={!seasonDropdownOptions.length}
 							options={seasonDropdownOptions || []}
 							value={selectedSeason}
-							onChange={handleSelectedSeason}
+							onChange={handleSelection}
 							color="#e10600"
 							required
 						/>
@@ -68,7 +72,7 @@ const Statistics = () => {
 							isLoading={!allTracks.length}
 							options={allTracks || []}
 							value={selectedTrack}
-							onChange={handleSelectedTrack}
+							onChange={handleSelection}
 							color="#e10600"
 							required
 						/>

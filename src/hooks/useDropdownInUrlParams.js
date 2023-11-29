@@ -8,12 +8,25 @@ export default function useDropdownInUrlParams(paramKey, value, onSelect, dropdo
 
 	useEffect(() => {
 		const selectedOptionLabel = searchParams.get(paramKey);
-		if (!selectedOptionLabel) return;
+		if (!selectedOptionLabel) {
+			if (value) {
+				const view = searchParams.get('view');
+				navigate({
+					search: `?${createSearchParams({
+						...view && {view},
+						[paramKey]: value,
+					})}`,
+				}, { replace: true });
+
+			} else {
+				return;
+			}
+		} 
 		const selectedOption = dropdownOptions.find(({label}) => label === selectedOptionLabel)
 		if (!selectedOption) return;
 
 		onSelect(selectedOption);
-	}, [onSelect, searchParams, dropdownOptions, paramKey]);
+	}, [onSelect, searchParams, dropdownOptions, paramKey, value, navigate]);
 
 	const handleSelectedOptions = useCallback((option) => {
 		if (option === value) return;

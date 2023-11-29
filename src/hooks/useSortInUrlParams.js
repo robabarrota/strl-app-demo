@@ -27,10 +27,12 @@ export default function useSortInUrlParams(defaultSortBy) {
 		if (!toSortBy) {
 			navigate({}, { replace: true });
 		} else {
-			const view = searchParams.get('view');
+			const existingParamEntries= Array.from(searchParams.entries());
+			const existingParams = existingParamEntries.reduce((acc, a) => ((acc[a[0]] = acc[a[0]] || []).push(a[1]), acc), {});
+
 			navigate({
 				search: `?${createSearchParams({
-					...view && {view},
+					...existingParams,
 					sortBy: toSortBy.key,
 					order: toSortBy.direction,
 				})}`,
