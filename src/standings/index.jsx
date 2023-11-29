@@ -1,6 +1,7 @@
 import './styles.scss';
-import React, {useCallback, useState, useMemo} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import Tabs from '@/components/tabs';
+import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 import DriverStandings from './driver-standings/index';
 import ConstructorStandings from './constructor-standings/index';
 
@@ -10,7 +11,7 @@ const tabs = [
 ];
 
 const Standings = () => {
-	const [activeTabIndex, setActiveTabIndex] = useState(0);
+	const [activeTabIndex, setActiveTabIndex] = useTabsInUrlParams(tabs);
 	const onChange = useCallback((index) => setActiveTabIndex(index), [setActiveTabIndex]);
 	const renderDriverStandings = useMemo(() => <DriverStandings show={activeTabIndex === 0} />, [activeTabIndex]);
 	const renderConstructorStandings = useMemo(() => <ConstructorStandings show={activeTabIndex === 1} />, [activeTabIndex]);

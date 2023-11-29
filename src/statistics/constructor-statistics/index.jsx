@@ -6,6 +6,7 @@ import { tableSortFunction, round } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatConstructorName from '@/hooks/useFormatConstructorName';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
 const defaultSortBy = {
 	key: 'total',
@@ -32,7 +33,7 @@ const ConstructorStatistics = ({show}) => {
 
 	const archiveStats = useSelector(selectedConstructorArchiveStats);
 		
-	const [sortBy, setSortBy] = useState(null);
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 	const formatConstructorName = useFormatConstructorName();
 	
 	useEffect(() => {

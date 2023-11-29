@@ -21,6 +21,7 @@ import {
 	ResponsiveContainer
 } from "recharts";
 import styled from 'styled-components';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -54,7 +55,7 @@ const ConstructorStandings = ({show}) => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
 	const [graphFilter, setGraphFilter] = useState([]);
-	const [sortBy, setSortBy] = useState(null);
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 	const [sortedConstructorPoints, setSortedConstructorPoints] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
 	const formatTrackName = useFormatTrackName();

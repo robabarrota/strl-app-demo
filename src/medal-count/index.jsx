@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getMedalCount } from '@/redux/selectors';
 import { fetchMedalCount } from '@/redux/actions';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+import { tableSortFunction } from '@/utils/utils';
 
 import {
 	BarChart,
@@ -14,30 +15,41 @@ import {
 	Tooltip as ChartTooltip,
 	ResponsiveContainer
 } from "recharts";
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const defaultSortBy = {
+	key: 'points',
+	direction: 'desc'
+}
+
+const statHeaders = [
+	{key: 'gold', label: 'Gold'},
+	{key: 'silver', label: 'Silver'},
+	{key: 'bronze', label: 'Bronze'},
+	{key: 'cup', label: 'Cup'},
+];
 
 const MedalCount = () => {
 	const dispatch = useDispatch();
+	const [sortedMedalCount, setSortedMedalCount] = useState([])
 	const { content: medalCount, loading: medalCountLoading, error: medalCountError, fetched: medalCountFetched } = useSelector(getMedalCount);
 	const formatDriverName = useFormatDriverName();
 
 	if (!medalCountFetched && !medalCountLoading && !medalCountError) dispatch(fetchMedalCount());
 
-	const [sortBy, setSortBy] = useState(null);
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 
-	const medalSortFunction = useCallback((a, b) => {
-		if ( +a[sortBy.key] < +b[sortBy.key] ){
-			return sortBy.direction === 'desc' ? -1 : 1;
-		}
-		if ( +a[sortBy.key] > +b[sortBy.key] ){
-			return sortBy.direction === 'desc' ? 1 : -1;
-		}
-		return 0;
-	}, [sortBy]);
-
-	const sortedMedalCount = useMemo(() => {
+	useEffect(() => {
 		const medalCountCopy = [...medalCount];
-		return sortBy === null ? medalCountCopy: [...medalCountCopy.sort(medalSortFunction)];
-	}, [medalCount, medalSortFunction, sortBy]);
+		if (sortBy === null) {
+			const sortedMedalCount =  [...medalCountCopy.sort((a,b) => tableSortFunction(a, b, defaultSortBy))]
+			setSortedMedalCount(sortedMedalCount);
+		}
+		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
+			const sortedMedalCount =  [...medalCountCopy.sort((a,b) => tableSortFunction(a, b, sortBy))]
+			setSortedMedalCount(sortedMedalCount);
+		} 
+	}, [medalCount, sortBy]);
 
 	const sortByKey = useCallback((key) => {
 		if (sortBy?.key === key) {
@@ -47,8 +59,8 @@ const MedalCount = () => {
 		return setSortBy({key, direction: 'desc'});
 	}, [sortBy, setSortBy]);
 
-	const getSortIcon = useCallback((track) => {
-		if (sortBy?.key !== track) return <i className="fa-solid fa-sort"></i>;
+	const getSortIcon = useCallback((key) => {
+		if (sortBy?.key !== key) return <i className="fa-solid fa-sort"></i>;
 		if (sortBy?.direction === 'desc') return <i className="fa-solid fa-sort-down"></i>;
 		if (sortBy?.direction === 'asc') return <i className="fa-solid fa-sort-up"></i>;
 	}, [sortBy]);
@@ -82,30 +94,15 @@ const MedalCount = () => {
 				<table>
 					<thead>
 						<tr>
-							<th 
-								className="medal-count__table-header medal-count__table-header--sortable" 
-								onClick={() => sortByKey('Gold')}
-							>
-								<i className="fa-solid fa-trophy medal-count__gold"></i> {getSortIcon('Gold')}
-							</th>
-							<th 
-								className="medal-count__table-header medal-count__table-header--sortable" 
-								onClick={() => sortByKey('Silver')}
-							>
-								<i className="fa-solid fa-trophy medal-count__silver"></i> {getSortIcon('Silver')}
-							</th>
-							<th 
-								className="medal-count__table-header medal-count__table-header--sortable" 
-								onClick={() => sortByKey('Bronze')}
-							>
-								<i className="fa-solid fa-trophy medal-count__bronze"></i> {getSortIcon('Bronze')}
-							</th>
-							<th 
-								className="medal-count__table-header medal-count__table-header--sortable" 
-								onClick={() => sortByKey('Cup')}
-							>
-								<i className="fa-solid fa-medal medal-count__cup"></i> {getSortIcon('Cup')}
-							</th>
+							{statHeaders.map((header) => 
+								<th
+									key={header.key}
+									className="medal-count__table-header medal-count__table-header--sortable"
+									onClick={() => sortByKey(header.key)}
+								>
+									<i className={`fa-solid fa-medal medal-count__${header.key}`}></i> {getSortIcon(header.key)}
+								</th>
+							)}
 						</tr>
 					</thead>
 					<tbody>

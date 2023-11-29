@@ -125,7 +125,7 @@ const Penalties = () => {
 					{sortedPenalties.map((row) => (
 						<tr key={row.driver}>
 							<td className={`penalties__table-cell`}>
-								<TableTooltip innerHtml={row.driver} customClass='penalties_driver-label'>
+								<TableTooltip innerHtml={row.driver} customClass='penalties__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>

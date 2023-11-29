@@ -21,6 +21,7 @@ import {
 	ResponsiveContainer
 } from "recharts";
 import styled from 'styled-components';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -55,7 +56,7 @@ const DriverStandings = ({show}) => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
 	const [graphFilter, setGraphFilter] = useState([]);
-	const [sortBy, setSortBy] = useState(null);
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 	const [sortedDriverPoints, setSortedDriverPoints] = useState([]);
 	const [sortedDriverStats, setSortedDriverStats] = useState([]);
 	const formatDriverName = useFormatDriverName();

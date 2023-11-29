@@ -4,9 +4,11 @@ import { selectedDriverArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
+// import {useSearchParams, useNavigate, createSearchParams} from 'react-router-dom';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
 const defaultSortBy = {
 	key: 'total',
@@ -33,8 +35,8 @@ const DriverStatistics = ({show}) => {
 	const formatDriverName = useFormatDriverName();
 
 	const archiveStats = useSelector(selectedDriverArchiveStats);
-		
-	const [sortBy, setSortBy] = useState(null);
+	
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 
 	useEffect(() => {
 		const statsCopy = [...archiveStats];

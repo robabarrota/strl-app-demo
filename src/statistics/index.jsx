@@ -1,5 +1,5 @@
 import './styles.scss';
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getArchives, getSelectedSeason, getDriverTrackStats, getSelectedTrack, getAllTracks } from '@/redux/selectors';
 import { fetchArchives, setSelectedSeason, fetchDriverTrackStats, setSelectedTrack } from '@/redux/actions';
@@ -8,6 +8,7 @@ import DriverStatistics from './driver-statistics/index';
 import ConstructorStatistics from './constructor-statistics';
 import DropdownSelect from '@/components/dropdown-select';
 import TrackStatistics from './track-statistics';
+import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 
 const tabs = [
 	'Driver',
@@ -17,7 +18,7 @@ const tabs = [
 
 const Statistics = () => {
 	const dispatch = useDispatch();
-	const [activeTabIndex, setActiveTabIndex] = useState(0);
+	const [activeTabIndex, setActiveTabIndex] = useTabsInUrlParams(tabs);
 	
 	const { content: archives, loading: archivesLoading, error: archivesError, fetched: archivesFetched } = useSelector(getArchives);
 	const { loading: driverTrackStatsLoading, error: driverTrackStatsError, fetched: driverTrackStatsFetched } = useSelector(getDriverTrackStats);
@@ -27,8 +28,6 @@ const Statistics = () => {
 	const { content: selectedSeason } = useSelector(getSelectedSeason);
 	const { content: selectedTrack } = useSelector(getSelectedTrack);
 	const { content: allTracks } = useSelector(getAllTracks);
-	
-	const onTabChange = useCallback((index) => setActiveTabIndex(index), [setActiveTabIndex]);
 
 	const onSeasonSelect = useCallback(({value}) => value && dispatch(setSelectedSeason(value)), [dispatch]);
 	const onTrackSelect = useCallback((value) => value && dispatch(setSelectedTrack(value)), [dispatch]);
@@ -51,7 +50,7 @@ const Statistics = () => {
 			<div className='statistics__title-container'>
 				<h1 className='statistics__title'>{tabs[activeTabIndex]} Statistics</h1>
 				<div className='statistics__filter-bar'>
-					<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={onTabChange} />
+					<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={setActiveTabIndex} />
 					{activeTabIndex < 2 && 
 						<DropdownSelect 
 							isLoading={!seasonDropdownOptions.length}
