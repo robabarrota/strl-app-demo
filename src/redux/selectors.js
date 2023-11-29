@@ -36,5 +36,5 @@ export const selectedConstructorArchiveStats = createSelector(
 export const selectedDriverTrackStats = createSelector(
     getDriverTrackStats,
     getSelectedTrack,
-    ({content: driverTrackStats}, {content: selectedTrack}) => driverTrackStats?.[selectedTrack?.value] || []
+    ({content: driverTrackStats}, {content: selectedTrack}) => driverTrackStats?.[selectedTrack] || []
 )

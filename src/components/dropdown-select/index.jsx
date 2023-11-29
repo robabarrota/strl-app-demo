@@ -1,12 +1,14 @@
+import { useMemo } from 'react';
 import './styles.scss';
 import Select from 'react-select';
 
 const DropdownSelect = ({ options, value, onChange, ...props }) => {
+    const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
     return (
         <div className="dropdown-select">
             <Select
                 options={options}
-                value={value}
+                value={selectedOption}
                 className='dropdown-select__select'
                 isSearchable={false}
                 onChange={onChange}

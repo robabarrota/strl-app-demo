@@ -9,6 +9,7 @@ import ConstructorStatistics from './constructor-statistics';
 import DropdownSelect from '@/components/dropdown-select';
 import TrackStatistics from './track-statistics';
 import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
+import useDropdownInUrlParams from '@/hooks/useDropdownInUrlParams';
 
 const tabs = [
 	'Driver',
@@ -30,16 +31,17 @@ const Statistics = () => {
 	const { content: allTracks } = useSelector(getAllTracks);
 
 	const onSeasonSelect = useCallback(({value}) => value && dispatch(setSelectedSeason(value)), [dispatch]);
-	const onTrackSelect = useCallback((value) => value && dispatch(setSelectedTrack(value)), [dispatch]);
-	
+	const onTrackSelect = useCallback(({value}) => value && dispatch(setSelectedTrack(value)), [dispatch]);
+
 	const seasonDropdownOptions = useMemo(() => 
 		archives
 			.map(({season}) => ({label: `Season ${+season}`, value: +season}))
 			.sort((a, b) => b.value - a.value),
 		[archives]
 	);
-	
-	const selectedSeasonValue = useMemo(() => seasonDropdownOptions.find(({value}) => value === selectedSeason) || seasonDropdownOptions[0], [seasonDropdownOptions, selectedSeason]);
+
+	const handleSelectedSeason = useDropdownInUrlParams('season', selectedSeason, onSeasonSelect, seasonDropdownOptions);
+	const handleSelectedTrack = useDropdownInUrlParams('track', selectedTrack, onTrackSelect, allTracks);
 
 	const renderDriverStatistics = useMemo(() => <DriverStatistics show={activeTabIndex === 0}/>, [activeTabIndex]);
 	const renderConstructorStatistics = useMemo(() => <ConstructorStatistics show={activeTabIndex === 1}/>, [activeTabIndex]);
@@ -55,8 +57,8 @@ const Statistics = () => {
 						<DropdownSelect 
 							isLoading={!seasonDropdownOptions.length}
 							options={seasonDropdownOptions || []}
-							value={selectedSeasonValue}
-							onChange={onSeasonSelect}
+							value={selectedSeason}
+							onChange={handleSelectedSeason}
 							color="#e10600"
 							required
 						/>
@@ -66,7 +68,7 @@ const Statistics = () => {
 							isLoading={!allTracks.length}
 							options={allTracks || []}
 							value={selectedTrack}
-							onChange={onTrackSelect}
+							onChange={handleSelectedTrack}
 							color="#e10600"
 							required
 						/>

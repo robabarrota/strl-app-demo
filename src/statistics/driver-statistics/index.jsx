@@ -4,7 +4,6 @@ import { selectedDriverArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
-// import {useSearchParams, useNavigate, createSearchParams} from 'react-router-dom';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';

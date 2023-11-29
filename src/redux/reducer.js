@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 	archiveStats: { loading: false, content: {}, error: null, fetched: false },
 	selectedSeason: { content: null },
 	driverTrackStats: { loading: false, content: {}, error: null, fetched: false },
-	selectedTrack: { content: {} },
+	selectedTrack: { content: null },
 	allTracks: { content: [] },
 };
 

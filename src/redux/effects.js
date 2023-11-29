@@ -402,7 +402,7 @@ const fetchDriverTrackStats = (store, action) => {
 
 				store.dispatch(
 					actions.setSelectedTrack(
-						trackList[0]
+						trackList[0]?.value
 					)
 				);
 

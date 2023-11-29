@@ -16,6 +16,8 @@ const carAbbreviationMap = {
     'Williams': 'WILL',
     'Alfa Romeo': 'ALFA',
     'Haas': 'HAAS',
+    'Racing Point': 'RP',
+    'Renault': 'REN',
 };
 
 const trackDetails = {
@@ -253,6 +255,16 @@ const carColorMap = {
         r: 182,
         g: 186,
         b: 189
+    },
+    racingPoint: {
+        r: 245,
+        g: 150,
+        b:  200
+    },
+    renault: {
+        r: 219,
+        g: 210,
+        b:  0
     },
 };
 
