@@ -24,9 +24,10 @@ const statHeaders = [
 	{key: 'averageDifference', label: 'AVG DIFF'},
 	{key: 'dNFs', label: 'DNF\'s'},
 	{key: 'fastestLaps', label: 'FASTEST'},
-	{key: 'racesMissed', label: 'DNS\'s'},
+	{key: 'finishRate', label: 'FINISH %', formatCallback: (value) => Number(value/100).toLocaleString(undefined,{style: 'percent'})},
 	{key: 'totalPenalties', label: 'PENALTIES'},
 	{key: 'penaltiesPerRace', label: 'PENALTIES PER RACE'},
+	{key: 'racesMissed', label: 'DNS\'s'},
 ];
 
 const DriverStatistics = ({show}) => {
@@ -116,7 +117,7 @@ const DriverStatistics = ({show}) => {
 										className={`driver-statistics__table-cell`}
 									>
 										<TableTooltip innerHtml={stat.label}>
-											{round(row[stat.key])}
+											{round(row[stat.key], {formatFn: stat.formatCallback})}
 										</TableTooltip>
 									</td>
 								)}

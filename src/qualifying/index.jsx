@@ -229,7 +229,7 @@ const Qualifying = () => {
 							<tr key={driverStats.driver}>
 								<td
 									className={`qualifying__table-cell`}>
-									<TableTooltip innerHtml={round(driverStats.averageQualifying, 8)} hangLeft>
+									<TableTooltip innerHtml={round(driverStats.averageQualifying, {decimalPlace: 8})} hangLeft>
 										{round(driverStats.averageQualifying)}
 									</TableTooltip>
 								</td>

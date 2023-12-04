@@ -1,10 +1,12 @@
 import { camelCase } from 'lodash';
 import { carColorMap } from './constants';
 
-const round = (number, decimalPlace = 2) => {
+const round = (number, {decimalPlace = 2, formatFn = null} = {}) => {
     const magnitude = Math.pow(10, decimalPlace);
     const result = Math.floor(+number * magnitude) / magnitude;
-    return !isNaN(result) ? result : number;
+    const cleanedResult = !isNaN(result) ? result : number;
+    const formattedResult = formatFn ? formatFn(cleanedResult) : cleanedResult;
+    return formattedResult;
 };
 
 const getCarColor = (car, isPrimaryDriver, customOpacity = null) => {

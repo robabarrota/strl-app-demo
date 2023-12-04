@@ -247,7 +247,7 @@ const RaceResults = () => {
 							<tr key={driverStats.driver}>
 								<td
 									className={`race-results__table-cell`}>
-									<TableTooltip innerHtml={round(driverStats.averageFinish, 8)} hangLeft>
+									<TableTooltip innerHtml={round(driverStats.averageFinish, {decimalPlace: 8})} hangLeft>
 										{round(driverStats.averageFinish)}
 									</TableTooltip>
 								</td>

@@ -446,7 +446,7 @@ const fetchDriverTrackStats = (store, action) => {
 								poles: polesDataStats[trackIndex],
 								totalPenalties: totalPenaltiesDataStats[trackIndex],
 								wins: winsDataStats[trackIndex],
-
+								finishRate: (1 - (totalDnfDataStats[trackIndex] / driverTotalRaceStats[trackIndex])) * 100 || 100,
 							}
 						];
 					}

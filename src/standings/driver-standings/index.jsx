@@ -227,7 +227,7 @@ const DriverStandings = ({show}) => {
 							</td>
 							<td
 								className={`driver-standings__table-cell`}>
-								<TableTooltip innerHtml={round(driverStats.averagePoints, 8)}>
+								<TableTooltip innerHtml={round(driverStats.averagePoints, {decimalPlace: 8})}>
 									{round(driverStats.averagePoints)}
 								</TableTooltip>
 							</td>

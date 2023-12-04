@@ -19,6 +19,7 @@ const statHeaders = [
 	{key: 'poles', label: 'POLES'},
 	{key: 'averageQualifying', label: 'AVG QUALIFYING'},
 	{key: 'totalDnfs', label: 'DNFS'},
+	{key: 'finishRate', label: 'FINISH %', formatCallback: (value) => Number(value/100).toLocaleString(undefined,{style: 'percent'})},
 	{key: 'fastestLaps', label: 'FASTEST LAPS'},
 	{key: 'totalPenalties', label: 'PENALTIES'},
 ];
@@ -112,7 +113,7 @@ const TrackStatistics = ({show}) => {
 										className={`track-statistics__table-cell`}
 									>
 										<TableTooltip innerHtml={stat.label}>
-											{round(row[stat.key])}
+											{round(row[stat.key], {formatFn: stat.formatCallback})}
 										</TableTooltip>
 									</td>
 								)}

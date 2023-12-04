@@ -226,7 +226,7 @@ const ConstructorStandings = ({show}) => {
 							</td>
 							<td
 								className={`constructor-standings__table-cell`}>
-								<TableTooltip innerHtml={round(constructorStats.averagePoints, 8)} hangLeft>
+								<TableTooltip innerHtml={round(constructorStats.averagePoints, {decimalPlace: 8})} hangLeft>
 									{round(constructorStats.averagePoints)}
 								</TableTooltip>
 							</td>
