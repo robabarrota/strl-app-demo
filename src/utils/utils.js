@@ -1,5 +1,5 @@
 import { camelCase } from 'lodash';
-import { carColorMap } from './constants';
+import { carColorMap, driverImageMap, defaultDriverImage } from './constants';
 
 const round = (number, {decimalPlace = 2, formatFn = null} = {}) => {
     const magnitude = Math.pow(10, decimalPlace);
@@ -76,6 +76,10 @@ const groupBy = (arr, key) => {
     return result;
 }
 
+const getDriverImage = (driverName) => {
+    return driverImageMap[driverName] || defaultDriverImage;
+}
+
 export {
     round, 
     getCarColor,
@@ -83,4 +87,5 @@ export {
     camelize,
     camelizeKeys,
     groupBy,
+    getDriverImage,
 }

@@ -9,6 +9,7 @@ import NotFound from './not-found';
 import Penalties from './penalties/index';
 import Standings from './standings/index';
 import Statistics from './statistics/index';
+import Drivers from './drivers/index';
 
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -20,6 +21,7 @@ const App = () => {
 				<div className='app__content-card'>
 					<Routes>
 						<Route path="schedule" element={<Schedule />} />
+						<Route path="drivers" element={<Drivers />} />
 						<Route path="race-results" element={<RaceResults />} />
 						<Route path="qualifying" element={<Qualifying />} />
 						<Route path="standings" element={<Standings />} />

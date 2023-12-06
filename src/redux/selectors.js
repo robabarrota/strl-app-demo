@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { camelize, getCarColor } from '@/utils/utils';
 
 const getDomainsState = state => state;
 
@@ -25,16 +26,36 @@ export const selectedDriverArchiveStats = createSelector(
     getArchiveStats,
     getSelectedSeason,
     ({content: archiveStats}, {content: selectedSeason}) => archiveStats?.[selectedSeason]?.driverData || []
-)
+);
   
 export const selectedConstructorArchiveStats = createSelector(
     getArchiveStats,
     getSelectedSeason,
     ({content: archiveStats}, {content: selectedSeason}) => archiveStats?.[selectedSeason]?.constructorData || []
-)
+);
   
 export const selectedDriverTrackStats = createSelector(
     getDriverTrackStats,
     getSelectedTrack,
     ({content: driverTrackStats}, {content: selectedTrack}) => driverTrackStats?.[selectedTrack] || []
-)
+);
+  
+export const getDriversPageData = createSelector(
+    getParticipants,
+    getDriverStats,
+    ({content: participants}, {content: driverStatsData}) => 
+        participants?.length && driverStatsData?.length ?
+            participants
+                    ?.map((driver, index) => ({...driver, ...driverStatsData?.[index]}))
+                    ?.sort((a, b) => b.total - a.total).map(driverStat => {
+                        const [firstName, ...lastName] = driverStat.driver.split(' ');
+                        const numberColour = getCarColor(camelize(driverStat.car), true) || '#e10600'
+                        return {
+                            ...driverStat,
+                            firstName,
+                            lastName,
+                            numberColour
+                        }
+                    }) : 
+            []
+);

@@ -1,0 +1,133 @@
+.drivers {
+    &__title {
+        margin-left: 18px;
+        margin-bottom: 0;
+    }
+
+    &__card-container {
+        padding: 0 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        column-gap: 20px;
+    }
+
+    &__standings-info{
+        padding-bottom: 15px;
+        border-bottom: 1px solid #949498;
+        margin-bottom: 15px;
+        padding-top: 10px;
+    }
+
+    &__top-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__points-container {
+        text-align: right;
+    }
+
+    &__points {
+        margin: 0;
+        font-family: 'F1WideRegular';
+        font-size: 18px;
+        line-height: 24px;
+    }
+
+    &__points-label {
+        margin: 0;
+        background-color: #000;
+        border-radius: 3px;
+        color: #fff;
+        margin: 0 0 0 auto;
+        padding: 1px 0 0;
+        text-align: center;
+        width: 70px;
+        text-transform: uppercase;
+        font-family: 'F1WideRegular';
+        letter-spacing: .5px;
+        line-height: 15px;
+        font-size: 12px;    
+    }
+
+    &__driver-description {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #949498;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center!important;
+
+        &--name-container {
+            padding-left: 15px;
+            text-transform: uppercase;
+            position: relative;
+            &::before {
+                background-color: #949498;
+                bottom: 5px;
+                content: '';
+                display: block;
+                left: 0;
+                position: absolute;
+                top: 2px;
+                width: 5px;
+            }
+        }
+
+        &--first-name {
+            font-family: strl-font;
+            font-size: 12px;
+            line-height: 15px;
+            letter-spacing: .5px;
+            font-weight: 400;
+            color: #15151e;
+            height: 15px;
+        }
+        
+        &--last-name {
+            font-family: 'F1BoldRegular';
+            font-size: 18px;
+            line-height: 24px;
+            height: 24px;
+        }
+        &--title {
+            font-family: strl-font;
+            font-size: 12px;
+            line-height: 15px;
+            letter-spacing: .5px;
+            font-weight: 400;
+        }
+    }
+
+    &__rank {
+        font-family: 'F1Black';
+        font-size: 42px;
+        line-height: 48px;
+        margin: 0;
+    }
+
+    &__team-label {
+        font-family: strl-font;
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: .5px;
+        font-weight: 400;
+        color: #67676d;
+    }
+
+    &__image-container {
+        height: 167px;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        padding: 0 10px;
+    }
+
+    &__driver-image {
+        display: inline-block;
+        height: 100%;
+        width: auto;
+    }
+}

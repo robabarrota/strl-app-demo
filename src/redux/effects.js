@@ -42,6 +42,8 @@ const fetchParticipants = (store, action) => {
 					driver: row['Driver'],
 					car: row['Car'],
 					isPrimary: row['Primary'] === 'TRUE',
+					number: row['Number'],
+					country: row['Country'],
 				}));
 
 				store.dispatch(
