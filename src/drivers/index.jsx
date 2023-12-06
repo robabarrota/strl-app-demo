@@ -30,11 +30,11 @@ const DriverCard = styled.fieldset`
 	}
 `;
 
-const CountryFlag = styled.fieldset`
+const CountryFlag = styled.div`
 	width: 48px;
 	border: 1px solid #949498;
 	overflow: hidden;
-	border-radius: 3px;
+	border-radius: 5px;
 	position: relative;
 	top: -2px;
 
