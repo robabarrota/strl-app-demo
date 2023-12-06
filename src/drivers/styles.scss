@@ -85,7 +85,7 @@
             color: #15151e;
             height: 15px;
         }
-        
+
         &--last-name {
             font-family: 'F1BoldRegular';
             font-size: 18px;
@@ -123,11 +123,5 @@
         align-items: end;
         justify-content: space-between;
         padding: 0 10px;
-    }
-
-    &__driver-image {
-        display: inline-block;
-        height: 100%;
-        width: auto;
     }
 }

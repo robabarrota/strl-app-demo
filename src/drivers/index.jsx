@@ -26,7 +26,7 @@ const DriverCard = styled.fieldset`
 	&:hover, &:focus, &:active {
 		padding-top: 10px;
 		margin-top: 30px;
-		border-color: rgb(54, 113, 198);
+		border-color: ${props => props.color};
 	}
 `;
 
@@ -51,6 +51,15 @@ const DriverNumber = styled.div`
 	line-height: normal;
 	font-weight: 900;
 	color: ${props => props.color};
+`;
+
+const DriverImage = styled.img`
+	display: inline-block;
+	height: 100%;
+	width: auto;
+	background: linear-gradient(#fff, 80%, ${props => props.color});
+    padding: 2px;
+    border-radius: 5px;
 `;
 
 const Drivers = () => {
@@ -80,7 +89,7 @@ const Drivers = () => {
 				<div className="drivers__card-container">
 					{driverData.map((driver, index) => {
 						return (
-							<DriverCard key={`driver-${index + 1}`}>
+							<DriverCard color={driver.numberColour} key={`driver-${index + 1}`}>
 								<div className="drivers__standings-info">
 									<div className="drivers__top-bar">
 										<p className="drivers__rank">{index + 1}</p>
@@ -108,7 +117,7 @@ const Drivers = () => {
 									<span className='drivers__team-label'>{driver.car}</span>
 									<div className="drivers__image-container">
 										<DriverNumber color={driver.numberColour}>{driver.number || 0}</DriverNumber>
-										<img className='drivers__driver-image' src={getDriverImage(driver.driver)} alt={driver.driver} />
+										<DriverImage color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
 									</div>
 								</div>
 							</DriverCard>
