@@ -47,6 +47,24 @@ const tableSortFunction = (a, b, sortBy, lowIsPriority, zeroToBottom = false) =>
     }
     return 0;
 };
+const nameSortFunction = (a, b, sortBy) => {
+    const getCorrectSortValue = (initialValue) => {
+        let sortModifier = 1;
+        sortModifier *= sortBy.direction === 'asc' ? -1 : 1;
+
+        return initialValue * sortModifier;
+    };
+    
+    const aVal = a[sortBy.key];
+    const bVal = b[sortBy.key];
+    if (aVal < bVal){
+        return getCorrectSortValue(-1);
+    }
+    if (aVal > bVal){
+        return getCorrectSortValue(1);
+    }
+    return 0;
+};
 const camelize = (str) => {
     return str ? str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
         return index === 0 ? word.toLowerCase() : word.toUpperCase();
@@ -88,4 +106,5 @@ export {
     camelizeKeys,
     groupBy,
     getDriverImage,
+    nameSortFunction,
 }
