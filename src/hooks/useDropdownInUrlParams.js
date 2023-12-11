@@ -8,9 +8,9 @@ export default function useDropdownInUrlParams(paramKey, value, onSelect, dropdo
 
 	useEffect(() => {
 		const selectedOptionLabel = searchParams.get(paramKey);
+		const view = searchParams.get('view');
 		if (!selectedOptionLabel) {
 			if (value) {
-				const view = searchParams.get('view');
 				navigate({
 					search: `?${createSearchParams({
 						...view && {view},
@@ -22,6 +22,7 @@ export default function useDropdownInUrlParams(paramKey, value, onSelect, dropdo
 				return;
 			}
 		} 
+
 		const selectedOption = dropdownOptions.find(({label}) => label === selectedOptionLabel)
 		if (!selectedOption) return;
 

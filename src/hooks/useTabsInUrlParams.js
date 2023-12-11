@@ -28,5 +28,5 @@ export default function useTabsInUrlParams(tabs) {
 		}, { replace: true });
 	}, [setActiveTabIndex, navigate, activeTabIndex, tabs]);
 
-    return [activeTabIndex, handleActiveTab];;
+    return [activeTabIndex, handleActiveTab];
 }

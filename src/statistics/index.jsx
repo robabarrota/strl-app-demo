@@ -42,12 +42,17 @@ const Statistics = () => {
 		[archives]
 	);
 
-	const handleSelection = useDropdownInUrlParams(
-		activeTabIndex === 2 ? 'track' : 'season', 
-		activeTabIndex === 2 ? selectedTrack : selectedSeason, 
-		activeTabIndex === 2 ? onTrackSelect : onSeasonSelect, 
-		activeTabIndex === 2 ? allTracks : seasonDropdownOptions
-	);
+	const dropdownParamData = useMemo(() => {
+		if (activeTabIndex === 3) {
+			return [];
+		} else if (activeTabIndex === 2) { 
+			return ['track', selectedTrack, onTrackSelect, allTracks];
+		} else {
+			return ['season', selectedSeason, onSeasonSelect, seasonDropdownOptions]
+		}
+ 	}, [activeTabIndex, selectedTrack, onTrackSelect, allTracks, onSeasonSelect, seasonDropdownOptions, selectedSeason])
+
+	const handleSelection = useDropdownInUrlParams(...dropdownParamData);
 
 	const renderDriverStatistics = useMemo(() => <DriverStatistics show={activeTabIndex === 0}/>, [activeTabIndex]);
 	const renderConstructorStatistics = useMemo(() => <ConstructorStatistics show={activeTabIndex === 1}/>, [activeTabIndex]);
