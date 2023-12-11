@@ -98,3 +98,9 @@ export const setSelectedTrack = selectedTrack => ({ type: SET_SELECTED_TRACK, pa
 
 export const SET_ALL_TRACKS = `${prefix}/SET_ALL_TRACKS`;
 export const setAllTracks = allTracks => ({ type: SET_ALL_TRACKS, payload: { allTracks: {content: allTracks} } });
+
+export const SET_HISTORICAL_DRIVER_STATS = `${prefix}/SET_HISTORICAL_DRIVER_STATS`;
+export const setHistoricalDriverStats = historicalDriverStats => ({ type: SET_HISTORICAL_DRIVER_STATS, payload: { historicalDriverStats } });
+
+export const FETCH_HISTORICAL_DRIVER_STATS = `${prefix}/FETCH_HISTORICAL_DRIVER_STATS`;
+export const fetchHistoricalDriverStats = () => ({ type: FETCH_HISTORICAL_DRIVER_STATS });

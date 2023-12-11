@@ -5,6 +5,7 @@ import { getArchives, getSelectedSeason, getDriverTrackStats, getSelectedTrack, 
 import { fetchArchives, setSelectedSeason, fetchDriverTrackStats, setSelectedTrack } from '@/redux/actions';
 import Tabs from '@/components/tabs';
 import DriverStatistics from './driver-statistics/index';
+import HistoricalStatistics from './historical-statistics/index';
 import ConstructorStatistics from './constructor-statistics';
 import DropdownSelect from '@/components/dropdown-select';
 import TrackStatistics from './track-statistics';
@@ -15,6 +16,7 @@ const tabs = [
 	'Driver',
 	'Constructor',
 	'Track',
+	'Historical'
 ];
 
 const Statistics = () => {
@@ -50,6 +52,7 @@ const Statistics = () => {
 	const renderDriverStatistics = useMemo(() => <DriverStatistics show={activeTabIndex === 0}/>, [activeTabIndex]);
 	const renderConstructorStatistics = useMemo(() => <ConstructorStatistics show={activeTabIndex === 1}/>, [activeTabIndex]);
 	const renderTrackStatistics = useMemo(() => <TrackStatistics show={activeTabIndex === 2}/>, [activeTabIndex]);
+	const renderHistoricalStatistics = useMemo(() => <HistoricalStatistics show={activeTabIndex === 3}/>, [activeTabIndex]);
 
 	return (
 		<div className="statistics">
@@ -84,6 +87,7 @@ const Statistics = () => {
 			{renderDriverStatistics}
 			{renderConstructorStatistics}
 			{renderTrackStatistics}
+			{renderHistoricalStatistics}
 		</div>
 	);
 }

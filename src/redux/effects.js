@@ -3,6 +3,7 @@ import * as actions from './actions';
 import { camelize, camelizeKeys } from '@/utils/utils';
 
 const DEFAULT_SHEET_ID = import.meta.env.VITE_MAIN_SHEET_ID;
+const reserveRegex = /^Reserve/;
 
 const fetchTrackList = (store, action) => {
 	if (action.type === actions.FETCH_TRACK_LIST) {
@@ -419,7 +420,6 @@ const fetchDriverTrackStats = (store, action) => {
 
 				const driverTrackData = {};
 
-				const reserveRegex = /^Reserve/;
 				for (let driverIndex = 0; driverIndex < formattedTotalRacesData.length; driverIndex++) {
 					const driverTotalRaceStats = Object.values(formattedTotalRacesData[driverIndex]) || [];
 					const driver = driverTotalRaceStats[0];
@@ -469,6 +469,32 @@ const fetchDriverTrackStats = (store, action) => {
 	}
 }; 
 
+const fetchHistoricalDriverStats = (store, action) => {
+	if (action.type === actions.FETCH_HISTORICAL_DRIVER_STATS) {
+		store.dispatch(actions.setHistoricalDriverStats({ loading: true }));
+		service
+			.getHistoricalDriverStats()
+			.then((response) => {
+				const data = response[0].data;
+
+				const formattedData = camelizeKeys(data)
+					.filter(({driver}) => !driver.match(reserveRegex));
+
+				store.dispatch(
+					actions.setHistoricalDriverStats({
+						loading: false,
+						content: formattedData,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setHistoricalDriverStats({ loading: false, error, fetched: true }));
+			});
+	}
+}
+
 const effects = [
 	fetchTrackList, 
 	fetchParticipants, 
@@ -486,6 +512,7 @@ const effects = [
 	fetchArchiveStats,
 	setSelectedSeason,
 	fetchDriverTrackStats,
+	fetchHistoricalDriverStats,
 ];
 
 export default effects;

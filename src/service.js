@@ -89,6 +89,11 @@ const service = {
             { id: 'Driver Track Stats - Wins' },
         ],
     }),
+
+    getHistoricalDriverStats: async() => await fetchGoogleSheetsData({
+        ...seasonSheetConfig,
+        sheetsOptions: [{ id: 'Total Driver Stats' }],
+    }),
 }
 
 export default service;
