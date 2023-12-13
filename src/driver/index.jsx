@@ -1,0 +1,240 @@
+import './styles.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import { getHistoricalDriverStats, getDriverPageData, getParticipants } from '@/redux/selectors';
+import { fetchHistoricalDriverStats, fetchParticipants } from '@/redux/actions';
+import { getDriverImage, nth } from '@/utils/utils';
+import { Link, useParams } from 'react-router-dom';
+import { trackDetails } from '@/utils/constants';
+
+const DriverImage = styled.img`
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+    padding: 2px;
+	position: relative;
+	margin: auto;
+	object-fit: contain;
+`;
+
+const Background = styled.div`
+	display: inline-block;
+	height: 100%;
+	width: 100%;
+	background: linear-gradient(to top, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.04) 100%), url('/strl-app/public/driver-background-image.png');
+    padding: 2px;
+	background-repeat: repeat;
+	background-size: 13%;
+`;
+
+const CountryFlag = styled.div`
+	width: 48px;
+	overflow: hidden;
+	border-radius: 5px;
+	position: relative;
+	top: -2px;
+
+	> img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+`;
+
+const Driver = () => {
+	const dispatch = useDispatch();
+
+	const { driverName } = useParams();
+	
+	const { loading: historicalDriverStatsLoading, fetched: historicalDriverStatsFetched, error: historicalDriverStatsError } = useSelector(getHistoricalDriverStats);
+	const { loading: participantsLoading, fetched: participantsFetched, error: participantsError } = useSelector(getParticipants);
+
+	if (!historicalDriverStatsFetched && !historicalDriverStatsLoading && !historicalDriverStatsError) dispatch(fetchHistoricalDriverStats());
+	if (!participantsFetched && !participantsLoading && !participantsError) dispatch(fetchParticipants());
+
+	const driverData = useSelector(getDriverPageData);
+
+	const isDataReady = !historicalDriverStatsLoading && !historicalDriverStatsError;
+	const driverInfo = useMemo(() => isDataReady && driverData.find((driverStat) => driverStat.driver === driverName), [driverName, driverData, isDataReady])
+
+	if (driverInfo) {
+		return (
+			<div className="driver">
+				<div className='driver__left-panel'>
+					<div className='driver__image-container'>
+						<Background />
+						<DriverImage src={getDriverImage(driverName)} alt={driverName} />
+					</div>
+					<div className='driver__details'>
+						<div className='driver__basic-details'>
+							<span className='driver__number'>{driverInfo.number || 0}</span>
+							<CountryFlag>
+								<img src={trackDetails[driverInfo.country]?.flag || trackDetails['Canada']?.flag} alt={`${driverInfo.country} flag`} />
+							</CountryFlag>
+						</div>
+						<h1 className="driver__name">{driverName}</h1>
+					</div>
+					
+				</div>
+				<div className='driver__right-panel'>
+					<div className='driver__stats-link-container'>
+
+						<Link className='driver__stats-link' to={`/statistics?view=Historical&driver=${driverName}`}>
+							View statistics
+							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+						</Link>
+
+					</div>
+					<table className='driver__advanced-details'>
+						<tbody>
+							{
+								driverInfo.country && (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												Country
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>{driverInfo.country}</td>
+									</tr>
+								)
+							}
+							{
+								driverInfo.wins > 0 ? (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												Race Wins
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>{driverInfo.wins}</td>
+									</tr>
+								) : (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												Highest race finish
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>{driverInfo.highestRaceFinish} (x{driverInfo.highestRaceFinishOccurences})</td>
+									</tr>
+								)
+							}
+							{
+								driverInfo.poles > 0 ? (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												Poles
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>{driverInfo.poles}</td>
+									</tr>
+								) : (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												Highest grid position
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>{driverInfo.highestGridPosition} (x{driverInfo.highestGridPositionOccurences})</td>
+									</tr>
+								)
+							}
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Podiums
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.podiums}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Points
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.points}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Grands Prix entered
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.totalRaces}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										World Championships
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.driversChampionships}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Constructors Championships
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.constructorsChampionships}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Season Joined
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.seasonJoined}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Seasons Raced
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{driverInfo.seasonsRaced}</td>
+							</tr>
+							{
+								driverInfo.firstWinTrack && (
+									<tr>
+										<th className='driver__advanced-details--key'>
+											<span className='driver__advanced-details--key--label'>
+												First Win
+											</span>
+										</th>
+										<td className='driver__advanced-details--value'>Season {driverInfo.firstWinSeason}, {driverInfo.firstWinTrack}</td>
+									</tr>
+								)
+							}
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Performance Ranking
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{nth(driverInfo.driverRank) || 'N/A'}</td>
+							</tr>
+							<tr>
+								<th className='driver__advanced-details--key'>
+									<span className='driver__advanced-details--key--label'>
+										Attendance Ranking
+									</span>
+								</th>
+								<td className='driver__advanced-details--value'>{nth(driverInfo.attendanceRank) || 'N/A'}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		);
+	} else {
+		return null;
+	}
+	
+}
+
+export default Driver;

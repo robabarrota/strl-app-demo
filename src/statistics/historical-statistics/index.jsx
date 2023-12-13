@@ -2,10 +2,9 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
-import ConstructorBadge from '@/components/constructor-badge';
 import { getHistoricalDriverStats } from '@/redux/selectors';
 import { fetchHistoricalDriverStats } from '@/redux/actions';
-
+import { useSearchParams } from 'react-router-dom';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
@@ -35,6 +34,9 @@ const statHeaders = [
 
 const HistoricalStatistics = ({show}) => {	
 	const dispatch = useDispatch();
+	const [searchParams] = useSearchParams();
+	const focusedDriver = searchParams.get('driver');
+
 	const [sortedHistoricalDriverStats, setSortedHistoricalDriverStats] = useState([]);
 	const formatDriverName = useFormatDriverName();
 
@@ -43,6 +45,19 @@ const HistoricalStatistics = ({show}) => {
 	if (!historicalDriverStatsFetched && !historicalDriverStatsLoading && !historicalDriverStatsError) dispatch(fetchHistoricalDriverStats());
 	
 	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
+
+	const isDataReady = !!historicalDriverStats;
+
+	const goToFocusedDriver = useCallback((driverName, element) => {
+		if (driverName === focusedDriver && element) {
+			const yOffset = -76; 
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+			window.scrollTo({top: y, behavior: 'smooth'});
+		}
+	}, [focusedDriver]);
+
+	const getFocusedDriverClass = useCallback((driverName) => driverName === focusedDriver ? "historical-statistics__focused" : '', [focusedDriver]);
 
 	useEffect(() => {
 		const statsCopy = [...historicalDriverStats];
@@ -88,10 +103,14 @@ const HistoricalStatistics = ({show}) => {
 				</thead>
 				<tbody>
 					{sortedHistoricalDriverStats.map((row) => (
-						<tr key={row.driver} >
+						<tr 
+							key={row.driver} 
+							onLoad={(el) => goToFocusedDriver(row.driver, el)}
+							className={`${getFocusedDriverClass(row.driver)}`}
+						>
 							<td className='historical-statistics__table-cell'>
 								<TableTooltip innerHtml={row.driver} customClass='historical-statistics__driver-label'>
-									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
+									{formatDriverName(row.driver)}
 								</TableTooltip>
 							</td>
 						</tr>
@@ -99,7 +118,7 @@ const HistoricalStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedHistoricalDriverStats, formatDriverName, sortByKey, getSortIcon]);
+	), [sortedHistoricalDriverStats, formatDriverName, sortByKey, getSortIcon, goToFocusedDriver, getFocusedDriverClass]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
@@ -120,7 +139,7 @@ const HistoricalStatistics = ({show}) => {
 					</thead>
 					<tbody>
 						{sortedHistoricalDriverStats.map((row) => (
-							<tr key={row.driver}>
+							<tr key={row.driver} className={`${getFocusedDriverClass(row.driver)}`}>
 								{statHeaders.map((stat, index) =>
 									<td
 										key={`${row.driver}-${index}`}
@@ -137,9 +156,7 @@ const HistoricalStatistics = ({show}) => {
 				</table>
 			</div>
 		)
-	}, [sortedHistoricalDriverStats, sortByKey, getSortIcon]);
-
-	const isDataReady = !!historicalDriverStats;
+	}, [sortedHistoricalDriverStats, sortByKey, getSortIcon, getFocusedDriverClass]);
 
 	if (isDataReady) {
 		return show && (

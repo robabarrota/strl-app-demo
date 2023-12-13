@@ -5,7 +5,7 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 export default function useTabsInUrlParams(tabs) {
     const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const [activeTabIndex, setActiveTabIndex] = useState(0);
+	const [activeTabIndex, setActiveTabIndex] = useState(null);
 
 	useEffect(() => {
 		const queryTab = searchParams.get('view');

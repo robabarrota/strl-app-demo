@@ -1,0 +1,99 @@
+.driver {
+    display: flex;
+    > div {
+        flex: 0 0 50%;
+    }
+
+    &__left-panel {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__details {
+        padding: 35px 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__basic-details {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+        margin: 0 0 15px;
+    }
+
+    &__image-container {
+        position: relative;
+        height: 452px;
+        display: flex;
+        width: 100%;
+        
+        > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    &__number {
+        font-family: 'F1BoldRegular';
+        font-size: 42px;
+        color: rgb(128, 128, 128);
+    }
+
+    &__name {
+        font-family: 'F1BoldRegular';
+        margin: 0;
+    }
+
+    &__right-panel {
+        padding: 15px 30px 0 20px;
+    }
+
+    &__stats-link-container {
+        display: flex;
+        justify-content: end;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    &__stats-link {
+        color: #FF1E00;
+        font-family: 'F1BoldRegular';
+        padding: 10px 10px 10px 0;
+        border: solid 1px #f08380;
+        border-top: 0;
+        border-left: 0;
+        border-bottom-right-radius: 10px;
+        grid-column: 2;
+        align-self: flex-end;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        &:hover {
+            color: #ff5540;
+        }
+    }
+    &__advanced-details {
+        margin: 30px 0 0;
+        & tr {
+            background: unset !important;
+        }
+        &--key {
+            padding: 4px 0 4px 10px;
+            line-height: 1.222;
+            width: 50%;
+            &--label {
+                font-family: 'F1BoldRegular';
+                color: black;
+                font-size: 18px;
+            }
+        }
+        &--value {
+            font-size: 18px;
+            font-weight: 400;
+            padding-left: 30px 
+        }
+    }
+}

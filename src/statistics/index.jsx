@@ -43,6 +43,7 @@ const Statistics = () => {
 	);
 
 	const dropdownParamData = useMemo(() => {
+		if (activeTabIndex === null) return [];
 		if (activeTabIndex === 3) {
 			return [];
 		} else if (activeTabIndex === 2) { 

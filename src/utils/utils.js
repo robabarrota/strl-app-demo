@@ -98,6 +98,8 @@ const getDriverImage = (driverName) => {
     return driverImageMap[driverName] || defaultDriverImage;
 }
 
+const nth = n => n+(n>3&&n<21?"th":n%10===1?"st":n%10===2?"nd":n%10===3?"rd":"th");
+
 export {
     round, 
     getCarColor,
@@ -107,4 +109,5 @@ export {
     groupBy,
     getDriverImage,
     nameSortFunction,
+    nth,
 }

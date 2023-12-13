@@ -7,6 +7,7 @@ import { getDriverImage } from '@/utils/utils';
 import { fetchArchives, fetchDriverStats, fetchParticipants } from '@/redux/actions';
 
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.fieldset`
 	display: flex;
@@ -57,13 +58,12 @@ const DriverImage = styled.img`
 	display: inline-block;
 	height: 100%;
 	width: auto;
-	background: linear-gradient(#fff, 80%, ${props => props.color});
     padding: 2px;
-    border-radius: 5px;
 `;
 
 const Drivers = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const { content: archives, loading: archivesLoading, error: archivesError, fetched: archivesFetched } = useSelector(getArchives);
 	const { loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);
@@ -89,7 +89,11 @@ const Drivers = () => {
 				<div className="drivers__card-container">
 					{driverData.map((driver, index) => {
 						return (
-							<DriverCard color={driver.numberColour} key={`driver-${index + 1}`}>
+							<DriverCard 
+								color={driver.numberColour} 
+								key={`driver-${index + 1}`} 
+								onClick={() => navigate(`/driver/${driver.driver}`)}
+							>
 								<div className="drivers__standings-info">
 									<div className="drivers__top-bar">
 										<p className="drivers__rank">{index + 1}</p>

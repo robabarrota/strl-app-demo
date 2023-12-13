@@ -23,19 +23,21 @@ export default function useSortInUrlParams(defaultSortBy) {
 		if (toSortBy?.key === sortBy?.key && toSortBy?.direction === sortBy?.direction) return;
 		
 		setSortBy(toSortBy);
+		const existingParamEntries= Array.from(searchParams.entries());
+		const existingParams = existingParamEntries.reduce((acc, a) => ((acc[a[0]] = acc[a[0]] || []).push(a[1]), acc), {});
 
 		if (!toSortBy) {
 			const view = searchParams.get('view');
 
+			delete existingParams.sortBy;
+			delete existingParams.order;
 			navigate({
 				search: `?${createSearchParams({
+					...existingParams,
 					...view && {view}
 				})}`,
 			}, { replace: true });
 		} else {
-			const existingParamEntries= Array.from(searchParams.entries());
-			const existingParams = existingParamEntries.reduce((acc, a) => ((acc[a[0]] = acc[a[0]] || []).push(a[1]), acc), {});
-
 			navigate({
 				search: `?${createSearchParams({
 					...existingParams,

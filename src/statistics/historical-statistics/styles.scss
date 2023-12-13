@@ -100,4 +100,12 @@
             display: block;
         }
     }
+    
+    &__focused {
+        background: #ffeaea !important;
+        & * {
+            font-weight: 600;
+            color: black;
+        }
+    }
 }

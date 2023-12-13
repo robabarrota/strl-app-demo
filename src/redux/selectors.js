@@ -61,3 +61,21 @@ export const getDriversPageData = createSelector(
                     }) : 
             []
 );
+
+export const getDriverPageData = createSelector(
+    getParticipants,
+    getHistoricalDriverStats,
+    ({content: participants}, {content: driverHistoricalStatsData}) => {
+        if (participants?.length && driverHistoricalStatsData?.length) {
+            const driverStatMap = new Map();
+            for (const driverStat of driverHistoricalStatsData) {
+                driverStatMap.set(driverStat.driver, driverStat);
+            }
+            return participants
+                ?.map((driver) => ({...driver, ...driverStatMap.get(driver.driver)}))
+        } else {
+            return [];
+        }
+    }
+);
+
