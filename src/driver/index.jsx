@@ -7,6 +7,7 @@ import { fetchHistoricalDriverStats, fetchParticipants } from '@/redux/actions';
 import { getDriverImage, nth } from '@/utils/utils';
 import { Link, useParams } from 'react-router-dom';
 import { trackDetails } from '@/utils/constants';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const DriverImage = styled.img`
 	display: inline-block;
@@ -29,21 +30,40 @@ const Background = styled.div`
 `;
 
 const CountryFlag = styled.div`
-	width: 48px;
 	overflow: hidden;
 	border-radius: 5px;
 	position: relative;
-	top: -2px;
-
+	${props => props.isMobile ? 
+			`top: 2px;
+			width: 30px;
+			height: 100%;` :
+			`top: -2px;
+			width: 48px;`
+	}
+	
 	> img {
 		width: 100%;
-		height: auto;
 		display: block;
+		${props => props.isMobile ? 
+			`height: 100%;` :
+			`height: auto;`
+		}
 	}
 `;
 
+const DetailsPanel = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
+const AdvancedDetailsPanel = styled.div`
+	padding: 15px 30px 0 20px;
+	${props => props.isMobile && `border-top: 1px solid #b0b0b0;`}
+`
+
 const Driver = () => {
 	const dispatch = useDispatch();
+	const isMobile = useIsMobile();
 
 	const { driverName } = useParams();
 	
@@ -61,7 +81,7 @@ const Driver = () => {
 	if (driverInfo) {
 		return (
 			<div className="driver">
-				<div className='driver__left-panel'>
+				<DetailsPanel>
 					<div className='driver__image-container'>
 						<Background />
 						<DriverImage src={getDriverImage(driverName)} alt={driverName} />
@@ -69,15 +89,15 @@ const Driver = () => {
 					<div className='driver__details'>
 						<div className='driver__basic-details'>
 							<span className='driver__number'>{driverInfo.number || 0}</span>
-							<CountryFlag>
+							<CountryFlag isMobile={isMobile}>
 								<img src={trackDetails[driverInfo.country]?.flag || trackDetails['Canada']?.flag} alt={`${driverInfo.country} flag`} />
 							</CountryFlag>
 						</div>
 						<h1 className="driver__name">{driverName}</h1>
 					</div>
 					
-				</div>
-				<div className='driver__right-panel'>
+				</DetailsPanel>
+				<AdvancedDetailsPanel isMobile={isMobile}>
 					<div className='driver__stats-link-container'>
 
 						<Link className='driver__stats-link' to={`/statistics?view=Historical&driver=${driverName}`}>
@@ -228,7 +248,7 @@ const Driver = () => {
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</AdvancedDetailsPanel>
 			</div>
 		);
 	} else {
