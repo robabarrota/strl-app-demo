@@ -31,7 +31,7 @@ const router = createHashRouter([
 				element: <Driver />,
 			},
 			{
-				path: "race",
+				path: "race-results",
 				element: <RaceResults />,
 			},
 			{

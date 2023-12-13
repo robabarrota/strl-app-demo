@@ -82,7 +82,7 @@ const Driver = () => {
 
 						<Link className='driver__stats-link' to={`/statistics?view=Historical&driver=${driverName}`}>
 							View statistics
-							<i className={"fa-solid fa-chevron-right header__chevron"}></i>
+							<i className={"fa-solid fa-chevron-right driver__chevron"}></i>
 						</Link>
 
 					</div>
