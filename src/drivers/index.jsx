@@ -7,7 +7,7 @@ import { getDriverImage } from '@/utils/utils';
 import { fetchArchives, fetchDriverStats, fetchParticipants } from '@/redux/actions';
 
 import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled.fieldset`
 	display: flex;
@@ -63,7 +63,6 @@ const DriverImage = styled.img`
 
 const Drivers = () => {
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 
 	const { content: archives, loading: archivesLoading, error: archivesError, fetched: archivesFetched } = useSelector(getArchives);
 	const { loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);
