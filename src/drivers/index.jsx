@@ -7,14 +7,14 @@ import { getDriverImage } from '@/utils/utils';
 import { fetchArchives, fetchDriverStats, fetchParticipants } from '@/redux/actions';
 
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.fieldset`
 	display: flex;
 	justify-content: space-between;
 `;
 
-const DriverCard = styled.fieldset`
+const DriverCard = styled(Link)`
 	border-top: solid 2px #000;
 	border-right: solid 2px #000;
 	border-top-right-radius: 10px;
@@ -92,7 +92,7 @@ const Drivers = () => {
 							<DriverCard 
 								color={driver.numberColour} 
 								key={`driver-${index + 1}`} 
-								onClick={() => navigate(`/driver/${driver.driver}`)}
+								to={`/driver/${driver.driver}`}
 							>
 								<div className="drivers__standings-info">
 									<div className="drivers__top-bar">

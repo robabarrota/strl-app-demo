@@ -12,33 +12,80 @@ import Statistics from './statistics/index';
 import Drivers from './drivers/index';
 import Driver from './driver/index';
 
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet } from 'react-router-dom';
 
-const App = () => {
+const router = createHashRouter([
+	{
+		element: <Layout />,
+		children: [
+			{
+				path: "schedule",
+				element: <Schedule />,
+			},
+			{
+				path: "drivers",
+				element: <Drivers />,
+			},
+			{
+				path: "driver/:driverName",
+				element: <Driver />,
+			},
+			{
+				path: "race",
+				element: <RaceResults />,
+			},
+			{
+				path: "qualifying",
+				element: <Qualifying />,
+			},
+			{
+				path: "standings",
+				element: <Standings />,
+			},
+			{
+				path: "medal",
+				element: <MedalCount />,
+			},
+			{
+				path: "statistics",
+				element: <Statistics />,
+			},
+			{
+				path: "highlights",
+				element: <Highlights />,
+			},
+			{
+				path: "penalties",
+				element: <Penalties />,
+			},
+			{
+				path: "/",
+				element: <Navigate replace to="/race-results" />,
+			},
+			{
+				path: "*",
+				element: <NotFound />,
+			},
+		]
+	},
+	
+]);
+
+function Layout() {
 	return (
-		<HashRouter baseline='/'>
+		<>
 			<Header />
 			<div className="app">
 				<div className='app__content-card'>
-					<Routes>
-						<Route path="schedule" element={<Schedule />} />
-						<Route path="drivers" element={<Drivers />} />
-						<Route path="driver/:driverName" element={<Driver />} />
-						<Route path="race-results" element={<RaceResults />} />
-						<Route path="qualifying" element={<Qualifying />} />
-						<Route path="standings" element={<Standings />} />
-						<Route path="medal-count" element={<MedalCount />} />
-						<Route path="statistics" element={<Statistics />} />
-						<Route path="highlights" element={<Highlights />} />
-						<Route path="penalties" element={<Penalties />} />
-						<Route exact path="/" element={<Navigate replace to="/race-results" />}/>
-						<Route path="*" element={<NotFound />} />
-					</Routes>
+					<Outlet />
 				</div>
 			</div>
-
-		</HashRouter>
+			<ScrollRestoration />
+		</>
 	);
+  }
+const App = () => {
+	return <RouterProvider router={router} />
 };
 
 export default App;
