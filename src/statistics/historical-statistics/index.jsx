@@ -105,7 +105,7 @@ const HistoricalStatistics = ({show}) => {
 					{sortedHistoricalDriverStats.map((row) => (
 						<tr 
 							key={row.driver} 
-							onLoad={(el) => goToFocusedDriver(row.driver, el)}
+							ref={(el) => goToFocusedDriver(row.driver, el)}
 							className={`${getFocusedDriverClass(row.driver)}`}
 						>
 							<td className='historical-statistics__table-cell'>
