@@ -45,10 +45,10 @@ const MedalCount = () => {
 			const sortedMedalCount =  [...medalCountCopy.sort((a,b) => tableSortFunction(a, b, defaultSortBy))]
 			setSortedMedalCount(sortedMedalCount);
 		}
-		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
-			const sortedMedalCount =  [...medalCountCopy.sort((a,b) => tableSortFunction(a, b, sortBy))]
-			setSortedMedalCount(sortedMedalCount);
-		} 
+		else {
+			const sortedRaceResults = [...medalCountCopy.sort((a, b) => tableSortFunction(a, b, sortBy))];
+			setSortedMedalCount(sortedRaceResults);
+		}
 	}, [medalCount, sortBy]);
 
 	const sortByKey = useCallback((key) => {
@@ -127,9 +127,9 @@ const MedalCount = () => {
 					<tr>
 						<th 
 							className="medal-count__table-header medal-count__table-header--sortable" 
-							onClick={() => sortByKey('Points')}
+							onClick={() => sortByKey('points')}
 						>
-							Points {getSortIcon('Points')}
+							Points {getSortIcon('points')}
 						</th>
 					</tr>
 				</thead>
