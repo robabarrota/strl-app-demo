@@ -155,7 +155,7 @@ const Driver = () => {
 									<tr>
 										<th className='driver__advanced-details--key'>
 											<span className='driver__advanced-details--key--label'>
-												Highest grid position
+												Highest qualifying position
 											</span>
 										</th>
 										<td className='driver__advanced-details--value'>{driverInfo.highestGridPosition} (x{driverInfo.highestGridPositionOccurences})</td>
