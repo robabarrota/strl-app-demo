@@ -43,7 +43,7 @@ const router = createHashRouter([
 				element: <Standings />,
 			},
 			{
-				path: "medal",
+				path: "medal-count",
 				element: <MedalCount />,
 			},
 			{
