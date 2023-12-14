@@ -11,25 +11,28 @@ import DropdownSelect from '@/components/dropdown-select';
 import TrackStatistics from './track-statistics';
 import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 import useDropdownInUrlParams from '@/hooks/useDropdownInUrlParams';
-import useIsMobile from '@/hooks/useIsMobile';
 
 const tabs = [
-	'Driver',
-	'Constructor',
-	'Track',
-	'Historical'
-];
-
-const iconTabs = [
-	'/strl-app/driver-icon.png',
-	'/strl-app/constructor-icon.png',
-	'/strl-app/track-icon.png',
-	'/strl-app/global-icon.png',
+	{
+		label: 'Driver',
+		icon: '/strl-app/driver-icon.png',
+	},
+	{
+		label: 'Constructor',
+		icon: '/strl-app/constructor-icon.png',
+	},
+	{
+		label: 'Track',
+		icon: '/strl-app/track-icon.png',
+	},
+	{
+		label: 'Historical',
+		icon: '/strl-app/global-icon.png',
+	},
 ];
 
 const Statistics = () => {
 	const dispatch = useDispatch();
-	const isMobile = useIsMobile();
 	const [activeTabIndex, setActiveTabIndex] = useTabsInUrlParams(tabs);
 	
 	const { content: archives, loading: archivesLoading, error: archivesError, fetched: archivesFetched } = useSelector(getArchives);
@@ -69,14 +72,12 @@ const Statistics = () => {
 	const renderTrackStatistics = useMemo(() => <TrackStatistics show={activeTabIndex === 2}/>, [activeTabIndex]);
 	const renderHistoricalStatistics = useMemo(() => <HistoricalStatistics show={activeTabIndex === 3}/>, [activeTabIndex]);
 
-	const displayTabs = useMemo(() => isMobile ? iconTabs : tabs, [isMobile]);
-
 	return (
 		<div className="statistics">
 			<div className='statistics__title-container'>
-				<h1 className='statistics__title'>{tabs[activeTabIndex]} Statistics</h1>
+				<h1 className='statistics__title'>{tabs[activeTabIndex]?.label} Statistics</h1>
 				<div className='statistics__filter-bar'>
-					<Tabs tabs={displayTabs} activeTabIndex={activeTabIndex} onChange={setActiveTabIndex} useIcons={isMobile} />
+					<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={setActiveTabIndex} />
 					{activeTabIndex < 2 && 
 						<DropdownSelect 
 							isLoading={!seasonDropdownOptions.length}

@@ -6,8 +6,14 @@ import DriverStandings from './driver-standings/index';
 import ConstructorStandings from './constructor-standings/index';
 
 const tabs = [
-	'Driver',
-	'Constructor',
+	{
+		label: 'Driver',
+		icon: '/strl-app/driver-icon.png',
+	},
+	{
+		label: 'Constructor',
+		icon: '/strl-app/constructor-icon.png',
+	},
 ];
 
 const Standings = () => {
@@ -19,7 +25,7 @@ const Standings = () => {
 	return (
 		<div className="standings">
 			<div className='standings__title-container'>
-				<h1 className='standings__title'>{tabs[activeTabIndex]} Standings</h1>
+				<h1 className='standings__title'>{tabs[activeTabIndex]?.label} Standings</h1>
 				<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={onChange} />
 			</div>
 
