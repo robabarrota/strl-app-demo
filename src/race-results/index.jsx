@@ -8,7 +8,7 @@ import ConstructorBadge from '@/components/constructor-badge';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
-import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
+import { round, getCarColor, tableSortFunction, nameSortFunction, cb } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
@@ -24,6 +24,9 @@ import {
 	ResponsiveContainer
 } from "recharts";
 import styled from 'styled-components';
+
+const blockName = 'race-results';
+const bem = cb(blockName);
 
 const statHeaders = [
 	{key: 'averageFinish', label: 'AVG'},
@@ -146,9 +149,9 @@ const RaceResults = () => {
 	, [trackList, raceResults, formatTrackName])
 
 	const getClassName = (header) => {
-		if (header === 'Driver') return 'race-results__driver';
-		if (header === 'Car') return 'race-results__car';
-		return 'race-results__track'
+		if (header === 'Driver') return bem('driver');
+		if (header === 'Car') return bem('car');
+		return bem('track');
 	}
 
 	const sortByKey = useCallback((key) => {
@@ -166,12 +169,12 @@ const RaceResults = () => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="race-results__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="race-results__table-header  driver-standings__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -181,8 +184,8 @@ const RaceResults = () => {
 				<tbody>
 					{sortedRaceResults.map((row) => (
 						<tr key={row.driver}>
-							<td className={`race-results__table-cell`}>
-								<TableTooltip innerHtml={row.driver} customClass='race-results__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>
@@ -195,17 +198,17 @@ const RaceResults = () => {
 
 	const renderResultsSubTable = useMemo(() => {
 		const fastestLapClass = (driverName, track) => {
-			if (fastestLaps[track] === driverName && fastestLaps[track] !== undefined) return 'race-results__fastest';
+			if (fastestLaps[track] === driverName && fastestLaps[track] !== undefined) return bem('fastest');
 		};
 		return (
-			<div className="race-results__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{trackList.map(track => 
 								<th 
 									key={track.key} 
-									className="race-results__table-header race-results__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 									onClick={() => sortByKey(track.key)}
 								>
 									{formatTrackName(track.label)} {getSortIcon(track.key)}
@@ -219,7 +222,7 @@ const RaceResults = () => {
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`race-results__table-cell ${getClassName(track.key)} ${fastestLapClass(row.driver, track.key)}`}>
+										className={`${bem('table-cell')} ${getClassName(track.key)} ${fastestLapClass(row.driver, track.key)}`}>
 											<TableTooltip innerHtml={track.label}>
 												{row[track.key]}
 											</TableTooltip>
@@ -234,8 +237,11 @@ const RaceResults = () => {
 	}, [trackList, formatTrackName, sortedRaceResults, fastestLaps, sortByKey, getSortIcon]);
 
 	const renderStatsSubTable = useMemo(() => (
-		<div className="race-results__end-subtable-container--right">
-			<div className={`race-results__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(!showStats)}>
+		<div className={bem('end-subtable-container', 'right')}>
+			<div 
+				className={`${bem('toggle-stats')} ${showStats ? 'show' : ''}`} 
+				onClick={() => setShowStats(!showStats)}
+			>
 				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 			</div>
@@ -246,7 +252,7 @@ const RaceResults = () => {
 							{statHeaders.map((header) => 
 								<th
 									key={header.key}
-									className="race-results__table-header race-results__table-header--sortable"
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 									onClick={() => sortByKey(header.key)}
 								>
 									{header.label} {getSortIcon(header.key)}
@@ -258,17 +264,17 @@ const RaceResults = () => {
 						{sortedStats.map((driverStats) => (
 							<tr key={driverStats.driver}>
 								<td
-									className={`race-results__table-cell`}>
+									className={bem('table-cell')}>
 									<TableTooltip innerHtml={round(driverStats.averageFinish, {decimalPlace: 8})} hangLeft>
 										{round(driverStats.averageFinish)}
 									</TableTooltip>
 								</td>
 								<td
-									className={`race-results__table-cell`}>
+									className={bem('table-cell')}>
 									{driverStats.racesMissed}
 								</td>
 								<td
-									className={`race-results__table-cell`}>
+									className={bem('table-cell')}>
 									{driverStats.fastestLaps}
 								</td>
 							</tr>
@@ -346,17 +352,17 @@ const RaceResults = () => {
 	);
 
 	return (
-		<div className="race-results">
-			<h1 className='race-results__title'>Race Results</h1>
+		<div className={blockName}>
+			<h1 className={bem('title')}>Race Results</h1>
 
 			{isDataReady && (
 				<>
-					<div className="race-results__table-container">
+					<div className={bem('table-container')}>
 						{renderDriverSubTable}
 						{renderResultsSubTable}
 						{renderStatsSubTable}
 					</div>
-					<div className='race-results__graph-container'>
+					<div className={bem('graph-container')}>
 						{renderGraph()}
 					</div>
 				</>

@@ -1,6 +1,27 @@
 import { camelCase } from 'lodash';
 import { carColorMap, driverImageMap, defaultDriverImage } from './constants';
 
+const cb = block => {
+    const bem = (element = '', modifiers = '') => {
+        let className = block;
+        if (element) {
+            className += `__${element}`;
+        }
+        
+        if (modifiers) {
+            if (Array.isArray(modifiers)) {
+                className += modifiers.map(modifier => `--${modifier}`).join(' ');
+            } else {
+                className += `--${modifiers}`;
+            }
+        }
+        
+          return className;
+    };
+
+    return bem
+}
+
 const round = (number, {decimalPlace = 2, formatFn = null} = {}) => {
     const magnitude = Math.pow(10, decimalPlace);
     const result = Math.floor(+number * magnitude) / magnitude;
@@ -110,4 +131,5 @@ export {
     getDriverImage,
     nameSortFunction,
     nth,
+    cb,
 }
