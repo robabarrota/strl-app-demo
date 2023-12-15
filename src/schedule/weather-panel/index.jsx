@@ -101,11 +101,11 @@ const WeatherPanel = ({trackInfo}) => {
                 <WeatherRow>
                     <WeatherItem $isMobile={isMobile} $isFirst={true}>
                         <WeatherLabel>{trackInfo?.q1Weather || 'TBD'}</WeatherLabel>
-                        <WeatherIcon transitioning={!weatherIconMap[trackInfo?.q1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q1Weather] || tbdWeatherIcon.src}/>
+                        <WeatherIcon $transitioning={!weatherIconMap[trackInfo?.q1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q1Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                     <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.q2Weather || 'TBD'}</WeatherLabel>
-                        <WeatherIcon transitioning={!weatherIconMap[trackInfo?.q2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q2Weather] || tbdWeatherIcon.src}/>
+                        <WeatherIcon $transitioning={!weatherIconMap[trackInfo?.q2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q2Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                 </WeatherRow>
             </Stint>
@@ -114,15 +114,15 @@ const WeatherPanel = ({trackInfo}) => {
                 <WeatherRow>
                     <WeatherItem $isMobile={isMobile} $isFirst={true}>
                         <WeatherLabel>{trackInfo?.r1Weather || 'TBD'}</WeatherLabel>
-                        <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r1Weather] || tbdWeatherIcon.src}/>
+                        <WeatherIcon $transitioning={!weatherIconMap[trackInfo?.r1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r1Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                     <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.r2Weather || 'TBD'}</WeatherLabel>
-                        <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r2Weather] || tbdWeatherIcon.src}/>
+                        <WeatherIcon $transitioning={!weatherIconMap[trackInfo?.r2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r2Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                     <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.r3Weather || 'TBD'}</WeatherLabel>
-                        <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r3Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r3Weather] || tbdWeatherIcon.src}/>
+                        <WeatherIcon $transitioning={!weatherIconMap[trackInfo?.r3Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r3Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                 </WeatherRow>
             </Stint>

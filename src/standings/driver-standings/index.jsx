@@ -8,7 +8,7 @@ import ConstructorBadge from '@/components/constructor-badge';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
-import { round, getCarColor, tableSortFunction } from '@/utils/utils';
+import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import {
 	LineChart,
@@ -90,6 +90,11 @@ const DriverStandings = ({show}) => {
 				setSortedDriverStats(sortedStats);
 				const sortedDrivers = sortedStats.map(stat => stat.driver);
 				setSortedDriverPoints([...driverPointsCopy.sort((a, b) => sortedDrivers.indexOf(a.driver) - sortedDrivers.indexOf(b.driver))]);
+			}  else if(sortBy.key === 'driver'){
+				const sortedStats =  [...statsCopy.sort((a,b) => nameSortFunction(a, b, sortBy))]
+				setSortedDriverStats(sortedStats);
+				const sortedDrivers = sortedStats.map(stat => stat.driver);
+				setSortedDriverPoints([...driverPointsCopy.sort((a, b) => sortedDrivers.indexOf(a.driver) - sortedDrivers.indexOf(b.driver))]);
 			} else {
 				const sortedDriverPoints = [...driverPointsCopy.sort((a,b) => tableSortFunction(a, b, sortBy))];
 				setSortedDriverPoints(sortedDriverPoints);
@@ -128,12 +133,31 @@ const DriverStandings = ({show}) => {
 		return 'driver-standings__track'
 	};
 
+	const sortByKey = useCallback((key) => {
+		if (sortBy?.key === key) {
+			if (sortBy.direction === 'desc') return setSortBy({key, direction: 'asc'});
+			if (sortBy.direction === 'asc') return setSortBy(null);
+		}
+		return setSortBy({key, direction: 'desc'});
+	}, [sortBy, setSortBy]);
+
+	const getSortIcon = useCallback((track) => {
+		if (sortBy?.key !== track) return <i className="fa-solid fa-sort"></i>;
+		if (sortBy?.direction === 'desc') return <i className="fa-solid fa-sort-down"></i>;
+		if (sortBy?.direction === 'asc') return <i className="fa-solid fa-sort-up"></i>;
+	}, [sortBy]);
+
 	const renderDriverSubTable = useMemo(() => (
 		<div className="driver-standings__end-subtable-container--left">
 			<table>
 				<thead>
 					<tr>
-						<th className="driver-standings__table-header">Driver</th>
+						<th 
+							className="driver-standings__table-header driver-standings__table-header--sortable"
+							onClick={() => sortByKey('driver')}
+						>
+							Driver {getSortIcon('driver')}
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -149,21 +173,7 @@ const DriverStandings = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedDriverPoints, formatDriverName]);
-
-	const sortByKey = useCallback((key) => {
-		if (sortBy?.key === key) {
-			if (sortBy.direction === 'desc') return setSortBy({key, direction: 'asc'});
-			if (sortBy.direction === 'asc') return setSortBy(null);
-		}
-		return setSortBy({key, direction: 'desc'});
-	}, [sortBy, setSortBy]);
-
-	const getSortIcon = useCallback((track) => {
-		if (sortBy?.key !== track) return <i className="fa-solid fa-sort"></i>;
-		if (sortBy?.direction === 'desc') return <i className="fa-solid fa-sort-down"></i>;
-		if (sortBy?.direction === 'asc') return <i className="fa-solid fa-sort-up"></i>;
-	}, [sortBy]);
+	), [sortedDriverPoints, formatDriverName, sortByKey, getSortIcon]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (

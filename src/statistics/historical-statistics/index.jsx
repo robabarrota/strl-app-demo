@@ -94,7 +94,7 @@ const HistoricalStatistics = ({show}) => {
 				<thead>
 					<tr>
 						<th 
-							className="historical-statistics__table-header"
+							className="historical-statistics__table-header historical-statistics__table-header--sortable"
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}

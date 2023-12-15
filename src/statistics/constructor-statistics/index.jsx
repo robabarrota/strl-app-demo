@@ -2,7 +2,7 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedConstructorArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatConstructorName from '@/hooks/useFormatConstructorName';
@@ -45,6 +45,9 @@ const ConstructorStatistics = ({show}) => {
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish', 'averageQualifying']))];
 			setSortedArchiveStats(sortedStats);
+		} else if(sortBy.key === 'car'){
+			const sortedStats =  [...statsCopy.sort((a, b) => nameSortFunction(a, b, sortBy))];
+			setSortedArchiveStats(sortedStats);
 		}
 	}, [archiveStats, sortBy]);
 
@@ -68,9 +71,10 @@ const ConstructorStatistics = ({show}) => {
 				<thead>
 					<tr>
 						<th 
-							className="constructor-statistics__table-header"
+							className="constructor-statistics__table-header constructor-statistics__table-header--sortable"
+							onClick={() => sortByKey('car')}
 						>
-							Constructor
+							Constructor {getSortIcon('car')}
 						</th>
 					</tr>
 				</thead>
@@ -87,7 +91,7 @@ const ConstructorStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedArchiveStats, formatConstructorName]);
+	), [sortedArchiveStats, formatConstructorName, sortByKey, getSortIcon]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (

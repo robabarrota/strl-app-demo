@@ -2,7 +2,7 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedDriverTrackStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
@@ -43,6 +43,9 @@ const TrackStatistics = ({show}) => {
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, reverseOrderStatKeys, reverseOrderStatKeys.includes(sortBy.key)))];
 			setSortedTrackStats(sortedStats);
+		} else if(sortBy.key === 'driver'){
+			const sortedStats =  [...statsCopy.sort((a, b) => nameSortFunction(a, b, sortBy))];
+			setSortedTrackStats(sortedStats);
 		}
 	}, [driverStats, sortBy]);
 
@@ -66,9 +69,10 @@ const TrackStatistics = ({show}) => {
 				<thead>
 					<tr>
 						<th 
-							className="track-statistics__table-header"
+							className="track-statistics__table-header track-statistics__table-header"
+							onClick={() => sortByKey('driver')}
 						>
-							Driver
+							Driver {getSortIcon('driver')}
 						</th>
 					</tr>
 				</thead>
@@ -85,7 +89,7 @@ const TrackStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedTrackStats, formatDriverName]);
+	), [sortedTrackStats, formatDriverName, sortByKey, getSortIcon]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (

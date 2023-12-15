@@ -2,7 +2,7 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedDriverArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
@@ -47,6 +47,9 @@ const DriverStatistics = ({show}) => {
 		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
 			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish', 'averageQualifying']))];
 			setSortedArchiveStats(sortedStats);
+		} else if(sortBy.key === 'driver'){
+			const sortedStats =  [...statsCopy.sort((a, b) => nameSortFunction(a, b, sortBy))];
+			setSortedArchiveStats(sortedStats);
 		}
 	}, [archiveStats, sortBy]);
 
@@ -70,9 +73,10 @@ const DriverStatistics = ({show}) => {
 				<thead>
 					<tr>
 						<th 
-							className="driver-statistics__table-header"
+							className="driver-statistics__table-header driver-statistics__table-header--sortable"
+							onClick={() => sortByKey('driver')}
 						>
-							Driver
+							Driver {getSortIcon('driver')}
 						</th>
 					</tr>
 				</thead>
@@ -89,7 +93,7 @@ const DriverStatistics = ({show}) => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedArchiveStats, formatDriverName]);
+	), [sortedArchiveStats, formatDriverName, sortByKey, getSortIcon]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (

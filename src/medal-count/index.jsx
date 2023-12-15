@@ -4,7 +4,7 @@ import { getMedalCount } from '@/redux/selectors';
 import { fetchMedalCount } from '@/redux/actions';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import { tableSortFunction } from '@/utils/utils';
+import { tableSortFunction, nameSortFunction } from '@/utils/utils';
 
 import {
 	BarChart,
@@ -44,6 +44,9 @@ const MedalCount = () => {
 		if (sortBy === null) {
 			const sortedMedalCount =  [...medalCountCopy.sort((a,b) => tableSortFunction(a, b, defaultSortBy))]
 			setSortedMedalCount(sortedMedalCount);
+		}  else if(sortBy.key === 'driver'){
+			const sortedRaceResults = [...medalCountCopy.sort((a, b) =>  nameSortFunction(a, b, sortBy))];
+			setSortedMedalCount(sortedRaceResults);
 		}
 		else {
 			const sortedRaceResults = [...medalCountCopy.sort((a, b) => tableSortFunction(a, b, sortBy))];
@@ -71,9 +74,11 @@ const MedalCount = () => {
 				<thead>
 					<tr>
 						<th 
-							className="medal-count__table-header"
+							className="medal-count__table-header medal-count__table-header--sortable"
+							onClick={() => sortByKey('driver')}
 						>
-							Driver
+							Driver {getSortIcon('driver')}
+
 						</th>
 					</tr>
 				</thead>
@@ -86,7 +91,7 @@ const MedalCount = () => {
 				</tbody>
 			</table>
 		</div>
-	), [sortedMedalCount]);
+	), [sortedMedalCount, sortByKey, getSortIcon]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
