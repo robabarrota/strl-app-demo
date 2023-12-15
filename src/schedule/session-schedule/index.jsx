@@ -23,7 +23,7 @@ const SessionItem = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 5px;
-    ${props => props.isPractice ? `
+    ${props => props.$isPractice ? `
         padding-bottom: 5px;
         border-bottom: 2px solid #38383f;
         margin-bottom: 5px;
@@ -34,7 +34,7 @@ const SessionSchedule = () => {
     return (
         <div className="session-schedule">
             <SessionList>
-                <SessionItem isPractice>
+                <SessionItem $isPractice={true}>
                     <div className="session-schedule__name">Practice</div>
                     <div className="session-schedule__day">Wed</div>
                     <div className="session-schedule__time">20:30</div>

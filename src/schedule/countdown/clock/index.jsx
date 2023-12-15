@@ -19,7 +19,7 @@ const Seconds = styled.div`
     height: 100%;
     width: 100%;
     position: absolute;
-    transform: rotate(${props => props.angle ?? 0}deg);
+    transform: rotate(${props => props.$angle ?? 0}deg);
 `;
 const Minutes = styled.div`
     background-image: url('https://www.formula1.com/etc/designs/fom-website/images/rolex-clock/minute-hand.png');
@@ -29,7 +29,7 @@ const Minutes = styled.div`
     height: 100%;
     width: 100%;
     position: absolute;
-    transform: rotate(${props => props.angle ?? 0}deg);
+    transform: rotate(${props => props.$angle ?? 0}deg);
 `;
 const Hours = styled.div`
     background-image: url('https://www.formula1.com/etc/designs/fom-website/images/rolex-clock/hour-hand.png');
@@ -39,7 +39,7 @@ const Hours = styled.div`
     height: 100%;
     width: 100%;
     position: absolute;
-    transform: rotate(${props => props.angle ?? 0}deg);
+    transform: rotate(${props => props.$angle ?? 0}deg);
 `;
 const Clock = ({ hours, minutes, seconds }) => {
     const secondAngle = useMemo(() => {
@@ -60,9 +60,9 @@ const Clock = ({ hours, minutes, seconds }) => {
     return (
         <div className="clock">
             <Face>
-                <Seconds angle={secondAngle} />
-                <Minutes angle={minuteAngle} />
-                <Hours angle={hourAngle} />
+                <Seconds $angle={secondAngle} />
+                <Minutes $angle={minuteAngle} />
+                <Hours $angle={hourAngle} />
             </Face>
         </div>
         

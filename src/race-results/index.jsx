@@ -38,7 +38,7 @@ const LegendWrapper = styled.div`
 `;
 
 const LegendSpan = styled.span`
-	background-color: ${props => props.teamColor};
+	background-color: ${props => props.$teamColor};
 	padding: 1px 10px;
 	border-radius: 12px;
 	margin: 5px;
@@ -295,7 +295,7 @@ const RaceResults = () => {
 		return (
 			<LegendWrapper>
 				{payload.map((entry, index) => (
-					<LegendSpan teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
+					<LegendSpan $teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
 						{formatDriverName(entry.value)}
 					</LegendSpan>
 				))}

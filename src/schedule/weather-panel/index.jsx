@@ -15,7 +15,7 @@ const Title = styled.div`
 `;
 
 const Stint = styled.div`
-    background: linear-gradient(149deg ${props => props.gradientStages?.map((stage, index) => `, ${stage} ${index / props.gradientStages.length * 100}%`)});
+    background: linear-gradient(149deg ${props => props.$gradientStages?.map((stage, index) => `, ${stage} ${index / props.$gradientStages.length * 100}%`)});
     flex: 1;
 `;
 
@@ -25,10 +25,10 @@ const WeatherRow = styled.div`
 `;
 
 const WeatherItem = styled.div`
-    ${props => !props.isFirst ? 'border-left: 1px solid rgba(208,208,210,.4);' : ''};
+    ${props => !props.$isFirst ? 'border-left: 1px solid rgba(208,208,210,.4);' : ''};
     display: flex;
     flex-direction: column;
-    padding: 0px ${props => props.isMobile ? '10px' : '30px'};
+    padding: 0px ${props => props.$isMobile ? '10px' : '30px'};
 `;
 
 const WeatherLabel = styled.p`
@@ -48,7 +48,7 @@ const WeatherIcon = styled.img`
     -o-transition: opacity 2s ease-in;
     opacity: 1;
     ${
-        props => props.transitioning ? 
+        props => props.$transitioning ? 
         `transition: opacity 2s ease-out;
         -webkit-transition: opacity 2s ease-out;
         -moz-transition: opacity 2s ease-out;
@@ -96,31 +96,31 @@ const WeatherPanel = ({trackInfo}) => {
 
 	return (
         <div className="weather-panel">
-            <Stint gradientStages={qualifyingWeatherGradientStages}>
+            <Stint $gradientStages={qualifyingWeatherGradientStages}>
                 <Title>Qualifying</Title>
                 <WeatherRow>
-                    <WeatherItem isMobile={isMobile} isFirst>
+                    <WeatherItem $isMobile={isMobile} $isFirst={true}>
                         <WeatherLabel>{trackInfo?.q1Weather || 'TBD'}</WeatherLabel>
                         <WeatherIcon transitioning={!weatherIconMap[trackInfo?.q1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q1Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
-                    <WeatherItem isMobile={isMobile}>
+                    <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.q2Weather || 'TBD'}</WeatherLabel>
                         <WeatherIcon transitioning={!weatherIconMap[trackInfo?.q2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.q2Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
                 </WeatherRow>
             </Stint>
-            <Stint gradientStages={raceWeatherGradientStages}>
+            <Stint $gradientStages={raceWeatherGradientStages}>
                 <Title>Race</Title>
                 <WeatherRow>
-                    <WeatherItem isMobile={isMobile} isFirst>
+                    <WeatherItem $isMobile={isMobile} $isFirst={true}>
                         <WeatherLabel>{trackInfo?.r1Weather || 'TBD'}</WeatherLabel>
                         <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r1Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r1Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
-                    <WeatherItem isMobile={isMobile}>
+                    <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.r2Weather || 'TBD'}</WeatherLabel>
                         <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r2Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r2Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>
-                    <WeatherItem isMobile={isMobile}>
+                    <WeatherItem $isMobile={isMobile}>
                         <WeatherLabel>{trackInfo?.r3Weather || 'TBD'}</WeatherLabel>
                         <WeatherIcon transitioning={!weatherIconMap[trackInfo?.r3Weather] && isTbdIconTransitioning} src={weatherIconMap[trackInfo?.r3Weather] || tbdWeatherIcon.src}/>
                     </WeatherItem>

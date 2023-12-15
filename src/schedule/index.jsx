@@ -51,7 +51,7 @@ const CurrentEventCard = styled.fieldset`
 `;
 
 const CountryFlag = styled.fieldset`
-	width: ${props => props.completed ? '30px' : '48px'};
+	width: ${props => props.$completed ? '30px' : '48px'};
 	border: 1px solid #949498;
 	overflow: hidden;
 	border-radius: 3px;
@@ -67,7 +67,7 @@ const CountryFlag = styled.fieldset`
 
 const CurrentRaceDetailsContainer = styled.div`
 	display: grid;
-	grid-template-columns: ${props => props.isMobile ? 'repeat(auto-fit, minmax(300px, auto))' : 'auto 1fr auto'};
+	grid-template-columns: ${props => props.$isMobile ? 'repeat(auto-fit, minmax(300px, auto))' : 'auto 1fr auto'};
 	gap: 10px;
 `;
 
@@ -150,7 +150,7 @@ const Schedule = () => {
 								<div className="schedule__event-info">
 									<div className="schedule__top-bar">
 										<p className="schedule__days">{getDayRange(date)}</p>
-										<CountryFlag completed>
+										<CountryFlag $completed={true}>
 											<img src={trackDetails[label]?.flag} alt={`${label} flag`} />
 										</CountryFlag>
 									</div>
@@ -186,7 +186,7 @@ const Schedule = () => {
 					<div className="schedule__current-race-container" ref={nextRaceRef}>
 						<CurrentEventCard key={`round-${completedRaces.length + 1}`}>
 							<RoundTitle>Round {completedRaces.length + 1} - Up Next</RoundTitle>
-							<CurrentRaceDetailsContainer isMobile={isMobile}>
+							<CurrentRaceDetailsContainer $isMobile={isMobile}>
 								<div className="schedule__current-race-track-panel">
 									<div className="schedule__event-info">
 										<div className="schedule__top-bar">

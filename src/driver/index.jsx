@@ -33,7 +33,7 @@ const CountryFlag = styled.div`
 	overflow: hidden;
 	border-radius: 5px;
 	position: relative;
-	${props => props.isMobile ? 
+	${props => props.$isMobile ? 
 			`top: 2px;
 			width: 30px;
 			height: 100%;` :
@@ -44,7 +44,7 @@ const CountryFlag = styled.div`
 	> img {
 		width: 100%;
 		display: block;
-		${props => props.isMobile ? 
+		${props => props.$isMobile ? 
 			`height: 100%;` :
 			`height: auto;`
 		}
@@ -58,7 +58,7 @@ const DetailsPanel = styled.div`
 
 const AdvancedDetailsPanel = styled.div`
 	padding: 15px 30px 0 20px;
-	${props => props.isMobile && `border-top: 1px solid #b0b0b0;`}
+	${props => props.$isMobile && `border-top: 1px solid #b0b0b0;`}
 `
 
 const Driver = () => {
@@ -89,7 +89,7 @@ const Driver = () => {
 					<div className='driver__details'>
 						<div className='driver__basic-details'>
 							<span className='driver__number'>{driverInfo.number || 0}</span>
-							<CountryFlag isMobile={isMobile}>
+							<CountryFlag $isMobile={isMobile}>
 								<img src={trackDetails[driverInfo.country]?.flag || trackDetails['Canada']?.flag} alt={`${driverInfo.country} flag`} />
 							</CountryFlag>
 						</div>
@@ -97,7 +97,7 @@ const Driver = () => {
 					</div>
 					
 				</DetailsPanel>
-				<AdvancedDetailsPanel isMobile={isMobile}>
+				<AdvancedDetailsPanel $isMobile={isMobile}>
 					<div className='driver__stats-link-container'>
 
 						<Link className='driver__stats-link' to={`/statistics?view=Historical&driver=${driverName}`}>

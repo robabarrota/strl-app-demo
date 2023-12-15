@@ -8,7 +8,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 const CountdownContainer = styled.div`
     background-color: #2e6442;
     display: flex;
-    ${props => !props.isMobile ? 'max-width: 310px;' : ''}
+    ${props => !props.$isMobile ? 'max-width: 310px;' : ''}
     border-radius: 10px;
     height: fit-content;
     justify-content: center;
@@ -29,8 +29,8 @@ const Title = styled.div`
 `;
 
 const TimeUnit = styled.div`
-    color: ${props => props.isDanger ? "#f00" : "#fff"};
-    ${props => !props.isFirst ? 'border-left: 1px solid rgba(208,208,210,.4);' : ''};
+    color: ${props => props.$isDanger ? "#f00" : "#fff"};
+    ${props => !props.$isFirst ? 'border-left: 1px solid rgba(208,208,210,.4);' : ''};
     padding: 0 10px;
     text-align: center;
     display: flex;
@@ -43,7 +43,7 @@ const Countdown = ({ targetDate }) => {
 
     const DateTimeDisplay = ({ value, label, isDanger, isFirst }) => {
         return (
-            <TimeUnit isDanger={isDanger} isFirst={isFirst} >
+            <TimeUnit $isDanger={isDanger} $isFirst={isFirst} >
                 <p className="countdown__time-value">{value}</p>
                 <span className="countdown__time-label">{label}</span>
             </TimeUnit>
@@ -55,7 +55,7 @@ const Countdown = ({ targetDate }) => {
             <div className="countdown__clock-container">
                 <Title>Race</Title>
                 <div className="countdown__clock">
-                    <DateTimeDisplay value={days} label={'Days'} isDanger={days <= 3} isFirst/>
+                    <DateTimeDisplay value={days} label={'Days'} $isDanger={days <= 3} isFirst/>
                     <DateTimeDisplay value={hours} label={'Hours'} />
                     <DateTimeDisplay value={minutes} label={'Mins'} />
                 </div>
@@ -64,7 +64,7 @@ const Countdown = ({ targetDate }) => {
     };
 
     return (
-        <CountdownContainer isMobile={isMobile}>
+        <CountdownContainer $isMobile={isMobile}>
             <CountdownClock
                 days={days}
                 hours={hours}

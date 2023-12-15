@@ -36,7 +36,7 @@ const LegendWrapper = styled.div`
 `;
 
 const LegendSpan = styled.span`
-	background-color: ${props => props.teamColor};
+	background-color: ${props => props.$teamColor};
 	padding: 1px 10px;
 	border-radius: 12px;
 	margin: 5px;
@@ -123,7 +123,7 @@ const Penalties = () => {
 				</thead>
 				<tbody>
 					{sortedPenalties.map((row) => (
-						<tr key={row.driver}>
+						<tr key={row.driver} className='penalties__row'>
 							<td className={`penalties__table-cell`}>
 								<TableTooltip innerHtml={row.driver} customClass='penalties__driver-label'>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
@@ -169,13 +169,13 @@ const Penalties = () => {
 					</thead>
 					<tbody>
 						{sortedPenalties.map((row) => (
-							<tr key={row.driver}>
+							<tr key={row.driver} className='penalties__row'>
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.driver}-${index}`}
 										className={`penalties__table-cell ${getClassName(track.key)}`}>
 											<TableTooltip innerHtml={track.label}>
-												{row[track.key]}
+												{row[track.key] || ''}
 											</TableTooltip>
 									</td>
 								)}
@@ -210,7 +210,7 @@ const Penalties = () => {
 					</thead>
 					<tbody>
 						{sortedStats.map((driverStats) => (
-							<tr key={driverStats.driver}>
+							<tr key={driverStats.driver} className='penalties__row' >
 								<td
 									className={`penalties__table-cell`}>
 									<TableTooltip innerHtml={round(driverStats.averagePenalties, {decimalPlace: 8})} hangLeft>
@@ -254,7 +254,7 @@ const Penalties = () => {
 		return (
 			<LegendWrapper>
 				{payload.map((entry, index) => (
-					<LegendSpan teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
+					<LegendSpan $teamColor={entry.color} key={`item-${index}`} onClick={() => toggleFilter(entry)}>
 						{formatDriverName(entry.value)}
 					</LegendSpan>
 				))}

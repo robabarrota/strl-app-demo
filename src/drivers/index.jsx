@@ -27,7 +27,7 @@ const DriverCard = styled(Link)`
 	&:hover, &:focus, &:active {
 		padding-top: 10px;
 		margin-top: 30px;
-		border-color: ${props => props.color};
+		border-color: ${props => props.$color};
 	}
 `;
 
@@ -51,7 +51,7 @@ const DriverNumber = styled.div`
 	font-size: 54px;
 	line-height: normal;
 	font-weight: 900;
-	color: ${props => props.color};
+	color: ${props => props.$color};
 `;
 
 const DriverImage = styled.img`
@@ -89,7 +89,7 @@ const Drivers = () => {
 					{driverData.map((driver, index) => {
 						return (
 							<DriverCard 
-								color={driver.numberColour} 
+								$color={driver.numberColour} 
 								key={`driver-${index + 1}`} 
 								to={`/driver/${driver.driver}`}
 							>
@@ -119,8 +119,8 @@ const Drivers = () => {
 								<div className="drivers__card-bottom">
 									<span className='drivers__team-label'>{driver.car}</span>
 									<div className="drivers__image-container">
-										<DriverNumber color={driver.numberColour}>{driver.number || 0}</DriverNumber>
-										<DriverImage color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
+										<DriverNumber $color={driver.numberColour}>{driver.number || 0}</DriverNumber>
+										<DriverImage $color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
 									</div>
 								</div>
 							</DriverCard>
