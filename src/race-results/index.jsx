@@ -263,19 +263,20 @@ const RaceResults = () => {
 					<tbody>
 						{sortedStats.map((driverStats) => (
 							<tr key={driverStats.driver}>
-								<td
-									className={bem('table-cell')}>
+								<td className={bem('table-cell')}>
 									<TableTooltip innerHtml={round(driverStats.averageFinish, {decimalPlace: 8})} hangLeft>
 										{round(driverStats.averageFinish)}
 									</TableTooltip>
 								</td>
-								<td
-									className={bem('table-cell')}>
-									{driverStats.racesMissed}
+								<td className={bem('table-cell')}>
+									<TableTooltip innerHtml={round(driverStats.racesMissed, {decimalPlace: 8})} hangLeft>
+										{driverStats.racesMissed}
+									</TableTooltip>
 								</td>
-								<td
-									className={bem('table-cell')}>
-									{driverStats.fastestLaps}
+								<td className={bem('table-cell')}>
+									<TableTooltip innerHtml={round(driverStats.fastestLaps, {decimalPlace: 8})} hangLeft>
+										{driverStats.fastestLaps}
+									</TableTooltip>
 								</td>
 							</tr>
 						))}
