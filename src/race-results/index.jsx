@@ -10,6 +10,8 @@ import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
 import { isNaN } from 'lodash';
 import {
 	LineChart,
@@ -56,12 +58,12 @@ const RaceResults = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
 	const [graphFilter, setGraphFilter] = useState([]);
-	const [sortBy, setSortBy] = useState(null);
 	const [sortedRaceResults, setSortedRaceResults] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
 	const formatDriverName = useFormatDriverName();
 	const formatTrackName = useFormatTrackName();
 	const graphTrackOrientation = useGraphTrackOrientation();
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 
 	const { content: raceResults, loading: raceResultsLoading, fetched: raceResultsFetched, error: raceResultsError } = useSelector(getRaceResults);
 	const { content: driverStats, loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);

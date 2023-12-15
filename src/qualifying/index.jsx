@@ -10,6 +10,8 @@ import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
 import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
+import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
 import { isNaN } from 'lodash';
 import {
 	LineChart,
@@ -56,7 +58,7 @@ const Qualifying = () => {
 	const dispatch = useDispatch();
 	const [showStats, setShowStats] = useState(false);
 	const [graphFilter, setGraphFilter] = useState([]);
-	const [sortBy, setSortBy] = useState(null);
+	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 	const [sortedQualifyingResults, setSortedQualifyingResults] = useState([]);
 	const [sortedStats, setSortedStats] = useState([]);
 	const formatDriverName = useFormatDriverName();
