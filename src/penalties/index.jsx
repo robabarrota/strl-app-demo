@@ -2,7 +2,7 @@ import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPenalties, getDriverStats, getTrackList, getParticipants } from '@/redux/selectors';
 import { fetchPenalties, fetchDriverStats, fetchTrackList, fetchParticipants } from '@/redux/actions';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNaN } from 'lodash';
 import React, { useCallback, useMemo, useState, useEffect } from 'react';
 import ConstructorBadge from '@/components/constructor-badge';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
@@ -12,7 +12,6 @@ import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils
 import TableTooltip from '@/components/table-tooltip';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
-import { isNaN } from 'lodash';
 import {
 	LineChart,
 	Line,
