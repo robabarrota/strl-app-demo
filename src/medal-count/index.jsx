@@ -144,6 +144,19 @@ const MedalCount = () => {
 		</div>
 	), [sortedMedalCount, sortByKey, getSortIcon]);
 
+	const customDriverTick = props => {
+		const { x, y, payload } = props;
+		return (
+			<g transform={`translate(${x},${y})`}>
+				<text x={0} y={0} dy={5} fill={"#666"} textAnchor="end">
+					<tspan>
+						{formatDriverName(payload.value)}
+					</tspan>
+				</text>
+			</g>
+		)
+	};
+
 	const renderGraph = () => (
 		<ResponsiveContainer width="100%" height="100%">
 			<BarChart 
@@ -154,13 +167,19 @@ const MedalCount = () => {
 				margin={{
 					top: 5,
 					right: 30,
-					left: 20,
+					left: 50,
 					bottom: 5
 				}} 
 				>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis type="number" interval={0} domain={['dataMin', 'dataMax']} tickMargin={0} minTickGap={0}/>
-				<YAxis type="category" dataKey="driver" tickFormatter={formatDriverName} interval={0} />
+				<YAxis 
+					type="category" 
+					dataKey="driver" 
+					tick={customDriverTick}
+					interval={0} 
+					tickMargin={5}
+				/>
 				<Bar dataKey="gold" stackId="a" fill="#C9B037" />
 				<Bar dataKey="silver" stackId="a" fill="#B4B4B4" />
 				<Bar dataKey="bronze" stackId="a" fill="#AD8A56" />
