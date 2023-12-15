@@ -8,7 +8,7 @@ import ConstructorBadge from '@/components/constructor-badge';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
-import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
+import { round, getCarColor, tableSortFunction, nameSortFunction, cb } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
@@ -24,6 +24,9 @@ import {
 	ResponsiveContainer
 } from "recharts";
 import styled from 'styled-components';
+
+const blockName = 'race-results';
+const bem = cb(blockName);
 
 const statHeaders = [
 	{key: 'averageQualifying', label: 'AVG'},
@@ -124,9 +127,9 @@ const Qualifying = () => {
 	}, [trackList, qualifyingResults, formatTrackName])
 
 	const getClassName = (header) => {
-		if (header === 'Driver') return 'qualifying__driver';
-		if (header === 'Car') return 'qualifying__car';
-		return 'qualifying__track'
+		if (header === 'Driver') return bem('driver');
+		if (header === 'Car') return bem('car');
+		return bem('track')
 	}
 
 	const sortByKey = useCallback((key) => {
@@ -144,12 +147,12 @@ const Qualifying = () => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="qualifying__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="qualifying__table-header qualifying__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -159,8 +162,8 @@ const Qualifying = () => {
 				<tbody>
 					{sortedQualifyingResults.map((row) => (
 						<tr key={row.driver}>
-							<td className={`qualifying__table-cell`}>
-								<TableTooltip innerHtml={row.driver} customClass='qualifying__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>
@@ -181,14 +184,14 @@ const Qualifying = () => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="qualifying__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 						{trackList.map(track => 
 							<th 
 								key={track.key} 
-								className="qualifying__table-header qualifying__table-header--sortable" 
+								className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 								onClick={() => sortByKey(track.key)}
 							>
 								{formatTrackName(track.label)} {getSortIcon(track.key)}
@@ -202,7 +205,7 @@ const Qualifying = () => {
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`qualifying__table-cell ${getClassName(track.key)}`}>
+										className={`${bem('table-cell')} ${getClassName(track.key)}`}>
 										<TableTooltip innerHtml={track.label}>
 											{row[track.key]}
 										</TableTooltip>
@@ -217,8 +220,11 @@ const Qualifying = () => {
 	}, [trackList, formatTrackName, sortedQualifyingResults, sortByKey, getSortIcon]);
 
 	const renderStatsSubTable = useMemo(() => (
-		<div className="qualifying__end-subtable-container--right">
-			<div className={`qualifying__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(!showStats)}>
+		<div className={bem('end-subtable-container', 'right')}>
+			<div 
+				className={`${bem('toggle-stats')} ${showStats ? 'show' : ''}`} 
+				onClick={() => setShowStats(!showStats)}
+			>
 				{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 				{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 			</div>
@@ -229,7 +235,7 @@ const Qualifying = () => {
 							{statHeaders.map((header) => 
 								<th
 									key={header.key}
-									className="qualifying__table-header qualifying__table-header--sortable"
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 									onClick={() => sortByKey(header.key)}
 								>
 									{header.label} {getSortIcon(header.key)}
@@ -240,19 +246,22 @@ const Qualifying = () => {
 					<tbody>
 						{sortedStats.map((driverStats) => (
 							<tr key={driverStats.driver}>
-								<td
-									className={`qualifying__table-cell`}>
+								<td className={bem('table-cell')}>
 									<TableTooltip innerHtml={round(driverStats.averageQualifying, {decimalPlace: 8})} hangLeft>
 										{round(driverStats.averageQualifying)}
 									</TableTooltip>
 								</td>
-								<td
-									className={`qualifying__table-cell`}>
-									{displayAverageDifference(driverStats.averageDifference)}
+								<td className={bem('table-cell')}>
+									<TableTooltip innerHtml={round(driverStats.averageDifference, {decimalPlace: 8})} hangLeft>
+										{displayAverageDifference(driverStats.averageDifference)}
+									</TableTooltip>
+									
 								</td>
-								<td
-									className={`qualifying__table-cell`}>
-									{driverStats.poles}
+								<td className={bem('table-cell')}>
+									<TableTooltip innerHtml={round(driverStats.poles, {decimalPlace: 8})} hangLeft>
+										{driverStats.poles}
+									</TableTooltip>
+									
 								</td>
 							</tr>
 						))}
@@ -329,16 +338,16 @@ const Qualifying = () => {
 
 	return (
 		<div className="qualifying">
-			<h1 className='qualifying__title'>Qualifying</h1>
+			<h1 className={bem('title')}>Qualifying</h1>
 
 			{isDataReady && (
 				<>
-					<div className="qualifying__table-container">
+					<div className={bem('table-container')}>
 						{renderDriverSubTable}
 						{renderResultsSubTable}
 						{renderStatsSubTable}
 					</div>
-					<div className='qualifying__graph-container'>
+					<div className={bem('graph-container')}>
 						{renderGraph()}
 					</div>
 				</>
