@@ -47,6 +47,12 @@
         }
     }
 
+    &__driver-label {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
     &__graph-container {
         max-width: inherit;
         height: 80vh;

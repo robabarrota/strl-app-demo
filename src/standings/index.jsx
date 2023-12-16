@@ -4,6 +4,10 @@ import Tabs from '@/components/tabs';
 import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 import DriverStandings from './driver-standings/index';
 import ConstructorStandings from './constructor-standings/index';
+import { cb } from '@/utils/utils';
+
+const blockName = 'standings';
+const bem = cb(blockName);
 
 const tabs = [
 	{
@@ -24,8 +28,8 @@ const Standings = () => {
 
 	return (
 		<div className="standings">
-			<div className='standings__title-container'>
-				<h1 className='standings__title'>{tabs[activeTabIndex]?.label} Standings</h1>
+			<div className={bem('title-container')}>
+				<h1 className={bem('title')}>{tabs[activeTabIndex]?.label} Standings</h1>
 				<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={onChange} />
 			</div>
 

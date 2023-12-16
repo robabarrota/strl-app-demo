@@ -4,7 +4,7 @@ import { getMedalCount } from '@/redux/selectors';
 import { fetchMedalCount } from '@/redux/actions';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import { tableSortFunction, nameSortFunction } from '@/utils/utils';
+import { tableSortFunction, nameSortFunction, round, cb } from '@/utils/utils';
 
 import {
 	BarChart,
@@ -16,6 +16,10 @@ import {
 	ResponsiveContainer
 } from "recharts";
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+import TableTooltip from '@/components/table-tooltip';
+
+const blockName = 'medal-count';
+const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'points',
@@ -23,6 +27,10 @@ const defaultSortBy = {
 }
 
 const statHeaders = [
+	{key: 'points', label: 'POINTS'},
+];
+
+const medalHeaders = [
 	{key: 'gold', label: 'Gold'},
 	{key: 'silver', label: 'Silver'},
 	{key: 'bronze', label: 'Bronze'},
@@ -69,12 +77,12 @@ const MedalCount = () => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="medal-count__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="medal-count__table-header medal-count__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -85,38 +93,48 @@ const MedalCount = () => {
 				<tbody>
 					{sortedMedalCount.map(({ driver }) => (
 						<tr key={driver} >
-							<td className='medal-count__table-cell'><div>{driver}</div></td>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={driver} customClass={bem('driver-label')}>
+									{formatDriverName(driver)}
+								</TableTooltip>
+							</td>
 						</tr>
 					))}
 				</tbody>
 			</table>
 		</div>
-	), [sortedMedalCount, sortByKey, getSortIcon]);
+	), [sortedMedalCount, sortByKey, getSortIcon, formatDriverName]);
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="medal-count__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
-							{statHeaders.map((header) => 
+							{medalHeaders.map((header) => 
 								<th
 									key={header.key}
-									className="medal-count__table-header medal-count__table-header--sortable"
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 									onClick={() => sortByKey(header.key)}
 								>
-									<i className={`fa-solid fa-medal medal-count__${header.key}`}></i> {getSortIcon(header.key)}
+									<i className={`fa-solid fa-medal ${bem(header.key)}`}></i> {getSortIcon(header.key)}
 								</th>
 							)}
 						</tr>
 					</thead>
 					<tbody>
-						{sortedMedalCount.map(({ driver, gold, silver, bronze, cup }) => (
-							<tr key={driver} >
-								<td className='medal-count__table-cell'><div>{gold}</div></td>
-								<td className='medal-count__table-cell'><div>{silver}</div></td>
-								<td className='medal-count__table-cell'><div>{bronze}</div></td>
-								<td className='medal-count__table-cell'><div>{cup}</div></td>
+						{sortedMedalCount.map((row) => (
+							<tr key={row.driver} >
+								{medalHeaders.map((stat, index) =>
+								<td
+									key={`${row.driver}-${index}`}
+									className={bem('table-cell')}
+								>
+									<TableTooltip innerHtml={stat.label}>
+										{round(row[stat.key], {formatFn: stat.formatCallback})}
+									</TableTooltip>
+								</td>
+							)}
 							</tr>
 						))}
 					</tbody>
@@ -126,12 +144,12 @@ const MedalCount = () => {
 	}, [sortedMedalCount, sortByKey, getSortIcon]);
 
 	const renderStatsSubTable = useMemo(() => (
-		<div className="medal-count__end-subtable-container--right">
+		<div className={bem('end-subtable-container', 'right')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="medal-count__table-header medal-count__table-header--sortable" 
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 							onClick={() => sortByKey('points')}
 						>
 							Points {getSortIcon('points')}
@@ -139,9 +157,18 @@ const MedalCount = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{sortedMedalCount.map(({ driver, points }) => (
-						<tr key={driver} >
-							<td className='medal-count__table-cell'><div>{points}</div></td>
+					{sortedMedalCount.map((row) => (
+						<tr key={row.driver} >
+							{statHeaders.map((stat, index) =>
+									<td
+										key={`${row.driver}-${index}`}
+										className={bem('table-cell')}
+									>
+										<TableTooltip innerHtml={stat.label}>
+											{round(row[stat.key], {formatFn: stat.formatCallback})}
+										</TableTooltip>
+									</td>
+								)}
 						</tr>
 					))}
 				</tbody>
@@ -200,14 +227,14 @@ const MedalCount = () => {
 	if (isDataReady) {
 		return (
 			<div className="medal-count">
-				<h1 className="medal-count__title">League Leaders</h1>
-				<div className="medal-count__table-container">
+				<h1 className={bem('title')}>League Leaders</h1>
+				<div className={bem('table-container')}>
 					{renderDriverSubTable}
 					{renderResultsSubTable}
 					{renderStatsSubTable}
 				</div>
 
-				<div className='medal-count__graph-container'>
+				<div className={bem('graph-container')}>
 					{renderGraph()}
 				</div>
 			</div>

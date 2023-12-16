@@ -246,23 +246,16 @@ const Qualifying = () => {
 					<tbody>
 						{sortedStats.map((driverStats) => (
 							<tr key={driverStats.driver}>
-								<td className={bem('table-cell')}>
-									<TableTooltip innerHtml={round(driverStats.averageQualifying, {decimalPlace: 8})} hangLeft>
-										{round(driverStats.averageQualifying)}
-									</TableTooltip>
-								</td>
-								<td className={bem('table-cell')}>
-									<TableTooltip innerHtml={round(driverStats.averageDifference, {decimalPlace: 8})} hangLeft>
-										{displayAverageDifference(driverStats.averageDifference)}
-									</TableTooltip>
-									
-								</td>
-								<td className={bem('table-cell')}>
-									<TableTooltip innerHtml={round(driverStats.poles, {decimalPlace: 8})} hangLeft>
-										{driverStats.poles}
-									</TableTooltip>
-									
-								</td>
+								{statHeaders.map((stat, index) =>
+									<td
+										key={`${driverStats.driver}-${index}`}
+										className={bem('table-cell')}
+									>
+										<TableTooltip innerHtml={stat.label}>
+											{round(driverStats[stat.key], {formatFn: stat.formatCallback})}
+										</TableTooltip>
+									</td>
+								)}
 							</tr>
 						))}
 					</tbody>

@@ -8,7 +8,7 @@ import ConstructorBadge from '@/components/constructor-badge';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
-import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
+import { round, getCarColor, tableSortFunction, nameSortFunction, cb } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import {
 	LineChart,
@@ -22,6 +22,9 @@ import {
 } from "recharts";
 import styled from 'styled-components';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'driver-standings';
+const bem = cb(blockName);
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -128,9 +131,9 @@ const DriverStandings = ({show}) => {
 	, [trackList, driverPoints, formatTrackName])
 
 	const getClassName = (header) => {
-		if (header === 'Driver') return 'driver-standings__driver';
-		if (header === 'Car') return 'driver-standings__car';
-		return 'driver-standings__track'
+		if (header === 'Driver') return bem('driver');
+		if (header === 'Car') return bem('car');
+		return bem('track')
 	};
 
 	const sortByKey = useCallback((key) => {
@@ -148,12 +151,12 @@ const DriverStandings = ({show}) => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="driver-standings__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="driver-standings__table-header driver-standings__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -163,8 +166,8 @@ const DriverStandings = ({show}) => {
 				<tbody>
 					{sortedDriverPoints.map((row) => (
 						<tr key={row.driver}>
-							<td className={`driver-standings__table-cell`}>
-								<TableTooltip innerHtml={row.driver} customClass='driver-standings__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>
@@ -177,14 +180,14 @@ const DriverStandings = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="driver-standings__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 						{trackList.map(({label, key}) => 
 							<th 
 								key={label} 
-								className="driver-standings__table-header driver-standings__table-header--sortable" 
+								className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 								onClick={() => sortByKey(key)}
 							>
 								{formatTrackName(label)} {getSortIcon(key)}
@@ -198,7 +201,7 @@ const DriverStandings = ({show}) => {
 								{trackList.map(({key, label}, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`driver-standings__table-cell ${getClassName(key)}`}>
+										className={`${bem('table-cell')} ${getClassName(key)}`}>
 										<TableTooltip innerHtml={label}>
 											{row[key]}
 										</TableTooltip>
@@ -220,7 +223,7 @@ const DriverStandings = ({show}) => {
 						{statHeaders.map((header) => 
 							<th
 								key={header.key}
-								className="driver-standings__table-header driver-standings__table-header--sortable"
+								className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 								onClick={() => sortByKey(header.key)}
 							>
 								{header.label} {getSortIcon(header.key)}
@@ -230,29 +233,28 @@ const DriverStandings = ({show}) => {
 				</thead>
 				<tbody>
 					{sortedDriverStats.map((driverStats) => (
-						<tr key={driverStats.driver}>
-							<td
-								className={`driver-standings__table-cell`}>
-								{driverStats.total}
-							</td>
-							<td
-								className={`driver-standings__table-cell`}>
-								<TableTooltip innerHtml={round(driverStats.averagePoints, {decimalPlace: 8})}>
-									{round(driverStats.averagePoints)}
-								</TableTooltip>
-							</td>
-							<td
-								className={`driver-standings__table-cell`}>
-								{driverStats.racesMissed}
-							</td>
+						<tr key={driverStats.driver} className={bem('row')} >
+							{statHeaders.map((stat, index) =>
+								<td
+									key={`${driverStats.driver}-${index}`}
+									className={bem('table-cell')}
+								>
+									<TableTooltip innerHtml={stat.label}>
+										{round(driverStats[stat.key], {formatFn: stat.formatCallback})}
+									</TableTooltip>
+								</td>
+							)}
 						</tr>
 					))}
 				</tbody>
 			</table>
 		;
 		return (
-			<div className="driver-standings__end-subtable-container--right">
-				<div className={`driver-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
+			<div className={bem('end-subtable-container', 'right')}>
+				<div 
+					className={`${bem('toggle-stats')} ${showStats ? 'show' : ''}`} 
+					onClick={() => setShowStats(current => !current)}
+				>
 					{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 					{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 				</div>
@@ -332,12 +334,12 @@ const DriverStandings = ({show}) => {
 		<div className="driver-standings">
 			{isDataReady && (
 				<>
-					<div className="driver-standings__table-container">
+					<div className={bem('table-container')}>
 						{renderDriverSubTable}
 						{renderResultsSubTable}
 						{renderStatsSubTable}
 					</div>
-					<div className='driver-standings__graph-container'>
+					<div className={bem('graph-container')}>
 						{renderGraph()}
 					</div>
 				</>
