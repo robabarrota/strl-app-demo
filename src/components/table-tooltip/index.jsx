@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import './styles.scss';
+import { cb } from '@/utils/utils';
+
+const blockName = 'table-tooltip';
+const bem = cb(blockName);
 
 const TableTooltip = ({ innerHtml, children, hangLeft = false, customClass = '' }) => {
     const [visible, setVisible] = useState(false)
-    const hangClass = hangLeft ? "table-tooltip__hang-left" : '';
+    const hangClass = hangLeft ? bem('hang-left') : '';
     return (
         <button 
-            className={`table-tooltip ${customClass}`} 
+            className={`${blockName} ${customClass}`} 
             onClick={() => setVisible(visibility => !visibility)} 
             onBlur={() => setVisible(false)}
         >
             {children}
             {visible && 
-                <div className={`table-tooltip__text ${hangClass}`}>
+                <div className={`${bem('text')} ${hangClass}`}>
                     {innerHtml}
                 </div>
             }

@@ -2,12 +2,15 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedDriverArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction, cb } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'driver-statistics';
+const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'total',
@@ -68,12 +71,12 @@ const DriverStatistics = ({show}) => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="driver-statistics__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="driver-statistics__table-header driver-statistics__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header--sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -83,8 +86,8 @@ const DriverStatistics = ({show}) => {
 				<tbody>
 					{sortedArchiveStats.map((row) => (
 						<tr key={row.driver} >
-							<td className='driver-statistics__table-cell'>
-								<TableTooltip innerHtml={row.driver} customClass='driver-statistics__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>
@@ -97,14 +100,14 @@ const DriverStatistics = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="driver-statistics__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{statHeaders.map(stat => 
 								<th 
 									key={stat.key} 
-									className="driver-statistics__table-header driver-statistics__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 									onClick={() => sortByKey(stat.key)}
 								>
 									{stat.label} {getSortIcon(stat.key)}
@@ -118,7 +121,7 @@ const DriverStatistics = ({show}) => {
 								{statHeaders.map((stat, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`driver-statistics__table-cell`}
+										className={bem('table-cell')}
 									>
 										<TableTooltip innerHtml={stat.label}>
 											{round(row[stat.key], {formatFn: stat.formatCallback})}
@@ -137,8 +140,8 @@ const DriverStatistics = ({show}) => {
 
 	if (isDataReady) {
 		return show && (
-			<div className="driver-statistics">
-				<div className="driver-statistics__table-container">
+			<div className={blockName}>
+				<div className={bem('table-container')}>
 					{renderDriverSubTable}
 					{renderResultsSubTable}
 				</div>

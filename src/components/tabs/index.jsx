@@ -1,6 +1,10 @@
 import './styles.scss';
 import useIsMobile from '@/hooks/useIsMobile';
+import { cb } from '@/utils/utils';
 import styled from 'styled-components';
+
+const blockName = 'tabs';
+const bem = cb(blockName);
 
 const Glider = styled.span`
     position: absolute;
@@ -36,8 +40,8 @@ const Tabs = ({ tabs, activeTabIndex, onChange }) => {
     	const isMobile = useIsMobile();
 
     return (
-        <div className="tabs">
-            <div className="tabs__container">
+        <div className={blockName}>
+            <div className={bem('container')}>
                 <Glider $index={activeTabIndex} $isMobile={isMobile} />
                 {tabs.map((content, index) => (
                     <div key={content.label}>
@@ -57,7 +61,7 @@ const Tabs = ({ tabs, activeTabIndex, onChange }) => {
                                     $selected={index === activeTabIndex}
                                     $isMobile={isMobile}
                                 >
-                                    <img className='tabs__icon' src={content.icon} alt={'icon'}/>
+                                    <img className={bem('icon')} src={content.icon} alt={'icon'}/>
                                 </TabLabel>
                                 
                             ) : 

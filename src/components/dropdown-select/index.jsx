@@ -1,15 +1,19 @@
 import { useMemo } from 'react';
 import './styles.scss';
 import Select from 'react-select';
+import { cb } from '@/utils/utils';
+
+const blockName = 'dropdown-select';
+const bem = cb(blockName);
 
 const DropdownSelect = ({ options, value, onChange, ...props }) => {
     const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
     return (
-        <div className="dropdown-select">
+        <div className={blockName}>
             <Select
                 options={options}
                 value={selectedOption}
-                className='dropdown-select__select'
+                className={bem('select')}
                 isSearchable={false}
                 onChange={onChange}
                 closeMenuOnSelect={true}

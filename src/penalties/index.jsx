@@ -319,7 +319,7 @@ const Penalties = () => {
 	);
 
 	return (
-		<div className="penalties">
+		<div className={blockName}>
 			<h1 className={bem('title')}>Penalties</h1>
 
 			{isDataReady && (

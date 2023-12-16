@@ -330,7 +330,7 @@ const Qualifying = () => {
 	);
 
 	return (
-		<div className="qualifying">
+		<div className={blockName}>
 			<h1 className={bem('title')}>Qualifying</h1>
 
 			{isDataReady && (

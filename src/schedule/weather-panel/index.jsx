@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { weatherIconMap, weatherColorMap } from '@/utils/constants';
 import useIsMobile from '@/hooks/useIsMobile';
 
+const blockName = 'weather-panel';
+
 const Title = styled.div`
     font-family: 'F1BoldRegular';
     font-size: 18px;
@@ -95,7 +97,7 @@ const WeatherPanel = ({trackInfo}) => {
     }, [isTbdIconTransitioning, setIsTbdIconTransitioning, tbdWeatherIcon?.iconIndex])
 
 	return (
-        <div className="weather-panel">
+        <div className={blockName}>
             <Stint $gradientStages={qualifyingWeatherGradientStages}>
                 <Title>Qualifying</Title>
                 <WeatherRow>

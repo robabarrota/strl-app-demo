@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getArchives, getDriverStats, getDriversPageData, getParticipants } from '@/redux/selectors';
 import { useMemo } from 'react';
 import { trackDetails } from '@/utils/constants';
-import { getDriverImage } from '@/utils/utils';
+import { cb, getDriverImage } from '@/utils/utils';
 import { fetchArchives, fetchDriverStats, fetchParticipants } from '@/redux/actions';
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
+const blockName = 'drivers';
+const bem = cb(blockName);
 
 const HeaderContainer = styled.fieldset`
 	display: flex;
@@ -80,12 +83,12 @@ const Drivers = () => {
 
 	if (isDataReady) {
 		return (
-			<div className="drivers">
+			<div className={blockName}>
 				<HeaderContainer>
-					<h1 className="drivers__title">STRL Drivers Season {seasonNumber}</h1>
+					<h1 className={bem('title')}>STRL Drivers Season {seasonNumber}</h1>
 				</HeaderContainer>
 
-				<div className="drivers__card-container">
+				<div className={bem('card-container')}>
 					{driverData.map((driver, index) => {
 						return (
 							<DriverCard 
@@ -93,21 +96,21 @@ const Drivers = () => {
 								key={`driver-${index + 1}`} 
 								to={`/driver/${driver.driver}`}
 							>
-								<div className="drivers__standings-info">
-									<div className="drivers__top-bar">
-										<p className="drivers__rank">{index + 1}</p>
-										<div className="drivers__points-container">
-											<p className="drivers__points">{driver.total}</p>
-											<p className="drivers__points-label">PTS</p>
+								<div className={bem('standings-info')}>
+									<div className={bem('top-bar')}>
+										<p className={bem('rank')}>{index + 1}</p>
+										<div className={bem('points-container')}>
+											<p className={bem('points')}>{driver.total}</p>
+											<p className={bem('points-label')}>PTS</p>
 										</div>
 									</div>
 								</div>
-								<div className="drivers__driver-description">
-									<div className="drivers__driver-description--name-container">
-										<div className="drivers__driver-description--first-name">
+								<div className={bem('driver-description')}>
+									<div className={bem('driver-description', 'name-container')}>
+										<div className={bem('driver-description', 'first-name')}>
 											{driver.firstName}
 										</div>
-										<div className="drivers__driver-description--last-name">
+										<div className={bem('driver-description', 'last-name')}>
 											{driver.lastName || ' '}
 										</div>
 									</div>
@@ -116,9 +119,9 @@ const Drivers = () => {
 									</CountryFlag>
 								</div>
 
-								<div className="drivers__card-bottom">
-									<span className='drivers__team-label'>{driver.car}</span>
-									<div className="drivers__image-container">
+								<div className={bem('card-bottom')}>
+									<span className={bem('team-label')}>{driver.car}</span>
+									<div className={bem('image-container')}>
 										<DriverNumber $color={driver.numberColour}>{driver.number || 0}</DriverNumber>
 										<DriverImage $color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
 									</div>

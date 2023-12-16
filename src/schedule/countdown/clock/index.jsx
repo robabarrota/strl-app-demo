@@ -2,6 +2,8 @@ import './styles.scss';
 import React, {useMemo} from 'react';
 import styled from 'styled-components';
 
+const blockName = 'clock';
+
 const Face = styled.div`
     background-image: url('https://www.formula1.com/etc/designs/fom-website/images/rolex-clock/face.png');
     background-position: 50% 50%;
@@ -58,14 +60,13 @@ const Clock = ({ hours, minutes, seconds }) => {
     }, [hours])
 
     return (
-        <div className="clock">
+        <div className={blockName}>
             <Face>
                 <Seconds $angle={secondAngle} />
                 <Minutes $angle={minuteAngle} />
                 <Hours $angle={hourAngle} />
             </Face>
         </div>
-        
     );
 };
 

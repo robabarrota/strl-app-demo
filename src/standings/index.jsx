@@ -27,7 +27,7 @@ const Standings = () => {
 	const renderConstructorStandings = useMemo(() => <ConstructorStandings show={activeTabIndex === 1} />, [activeTabIndex]);
 
 	return (
-		<div className="standings">
+		<div className={blockName}>
 			<div className={bem('title-container')}>
 				<h1 className={bem('title')}>{tabs[activeTabIndex]?.label} Standings</h1>
 				<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={onChange} />

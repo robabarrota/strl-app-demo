@@ -1,14 +1,18 @@
 import './styles.scss';
+import { cb } from '@/utils/utils';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+const blockName = 'not-found';
+const bem = cb(blockName);
+
 const NotFound = () => {
 	return (
-		<div className="not-found">
-			<div className="not-found__content">
+		<div className={blockName}>
+			<div className={bem('content')}>
 				<p>Looks like you spun out <i className="fa-solid fa-road-circle-exclamation"></i></p>
 
-				<Link to="/" className='not-found__link'>
+				<Link to="/" className={bem('link')}>
 					Get back on track
 				</Link>				
 			</div>

@@ -1,7 +1,7 @@
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction, cb } from '@/utils/utils';
 import { getHistoricalDriverStats } from '@/redux/selectors';
 import { fetchHistoricalDriverStats } from '@/redux/actions';
 import { useSearchParams } from 'react-router-dom';
@@ -9,6 +9,9 @@ import { useSearchParams } from 'react-router-dom';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'historical-statistics';
+const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'total',
@@ -57,7 +60,7 @@ const HistoricalStatistics = ({show}) => {
 		}
 	}, [focusedDriver]);
 
-	const getFocusedDriverClass = useCallback((driverName) => driverName === focusedDriver ? "historical-statistics__focused" : '', [focusedDriver]);
+	const getFocusedDriverClass = useCallback((driverName) => driverName === focusedDriver ? bem('focused') : '', [focusedDriver]);
 
 	useEffect(() => {
 		const statsCopy = [...historicalDriverStats];
@@ -89,12 +92,12 @@ const HistoricalStatistics = ({show}) => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="historical-statistics__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="historical-statistics__table-header historical-statistics__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -108,8 +111,8 @@ const HistoricalStatistics = ({show}) => {
 							ref={(el) => goToFocusedDriver(row.driver, el)}
 							className={`${getFocusedDriverClass(row.driver)}`}
 						>
-							<td className='historical-statistics__table-cell'>
-								<TableTooltip innerHtml={row.driver} customClass='historical-statistics__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)}
 								</TableTooltip>
 							</td>
@@ -122,14 +125,14 @@ const HistoricalStatistics = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="historical-statistics__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{statHeaders.map(stat => 
 								<th 
 									key={stat.key} 
-									className="historical-statistics__table-header historical-statistics__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 									onClick={() => sortByKey(stat.key)}
 								>
 									{stat.label} {getSortIcon(stat.key)}
@@ -143,7 +146,7 @@ const HistoricalStatistics = ({show}) => {
 								{statHeaders.map((stat, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`historical-statistics__table-cell`}
+										className={bem('table-cell')}
 									>
 										<TableTooltip innerHtml={stat.label}>
 											{round(row[stat.key], {formatFn: stat.formatCallback})}
@@ -160,8 +163,8 @@ const HistoricalStatistics = ({show}) => {
 
 	if (isDataReady) {
 		return show && (
-			<div className="historical-statistics">
-				<div className="historical-statistics__table-container">
+			<div className={blockName}>
+				<div className={bem('table-container')}>
 					{renderDriverSubTable}
 					{renderResultsSubTable}
 				</div>

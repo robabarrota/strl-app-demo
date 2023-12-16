@@ -9,6 +9,10 @@ import Countdown from './countdown';
 import SessionSchedule from './session-schedule';
 import WeatherPanel from './weather-panel';
 import useIsMobile from '@/hooks/useIsMobile';
+import { cb } from '@/utils/utils';
+
+const blockName = 'schedule';
+const bem = cb(blockName);
 
 const HeaderContainer = styled.fieldset`
 	display: flex;
@@ -136,46 +140,46 @@ const Schedule = () => {
 
 	if (isDataReady) {
 		return (
-			<div className="schedule">
+			<div className={blockName}>
 				<HeaderContainer>
-					<h1 className="schedule__title">Schedule</h1>
-					{!!nextTrack && <button className="schedule__go-to-next" onClick={() => scrollToNextRace()} disabled={!nextTrack}>Go To Next Race</button>}
+					<h1 className={bem('title')}>Schedule</h1>
+					{!!nextTrack && <button className={bem('go-to-next')} onClick={() => scrollToNextRace()} disabled={!nextTrack}>Go To Next Race</button>}
 				</HeaderContainer>
 
-				<div className="schedule__race-card-container">
+				<div className={bem('race-card-container')}>
 					{completedRaces.map(({ date, label }, index) => {
 						return (
 							<EventCard key={`round-${index + 1}`}>
 								<RoundTitle>Round {index + 1}</RoundTitle>
-								<div className="schedule__event-info">
-									<div className="schedule__top-bar">
-										<p className="schedule__days">{getDayRange(date)}</p>
+								<div className={bem('event-info')}>
+									<div className={bem('top-bar')}>
+										<p className={bem('days')}>{getDayRange(date)}</p>
 										<CountryFlag $completed={true}>
 											<img src={trackDetails[label]?.flag} alt={`${label} flag`} />
 										</CountryFlag>
 									</div>
-									<div className="schedule__month-container">
-										<span className="schedule__month">
+									<div className={bem('month-container')}>
+										<span className={bem('month')}>
 											{new Date(date).toLocaleString('default', { month: 'short' })}
 										</span>
 										{isRaceOver(date) &&
-											<span className="schedule__finish-banner-container">
+											<span className={bem('finish-banner-container')}>
 												<img src="https://www.formula1.com/etc/designs/fom-website/images/flag-asset.png" alt="race finished" />
 											</span>
 										}
 									</div>
 								</div>
-								<div className="schedule__event-details">
-									<div className="schedule__event-description">
-										<div className="schedule__event-description--track">
+								<div className={bem('event-details')}>
+									<div className={bem('event-description')}>
+										<div className={bem('event-description', 'track')}>
 											{label}
 										</div>
-										<div className="schedule__event-description--title">
+										<div className={bem('event-description', 'title')}>
 											{trackDetails[label]?.fullName}
 										</div>
 									</div>
 								</div>
-								<div className="schedule__event-image">
+								<div className={bem('event-image')}>
 									<img src={trackDetails[label]?.map} alt={`${label} map`} />
 								</div>
 							</EventCard>
@@ -183,21 +187,21 @@ const Schedule = () => {
 					})}
 				</div>
 				{nextTrack && 
-					<div className="schedule__current-race-container" ref={nextRaceRef}>
+					<div className={bem('current-race-container')} ref={nextRaceRef}>
 						<CurrentEventCard key={`round-${completedRaces.length + 1}`}>
 							<RoundTitle>Round {completedRaces.length + 1} - Up Next</RoundTitle>
 							<CurrentRaceDetailsContainer $isMobile={isMobile}>
-								<div className="schedule__current-race-track-panel">
-									<div className="schedule__event-info">
-										<div className="schedule__top-bar">
+								<div className={bem('current-race-track-panel')}>
+									<div className={bem('event-info')}>
+										<div className={bem('top-bar')}>
 											<div>
-												<p className="schedule__days">{getDayRange(nextTrack.date)}</p>
-												<div className="schedule__month-container">
-													<span className="schedule__month">
+												<p className={bem('days')}>{getDayRange(nextTrack.date)}</p>
+												<div className={bem('month-container')}>
+													<span className={bem('month')}>
 														{new Date(nextTrack.date).toLocaleString('default', { month: 'short' })}
 													</span>
 													{isRaceOver(nextTrack.date) &&
-														<span className="schedule__finish-banner-container">
+														<span className={bem('finish-banner-container')}>
 															<img src="https://www.formula1.com/etc/designs/fom-website/images/flag-asset.png" alt="race finished" />
 														</span>
 													}
@@ -209,22 +213,22 @@ const Schedule = () => {
 										</div>
 										
 									</div>
-									<div className="schedule__event-details">
-										<div className="schedule__event-description">
-											<div className="schedule__event-description--track">
+									<div className={bem('event-details')}>
+										<div className={bem('event-description')}>
+											<div className={bem('event-description', 'track')}>
 												{nextTrack.label}
 											</div>
-											<div className="schedule__event-description--title">
+											<div className={bem('event-description', 'title')}>
 												{trackDetails[nextTrack.label]?.fullName}
 											</div>
 										</div>
 									</div>
-									<div className="schedule__current-event-image">
+									<div className={bem('current-event-image')}>
 										<img src={trackDetails[nextTrack.label]?.whiteMap} alt={`${nextTrack.label} map`} />
 									</div>
 								</div>
 								{!isMobile && <WeatherPanel trackInfo={nextTrack}/>}
-								<div className="schedule__current-race-session-panel">
+								<div className={bem('current-race-session-panel')}>
 									<Countdown targetDate={nextRaceDate}/>
 									{isMobile && <WeatherPanel trackInfo={nextTrack}/>}
 									<SessionSchedule />
@@ -233,21 +237,21 @@ const Schedule = () => {
 						</CurrentEventCard>
 					</div>
 				}
-				<div className="schedule__race-card-container">
+				<div className={bem('race-card-container')}>
 					{futureRaces.map(({ date, label }, index) => {
 						return (
 							<EventCard key={`round-${index + 2}`}>
 								<RoundTitle>Round {index + 2}</RoundTitle>
-								<div className="schedule__event-info">
-									<div className="schedule__top-bar">
+								<div className={bem('event-info')}>
+									<div className={bem('top-bar')}>
 											<div>
-												<p className="schedule__days">{getDayRange(date)}</p>
-												<div className="schedule__month-container">
-													<span className="schedule__month">
+												<p className={bem('days')}>{getDayRange(date)}</p>
+												<div className={bem('month-container')}>
+													<span className={bem('month')}>
 														{new Date(date).toLocaleString('default', { month: 'short' })}
 													</span>
 													{isRaceOver(date) &&
-														<span className="schedule__finish-banner-container">
+														<span className={bem('finish-banner-container')}>
 															<img src="https://www.formula1.com/etc/designs/fom-website/images/flag-asset.png" alt="race finished" />
 														</span>
 													}
@@ -259,17 +263,17 @@ const Schedule = () => {
 									</div>
 									
 								</div>
-								<div className="schedule__event-details">
-									<div className="schedule__event-description">
-										<div className="schedule__event-description--track">
+								<div className={bem('event-details')}>
+									<div className={bem('event-description')}>
+										<div className={bem('event-description', 'track')}>
 											{label}
 										</div>
-										<div className="schedule__event-description--title">
+										<div className={bem('event-description', 'title')}>
 											{trackDetails[label]?.fullName}
 										</div>
 									</div>
 								</div>
-								<div className="schedule__event-image">
+								<div className={bem('event-image')}>
 									<img src={trackDetails[label]?.map} alt={`${label} map`} />
 								</div>
 							</EventCard>

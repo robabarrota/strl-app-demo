@@ -2,11 +2,14 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedConstructorArchiveStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction, cb } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatConstructorName from '@/hooks/useFormatConstructorName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'constructor-statistics';
+const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'total',
@@ -66,12 +69,12 @@ const ConstructorStatistics = ({show}) => {
 	}, [sortBy]);
 
 	const renderConstructorSubTable = useMemo(() => (
-		<div className="constructor-statistics__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="constructor-statistics__table-header constructor-statistics__table-header--sortable"
+							className={`${bem('table-header')} ${bem('table-header--sortable')}`}
 							onClick={() => sortByKey('car')}
 						>
 							Constructor {getSortIcon('car')}
@@ -81,8 +84,8 @@ const ConstructorStatistics = ({show}) => {
 				<tbody>
 					{sortedArchiveStats.map((row) => (
 						<tr key={row.car} >
-							<td className='constructor-statistics__table-cell'>
-								<TableTooltip innerHtml={row.car} customClass='constructor-statistics__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.car} customClass={bem('driver-label')}>
 									{formatConstructorName(row.car)} <ConstructorBadge constructor={row.car} />
 								</TableTooltip>
 							</td>
@@ -95,14 +98,14 @@ const ConstructorStatistics = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="constructor-statistics__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{statHeaders.map(stat => 
 								<th 
 									key={stat.key} 
-									className="constructor-statistics__table-header constructor-statistics__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 									onClick={() => sortByKey(stat.key)}
 								>
 									{stat.label} {getSortIcon(stat.key)}
@@ -116,7 +119,7 @@ const ConstructorStatistics = ({show}) => {
 								{statHeaders.map((stat, index) =>
 									<td
 										key={`${row.car}-${index}`}
-										className={`constructor-statistics__table-cell`}
+										className={bem('table-cell')}
 									>
 										<TableTooltip innerHtml={stat.label}>
 											{round(row[stat.key])}
@@ -135,8 +138,8 @@ const ConstructorStatistics = ({show}) => {
 
 	if (isDataReady) {
 		return show && (
-			<div className="constructor-statistics">
-				<div className="constructor-statistics__table-container">
+			<div className={blockName}>
+				<div className={bem('table-container')}>
 					{renderConstructorSubTable}
 					{renderResultsSubTable}
 				</div>

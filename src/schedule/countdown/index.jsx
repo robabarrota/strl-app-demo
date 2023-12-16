@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import { useCountdown } from '@/hooks/useCountdown';
 import Clock from './clock';
 import useIsMobile from '@/hooks/useIsMobile';
+import { cb } from '@/utils/utils';
+
+const blockName = 'schedule';
+const bem = cb(blockName);
 
 const CountdownContainer = styled.div`
     background-color: #2e6442;
@@ -44,17 +48,17 @@ const Countdown = ({ targetDate }) => {
     const DateTimeDisplay = ({ value, label, isDanger, isFirst }) => {
         return (
             <TimeUnit $isDanger={isDanger} $isFirst={isFirst} >
-                <p className="countdown__time-value">{value}</p>
-                <span className="countdown__time-label">{label}</span>
+                <p className={bem('time-value')}>{value}</p>
+                <span className={bem('time-label')}>{label}</span>
             </TimeUnit>
         );
     };
 
     const CountdownClock = ({ days, hours, minutes }) => {
         return (
-            <div className="countdown__clock-container">
+            <div className={bem('clock-container')}>
                 <Title>Race</Title>
-                <div className="countdown__clock">
+                <div className={bem('clock')}>
                     <DateTimeDisplay value={days} label={'Days'} $isDanger={days <= 3} isFirst/>
                     <DateTimeDisplay value={hours} label={'Hours'} />
                     <DateTimeDisplay value={minutes} label={'Mins'} />

@@ -2,10 +2,13 @@ import './styles.scss';
 import { useSelector } from 'react-redux';
 import { selectedDriverTrackStats } from '@/redux/selectors';
 import TableTooltip from '@/components/table-tooltip';
-import { tableSortFunction, round, nameSortFunction } from '@/utils/utils';
+import { tableSortFunction, round, nameSortFunction, cb } from '@/utils/utils';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'track-statistics';
+const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'total',
@@ -64,12 +67,12 @@ const TrackStatistics = ({show}) => {
 	}, [sortBy]);
 
 	const renderDriverSubTable = useMemo(() => (
-		<div className="track-statistics__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="track-statistics__table-header track-statistics__table-header"
+							className={`${bem('table-header')} ${bem('table-header')}`}
 							onClick={() => sortByKey('driver')}
 						>
 							Driver {getSortIcon('driver')}
@@ -79,8 +82,8 @@ const TrackStatistics = ({show}) => {
 				<tbody>
 					{sortedTrackStats.map((row) => (
 						<tr key={row.driver} >
-							<td className='track-statistics__table-cell'>
-								<TableTooltip innerHtml={row.driver} customClass='track-statistics__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
 									{formatDriverName(row.driver)}
 								</TableTooltip>
 							</td>
@@ -93,14 +96,14 @@ const TrackStatistics = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="track-statistics__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{statHeaders.map(stat => 
 								<th 
 									key={stat.key} 
-									className="track-statistics__table-header track-statistics__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
 									onClick={() => sortByKey(stat.key)}
 								>
 									{stat.label} {getSortIcon(stat.key)}
@@ -114,7 +117,7 @@ const TrackStatistics = ({show}) => {
 								{statHeaders.map((stat, index) =>
 									<td
 										key={`${row.driver}-${index}`}
-										className={`track-statistics__table-cell`}
+										className={bem('table-cell')}
 									>
 										<TableTooltip innerHtml={stat.label}>
 											{round(row[stat.key], {formatFn: stat.formatCallback})}
@@ -133,8 +136,8 @@ const TrackStatistics = ({show}) => {
 
 	if (isDataReady) {
 		return show && (
-			<div className="track-statistics">
-				<div className="track-statistics__table-container">
+			<div className={blockName}>
+				<div className={bem('table-container')}>
 					{renderDriverSubTable}
 					{renderResultsSubTable}
 				</div>

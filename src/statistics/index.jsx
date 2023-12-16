@@ -11,6 +11,10 @@ import DropdownSelect from '@/components/dropdown-select';
 import TrackStatistics from './track-statistics';
 import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 import useDropdownInUrlParams from '@/hooks/useDropdownInUrlParams';
+import { cb } from '@/utils/utils';
+
+const blockName = 'statistics';
+const bem = cb(blockName);
 
 const tabs = [
 	{
@@ -73,10 +77,10 @@ const Statistics = () => {
 	const renderHistoricalStatistics = useMemo(() => <HistoricalStatistics show={activeTabIndex === 3}/>, [activeTabIndex]);
 
 	return (
-		<div className="statistics">
-			<div className='statistics__title-container'>
-				<h1 className='statistics__title'>{tabs[activeTabIndex]?.label} Statistics</h1>
-				<div className='statistics__filter-bar'>
+		<div className={blockName}>
+			<div className={bem('title-container')}>
+				<h1 className={bem('title')}>{tabs[activeTabIndex]?.label} Statistics</h1>
+				<div className={bem('filter-bar')}>
 					<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={setActiveTabIndex} />
 					{activeTabIndex < 2 && 
 						<DropdownSelect 

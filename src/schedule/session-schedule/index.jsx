@@ -1,6 +1,10 @@
+import { cb } from '@/utils/utils';
 import './styles.scss';
 import React from 'react';
 import styled from 'styled-components';
+
+const blockName = 'session-schedule';
+const bem = cb(blockName);
 
 const MiscLabel = styled.p`
     margin: 0;
@@ -32,22 +36,22 @@ const SessionItem = styled.div`
 
 const SessionSchedule = () => {
     return (
-        <div className="session-schedule">
+        <div className={blockName}>
             <SessionList>
                 <SessionItem $isPractice={true}>
-                    <div className="session-schedule__name">Practice</div>
-                    <div className="session-schedule__day">Wed</div>
-                    <div className="session-schedule__time">20:30</div>
+                    <div className={bem('name')}>Practice</div>
+                    <div className={bem('day')}>Wed</div>
+                    <div className={bem('time')}>20:30</div>
                 </SessionItem>
                 <SessionItem>
-                    <div className="session-schedule__name">Qualifying</div>
-                    <div className="session-schedule__day">Wed</div>
-                    <div className="session-schedule__time">21:30</div>
+                    <div className={bem('name')}>Qualifying</div>
+                    <div className={bem('day')}>Wed</div>
+                    <div className={bem('time')}>21:30</div>
                 </SessionItem>
                 <SessionItem>
-                    <div className="session-schedule__name">Race</div>
-                    <div className="session-schedule__day">Wed</div>
-                    <div className="session-schedule__time">21:48</div>
+                    <div className={bem('name')}>Race</div>
+                    <div className={bem('day')}>Wed</div>
+                    <div className={bem('time')}>21:48</div>
                 </SessionItem>
             </SessionList>
             <MiscLabel>Times displayed are EST</MiscLabel>

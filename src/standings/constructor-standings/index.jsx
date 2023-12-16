@@ -8,7 +8,7 @@ import ConstructorBadge from '@/components/constructor-badge';
 import useFormatTrackName from '@/hooks/useFormatTrackName';
 import useFormatConstructorName from '@/hooks/useFormatConstructorName';
 import useGraphTrackOrientation from '@/hooks/useGraphTrackOrientation';
-import { round, getCarColor, tableSortFunction, nameSortFunction } from '@/utils/utils';
+import { round, getCarColor, tableSortFunction, nameSortFunction, cb } from '@/utils/utils';
 import TableTooltip from '@/components/table-tooltip';
 import {
 	LineChart,
@@ -22,6 +22,9 @@ import {
 } from "recharts";
 import styled from 'styled-components';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
+
+const blockName = 'constructor-standings';
+const bem = cb(blockName);
 
 const statHeaders = [
 	{key: 'total', label: 'TOTAL'},
@@ -127,9 +130,9 @@ const ConstructorStandings = ({show}) => {
 	, [trackList, constructorPoints, formatTrackName])
 
 	const getClassName = (header) => {
-		if (header === 'Driver') return 'constructor-standings__driver';
-		if (header === 'Car') return 'constructor-standings__car';
-		return 'constructor-standings__track'
+		if (header === 'Driver') return bem('driver');
+		if (header === 'Car') return bem('car');
+		return bem('track')
 	};
 
 	const sortByKey = useCallback((key) => {
@@ -147,12 +150,12 @@ const ConstructorStandings = ({show}) => {
 	}, [sortBy]);
 
 	const renderConstructorSubTable = useMemo(() => (
-		<div className="constructor-standings__end-subtable-container--left">
+		<div className={bem('end-subtable-container', 'left')}>
 			<table>
 				<thead>
 					<tr>
 						<th 
-							className="constructor-standings__table-header driver-standings__table-header--sortable"
+							className={`${bem('table-header')} ${bem('driver-standings__table-header--sortable')}`}
 							onClick={() => sortByKey('car')}
 						>
 							Constructor {getSortIcon('car')}
@@ -162,8 +165,8 @@ const ConstructorStandings = ({show}) => {
 				<tbody>
 					{sortedConstructorPoints.map(({car}) => (
 						<tr key={car}>
-							<td className={`constructor-standings__table-cell`}>
-								<TableTooltip innerHtml={car} customClass='constructor-standings__driver-label'>
+							<td className={bem('table-cell')}>
+								<TableTooltip innerHtml={car} customClass={bem('driver-label')}>
 									{formatConstructorName(car)} <ConstructorBadge constructor={car} />
 								</TableTooltip>
 							</td>
@@ -177,14 +180,14 @@ const ConstructorStandings = ({show}) => {
 
 	const renderResultsSubTable = useMemo(() => {
 		return (
-			<div className="constructor-standings__results-subtable-container">
+			<div className={bem('results-subtable-container')}>
 				<table>
 					<thead>
 						<tr>
 							{trackList.map(track => 
 								<th
 									key={track.key} 
-									className="constructor-standings__table-header constructor-standings__table-header--sortable" 
+									className={`${bem('table-header')} ${bem('table-header--sortable')}`} 
 									onClick={() => sortByKey(track.key)}
 								>
 									{formatTrackName(track.label)} {getSortIcon(track.key)}
@@ -198,7 +201,7 @@ const ConstructorStandings = ({show}) => {
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.car}-${index}`}
-										className={`constructor-standings__table-cell ${getClassName(track.key)}`}>
+										className={`${bem('table-cell')} ${getClassName(track.key)}`}>
 										<TableTooltip innerHtml={track.label}>
 											{row[track.key]}
 										</TableTooltip>
@@ -220,7 +223,7 @@ const ConstructorStandings = ({show}) => {
 						{statHeaders.map((header) => 
 							<th
 								key={header.key}
-								className="constructor-standings__table-header constructor-standings__table-header--sortable"
+								className={`${bem('table-header')} ${bem('table-header--sortable')}`}
 								onClick={() => sortByKey(header.key)}
 							>
 								{header.label} {getSortIcon(header.key)}
@@ -232,11 +235,11 @@ const ConstructorStandings = ({show}) => {
 					{sortedStats.map((constructorStats) => (
 						<tr key={constructorStats.car}>
 							<td
-								className={`constructor-standings__table-cell`}>
+								className={bem('table-cell')}>
 								{constructorStats.total}
 							</td>
 							<td
-								className={`constructor-standings__table-cell`}>
+								className={bem('table-cell')}>
 								<TableTooltip innerHtml={round(constructorStats.averagePoints, {decimalPlace: 8})} hangLeft>
 									{round(constructorStats.averagePoints)}
 								</TableTooltip>
@@ -248,8 +251,11 @@ const ConstructorStandings = ({show}) => {
 		;
 
 		return (
-			<div className="constructor-standings__end-subtable-container--right">
-				<div className={`constructor-standings__toggle-stats ${showStats ? 'show' : ''}`} onClick={() => setShowStats(current => !current)}>
+			<div className={bem('end-subtable-container', 'right')}>
+				<div
+					className={`${bem('toggle-stats')} ${showStats ? 'show' : ''}`}
+					onClick={() => setShowStats(current => !current)}
+				>
 					{showStats && <i className={"fa-solid fa-chevron-right"}></i>}
 					{!showStats && <i className={"fa-solid fa-chevron-left"}></i>}
 				</div>
@@ -326,15 +332,15 @@ const ConstructorStandings = ({show}) => {
 	);
 
 	return show && (
-		<div className="constructor-standings">
+		<div className={blockName}>
 			{isDataReady && (
 				<>
-					<div className="constructor-standings__table-container">
+					<div className={bem('table-container')}>
 						{renderConstructorSubTable}
 						{renderResultsSubTable}
 						{renderStatsSubTable}
 					</div>
-					<div className='constructor-standings__graph-container'>
+					<div className={bem('graph-container')}>
 						{renderGraph()}
 					</div>
 				</>

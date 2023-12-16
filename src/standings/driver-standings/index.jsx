@@ -331,7 +331,7 @@ const DriverStandings = ({show}) => {
 	);
 
 	return show && (
-		<div className="driver-standings">
+		<div className={blockName}>
 			{isDataReady && (
 				<>
 					<div className={bem('table-container')}>

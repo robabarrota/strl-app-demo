@@ -4,6 +4,10 @@ import YoutubeEmbed from '@/components/youtube-embed'
 import { useDispatch, useSelector } from 'react-redux';
 import { getHighlights} from '@/redux/selectors';
 import { fetchHighlights} from '@/redux/actions';
+import { cb } from '@/utils/utils';
+
+const blockName = 'highlights';
+const bem = cb(blockName);
 
 const embedIdRegex = /\?v=(\w+)&/;
 
@@ -17,18 +21,17 @@ const Highlights = () => {
 	const getEmbedId = (url) => url?.match(embedIdRegex)[0]?.replace('?v=', '')?.replace('&', '');
 
 	return (
-		<div className="highlights">
-			<h1 className='highlights__title'>STRL Highlights</h1>
+		<div className={blockName}>
+			<h1 className={bem('title')}>STRL Highlights</h1>
 
 			{isDataReady && (
-				<div className="highlights__container">
+				<div className={bem('container')}>
 					{highlights.map(highlight => {
 						const embedId = getEmbedId(highlight.url);
 						return <YoutubeEmbed key={embedId} embedId={embedId} />
 					})}
 				</div>
 			)}
-
 		</div>
 	);
 
