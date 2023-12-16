@@ -218,7 +218,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
     width: 100%;
     position: absolute;
     transform: rotate(${e=>e.$angle??0}deg);
-`,gAe=({hours:e,minutes:t,seconds:n})=>{const r=I.useMemo(()=>{const o=60-n;return Math.round(o/60*360)},[n]),i=I.useMemo(()=>Math.round(t/60*360),[t]),a=I.useMemo(()=>{let o=e;return o>12&&(o=o-12),Math.round(o/12*360)},[e]);return w.jsx("div",{className:cAe,children:w.jsxs(fAe,{children:[w.jsx(dAe,{$angle:r}),w.jsx(hAe,{$angle:i}),w.jsx(pAe,{$angle:a})]})})},mAe="schedule",pg=Xt(mAe),vAe=Ue.div`
+`,gAe=({hours:e,minutes:t,seconds:n})=>{const r=I.useMemo(()=>{const o=60-n;return Math.round(o/60*360)},[n]),i=I.useMemo(()=>Math.round(t/60*360),[t]),a=I.useMemo(()=>{let o=e;return o>12&&(o=o-12),Math.round(o/12*360)},[e]);return w.jsx("div",{className:cAe,children:w.jsxs(fAe,{children:[w.jsx(dAe,{$angle:r}),w.jsx(hAe,{$angle:i}),w.jsx(pAe,{$angle:a})]})})},mAe="countdown",pg=Xt(mAe),vAe=Ue.div`
     background-color: #2e6442;
     display: flex;
     ${e=>e.$isMobile?"":"max-width: 310px;"}
