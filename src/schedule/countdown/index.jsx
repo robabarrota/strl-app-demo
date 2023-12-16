@@ -6,7 +6,7 @@ import Clock from './clock';
 import useIsMobile from '@/hooks/useIsMobile';
 import { cb } from '@/utils/utils';
 
-const blockName = 'schedule';
+const blockName = 'countdown';
 const bem = cb(blockName);
 
 const CountdownContainer = styled.div`
