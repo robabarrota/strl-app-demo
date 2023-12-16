@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"baseUrl": ".",
 		"allowSyntheticDefaultImports": true,
 		"paths": {
-			"@/*": ["./src/*"],
+			"@/*": ["src/*"],
 		}
 	}
 }
