@@ -218,7 +218,7 @@ const RaceResults = () => {
 					</thead>
 					<tbody>
 						{sortedRaceResults.map((row) => (
-							<tr key={row.driver}>
+							<tr key={row.driver} className={bem('row')}>
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.driver}-${index}`}

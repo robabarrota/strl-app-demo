@@ -197,7 +197,7 @@ const DriverStandings = ({show}) => {
 					</thead>
 					<tbody>
 						{sortedDriverPoints.map((row) => (
-							<tr key={row.driver}>
+							<tr key={row.driver} className={bem('row')}>
 								{trackList.map(({key, label}, index) =>
 									<td
 										key={`${row.driver}-${index}`}

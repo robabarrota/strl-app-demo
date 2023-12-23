@@ -197,7 +197,7 @@ const ConstructorStandings = ({show}) => {
 					</thead>
 					<tbody>
 						{sortedConstructorPoints.map((row) => (
-							<tr key={row.car}>
+							<tr key={row.car} className={bem('row')}>
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.car}-${index}`}

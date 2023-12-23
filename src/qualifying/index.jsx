@@ -201,7 +201,7 @@ const Qualifying = () => {
 					</thead>
 					<tbody>
 						{sortedQualifyingResults.map((row) => (
-							<tr key={row.driver}>
+							<tr key={row.driver} className={bem('row')}>
 								{trackList.map((track, index) =>
 									<td
 										key={`${row.driver}-${index}`}
