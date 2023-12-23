@@ -249,6 +249,22 @@ const Driver = () => {
 								</th>
 								<td className={bem('advanced-details', 'value')}>{nth(driverInfo.attendanceRank) || 'N/A'}</td>
 							</tr>
+							<tr>
+								<th className={bem('advanced-details', 'key')}>
+									<span className={bem('advanced-details', 'key--label')}>
+										STRL Cup Appearances
+									</span>
+								</th>
+								<td className={bem('advanced-details', 'value')}>{driverInfo.sTRLCupAppearances || 0}</td>
+							</tr>
+							<tr>
+								<th className={bem('advanced-details', 'key')}>
+									<span className={bem('advanced-details', 'key--label')}>
+										STRL Cup Wins
+									</span>
+								</th>
+								<td className={bem('advanced-details', 'value')}>{driverInfo.sTRLCupWins || 0}</td>
+							</tr>
 						</tbody>
 					</table>
 				</AdvancedDetailsPanel>
