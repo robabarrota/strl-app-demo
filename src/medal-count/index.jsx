@@ -31,10 +31,10 @@ const statHeaders = [
 ];
 
 const medalHeaders = [
-	{key: 'gold', label: 'Gold'},
-	{key: 'silver', label: 'Silver'},
-	{key: 'bronze', label: 'Bronze'},
-	{key: 'cup', label: 'Cup'},
+	{key: 'gold', label: 'Gold', icon: 'fa-solid fa-medal'},
+	{key: 'silver', label: 'Silver', icon: 'fa-solid fa-medal'},
+	{key: 'bronze', label: 'Bronze', icon: 'fa-solid fa-medal'},
+	{key: 'cup', label: 'Cup', icon: 'fa-solid fa-trophy'},
 ];
 
 const MedalCount = () => {
@@ -117,7 +117,7 @@ const MedalCount = () => {
 									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
 									onClick={() => sortByKey(header.key)}
 								>
-									<i className={`fa-solid fa-medal ${bem(header.key)}`}></i> {getSortIcon(header.key)}
+									<i className={`${header.icon} ${bem(header.key)}`}></i> {getSortIcon(header.key)}
 								</th>
 							)}
 						</tr>
