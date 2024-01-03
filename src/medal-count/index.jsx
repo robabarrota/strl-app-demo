@@ -17,6 +17,7 @@ import {
 } from "recharts";
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 import TableTooltip from '@/components/table-tooltip';
+import useIsMobile from '@/hooks/useIsMobile';
 
 const blockName = 'medal-count';
 const bem = cb(blockName);
@@ -39,6 +40,7 @@ const medalHeaders = [
 
 const MedalCount = () => {
 	const dispatch = useDispatch();
+	const isMobile = useIsMobile();
 	const [sortedMedalCount, setSortedMedalCount] = useState([])
 	const { content: medalCount, loading: medalCountLoading, error: medalCountError, fetched: medalCountFetched } = useSelector(getMedalCount);
 	const formatDriverName = useFormatDriverName();
@@ -189,6 +191,8 @@ const MedalCount = () => {
 		)
 	};
 
+	const graphMargin = useMemo(() => isMobile ? 50 : 90, [isMobile]);
+
 	const renderGraph = () => (
 		<ResponsiveContainer width="100%" height="100%">
 			<BarChart 
@@ -199,7 +203,7 @@ const MedalCount = () => {
 				margin={{
 					top: 5,
 					right: 30,
-					left: 50,
+					left: graphMargin,
 					bottom: 5
 				}} 
 				>
