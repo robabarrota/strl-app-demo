@@ -1,5 +1,6 @@
 import { camelCase } from 'lodash';
 import { carColorMap, driverImageMap, defaultDriverImage } from './constants';
+import Cookies from 'js-cookie';
 
 const cb = block => {
     const bem = (element = '', modifiers = '') => {

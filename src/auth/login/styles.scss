@@ -1,0 +1,78 @@
+@import '../../variables';
+
+.login {
+    width: inherit;
+
+    &__title {
+        font-size: 32px;
+        font-family: 'F1BoldRegular';
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #d0d0d2;
+    }
+    
+    &__input-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    &__label {
+        font-family: "Titillium Web";
+        font-size: 17px;
+        letter-spacing: .2px;
+        color: #15151e;
+        display: block;
+        font-weight: 400;
+        padding: 0 10px;
+        margin-bottom: 5px;
+    }
+
+    &__input {
+        font-family: "Titillium Web";
+        font-size: 15px;
+        color: #15151e;
+        background: #fff;
+        border: solid 1px #15151e;
+        border-radius: 10px;
+        display: block;
+        width: 100%;
+        padding: 15px 10px;
+    }
+
+    &__password-icon-container {
+        position: absolute;
+        right: 8px;
+        top: 38px;
+        width: 30px;
+        height: 30px;
+        align-items: end;
+        display: flex;
+        
+        > i {
+            font-size: 24px;
+        }
+    }
+
+    &__submit-button {
+        margin-left: 0;
+        margin-top: 15px;
+        display: block;
+        padding: 10px 30px;
+        background-color: #e00;
+        appearance: none;
+        border-radius: 5px;
+        border: none;
+        box-sizing: border-box;
+        line-height: 1;
+        text-decoration: none;
+        text-transform: uppercase;
+        outline: 0;
+        font-family: "Titillium Web";
+        font-size: 13px;
+        letter-spacing: .5px;
+        font-weight: 600;
+        color: #fff;
+    }
+}

@@ -1,6 +1,8 @@
 import './styles.scss';
 import useIsMobile from '@/hooks/useIsMobile';
 import { cb } from '@/utils/utils';
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const blockName = 'tabs';
@@ -36,9 +38,42 @@ const TabLabel = styled.label`
     ${props => props.$selected ? 'color: #fff;' : ''};
 `;
 
-const Tabs = ({ tabs, activeTabIndex, onChange }) => {
-    	const isMobile = useIsMobile();
+const Tabs = ({ tabs, activeTabIndex, onChange, useLinks }) => {
+    const isMobile = useIsMobile();
 
+    const renderTab = useCallback((tabContent, index) => {
+        if (useLinks) {
+            return  <TabLabel
+                key={`label-${index}`} 
+                htmlFor={`radio-${index}`}
+                $selected={index === activeTabIndex}
+                $isMobile={isMobile}
+            >
+                <Link to={tabContent.to}>
+					{tabContent.label}
+				</Link>
+            </TabLabel>
+        }
+        if (isMobile && tabContent.icon) {
+            return  <TabLabel
+                key={`label-${index}`} 
+                htmlFor={`radio-${index}`}
+                $selected={index === activeTabIndex}
+                $isMobile={isMobile}
+            >
+                <img className={bem('icon')} src={tabContent.icon} alt={'icon'}/>
+            </TabLabel>
+        } else {
+            return <TabLabel
+                key={`label-${index}`} 
+                htmlFor={`radio-${index}`}
+                $selected={index === activeTabIndex}
+            >
+                {tabContent.label}
+            </TabLabel>
+        }
+    }, [isMobile, activeTabIndex, useLinks]);
+    
     return (
         <div className={blockName}>
             <div className={bem('container')}>
@@ -50,32 +85,10 @@ const Tabs = ({ tabs, activeTabIndex, onChange }) => {
                             type="radio" 
                             id={`radio-${index}`}
                             name="tabs" 
-                            onChange={() => onChange(index)} 
+                            onChange={() => onChange && onChange(index)} 
                             checked={index === activeTabIndex}
                         />
-                        {
-                            isMobile ? (
-                                <TabLabel
-                                    key={`label-${index}`} 
-                                    htmlFor={`radio-${index}`}
-                                    $selected={index === activeTabIndex}
-                                    $isMobile={isMobile}
-                                >
-                                    <img className={bem('icon')} src={content.icon} alt={'icon'}/>
-                                </TabLabel>
-                                
-                            ) : 
-                            (
-                                <TabLabel
-                                    key={`label-${index}`} 
-                                    htmlFor={`radio-${index}`}
-                                    $selected={index === activeTabIndex}
-                                >
-                                    {content.label}
-                                </TabLabel>
-                            )
-                        }
-                       
+                        {renderTab(content, index)}
                     </div>
                 ))}
             </div>

@@ -104,3 +104,15 @@ export const setHistoricalDriverStats = historicalDriverStats => ({ type: SET_HI
 
 export const FETCH_HISTORICAL_DRIVER_STATS = `${prefix}/FETCH_HISTORICAL_DRIVER_STATS`;
 export const fetchHistoricalDriverStats = () => ({ type: FETCH_HISTORICAL_DRIVER_STATS });
+
+export const LOGIN = `${prefix}/LOGIN`;
+export const login = (loginBody) => ({ type: LOGIN, payload: { loginBody } });
+
+export const LOGOUT = `${prefix}/LOGOUT`;
+export const logout = () => ({ type: LOGOUT });
+
+export const SET_ACTIVE_USER = `${prefix}/SET_ACTIVE_USER`;
+export const setActiveUser = activeUser => ({ type: SET_ACTIVE_USER, payload: { activeUser } });
+
+export const FETCH_ACTIVE_USER = `${prefix}/FETCH_ACTIVE_USER`;
+export const fetchActiveUser = () => ({ type: FETCH_ACTIVE_USER });

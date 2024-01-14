@@ -1,0 +1,16 @@
+@import '../variables';
+
+.auth {
+    display: grid;
+    gap: 1.5rem;
+    @media screen and (max-width: $mobile-width) {
+        gap: 1rem;
+    }
+    justify-content: center;
+    width: 600px;
+    margin: auto;
+
+    > .tabs {
+        justify-content: center;
+    }
+}

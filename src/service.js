@@ -1,5 +1,9 @@
+import axios from 'axios';
 import { seasonSheetConfig } from './utils/constants';
 import { fetchGoogleSheetsData } from 'google-sheets-mapper';
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.withCredentials = true;
 
 const service = {
     getTrackList: async () => await fetchGoogleSheetsData({
@@ -94,6 +98,14 @@ const service = {
         ...seasonSheetConfig,
         sheetsOptions: [{ id: 'Total Driver Stats' }],
     }),
+
+    signup: async(body) => await axios.post(`${apiBaseUrl}/signup`, body),
+    
+    login: async(body) => await axios.post(`${apiBaseUrl}/login`, body),
+
+    logout: async(body) => await axios.post(`${apiBaseUrl}/logout`, body),
+    
+    getActiveUser: async(body) => await axios.get(`${apiBaseUrl}/me`),
 }
 
 export default service;

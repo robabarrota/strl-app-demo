@@ -1,6 +1,7 @@
 import service from '@/service';
 import * as actions from './actions';
 import { camelize, camelizeKeys } from '@/utils/utils';
+import { toast } from 'react-toastify';
 
 const DEFAULT_SHEET_ID = import.meta.env.VITE_MAIN_SHEET_ID;
 const reserveRegex = /^Reserve/;
@@ -495,6 +496,83 @@ const fetchHistoricalDriverStats = (store, action) => {
 	}
 }
 
+const login = (store, action) => {
+	if (action.type === actions.LOGIN) {
+		store.dispatch(actions.setActiveUser({loading: true}));
+		return service
+			.login(action.payload.loginBody)
+			.then((response) => {
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: response.data,
+					error: null,
+					fetched: true
+				}))
+			})
+			.catch((error) => {
+				console.error(error);
+				toast.error('Invalid username or password');
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: null,
+					error: error,
+					fetched: true
+				}))
+			});
+	}
+}
+
+const logout = (store, action) => {
+	if (action.type === actions.LOGOUT) {
+		store.dispatch(actions.setActiveUser({loading: true}));
+		return service
+			.logout()
+			.then(() => {
+				toast.success('Successfully logged out');
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: null,
+					error: null,
+					fetched: true
+				}));
+			})
+			.catch((error) => {
+				console.error(error);
+				toast.error('Error logging out');
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: null,
+					error,
+					fetched: true
+				}))
+			});
+	}
+}
+
+const fetchActiveUser = (store, action) => {
+	if (action.type === actions.FETCH_ACTIVE_USER) {
+		store.dispatch(actions.setActiveUser({loading: true}));
+		return service
+			.getActiveUser()
+			.then((response) => {
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: response.data,
+					error: null,
+					fetched: true
+				}));
+			})
+			.catch((error) => {
+				store.dispatch(actions.setActiveUser({
+					loading: false,
+					content: null,
+					error: error,
+					fetched: true
+				}));
+			});
+	}
+}
+
 const effects = [
 	fetchTrackList, 
 	fetchParticipants, 
@@ -513,6 +591,9 @@ const effects = [
 	setSelectedSeason,
 	fetchDriverTrackStats,
 	fetchHistoricalDriverStats,
+	login,
+	logout,
+	fetchActiveUser,
 ];
 
 export default effects;

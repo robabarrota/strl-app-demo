@@ -11,8 +11,29 @@ import Standings from './standings/index';
 import Statistics from './statistics/index';
 import Drivers from './drivers/index';
 import Driver from './driver/index';
+import Auth from './auth';
+import EditQualifying from './admin/edit-qualifying';
 
-import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet } from 'react-router-dom';
+import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+import useIsLoggedIn from './hooks/useIsLoggedIn';
+
+const PrivateRoutes = () => {
+	const location = useLocation();
+	const isLoggedIn = useIsLoggedIn();
+	return isLoggedIn
+		? <Outlet />
+		: <Navigate to="/auth/login" replace state={{ from: location }} />;
+};
+
+const AuthRoute = () => {
+	const isLoggedIn = useIsLoggedIn();
+
+	return isLoggedIn
+		? <Navigate to="/admin/seasons" replace />
+		: <Auth />;
+};
 
 const router = createHashRouter([
 	{
@@ -59,6 +80,20 @@ const router = createHashRouter([
 				element: <Penalties />,
 			},
 			{
+				path: "/auth/*",
+				element: <AuthRoute />,
+			},
+			{
+				path: "/admin",
+				element: <PrivateRoutes />,
+				children: [
+					{
+						path: "seasons",
+						element: <EditQualifying />,
+					}
+				]
+			},
+			{
 				path: "/",
 				element: <Navigate replace to="/race-results" />,
 			},
@@ -80,6 +115,7 @@ function Layout() {
 					<Outlet />
 				</div>
 			</div>
+			<ToastContainer position="bottom-left" />
 			<ScrollRestoration />
 		</>
 	);

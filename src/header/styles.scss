@@ -30,6 +30,45 @@
 		line-height: normal;
 	}
 
+	&__user-nav-button {
+		height: 40px;
+		width: 40px;
+		border-radius: 20px;
+		background: #743937;
+	}
+
+	&__admin-nav-container {
+		position: absolute;
+		right: 20px;
+		top: 20px;
+	}
+
+	&__user-nav-container {
+		position: absolute;
+		right: 20px;
+		top: 12px;
+	}
+
+
+	&__admin-menu {
+		position: absolute;
+		right: 0;
+		display: flex;
+		gap: 6px;
+		flex-direction: column;
+		background: #888;
+		padding: 10px;
+		border-radius: 5px;
+	}
+
+	&__admin-link-label {
+		padding: 10px 10px 10px 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+	}
+
 	&__burger-menu {
 		display: none;
 	}
@@ -119,10 +158,10 @@
 		}
 
 		&__responsive-bar {
-			display: grid;
-			grid-auto-flow: column;
+			display: flex;
 			width: 100%;
 			align-items: center;
+			justify-content: space-between;
 		}
 
 		&__dropdown-chevron {

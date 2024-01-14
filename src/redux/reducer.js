@@ -20,6 +20,7 @@ const INITIAL_STATE = {
 	selectedTrack: { content: null },
 	allTracks: { content: [] },
 	historicalDriverStats: { loading: false, content: [], error: null, fetched: false },
+	activeUser: { loading: false, content: {}, error: null, fetched: false },
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -62,6 +63,8 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return { ...state, allTracks: {...state.allTracks, ...action.payload.allTracks} };
 		case actions.SET_HISTORICAL_DRIVER_STATS:
 			return { ...state, historicalDriverStats: { ...state.historicalDriverStats, ...action.payload.historicalDriverStats } };
+		case actions.SET_ACTIVE_USER:
+			return { ...state, activeUser: { ...state.activeUser, ...action.payload.activeUser } };
 		default:
 			return state;
 	}
