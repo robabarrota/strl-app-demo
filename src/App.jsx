@@ -12,13 +12,13 @@ import Statistics from './statistics/index';
 import Drivers from './drivers/index';
 import Driver from './driver/index';
 import Auth from './auth';
-import EditQualifying from './admin/edit-qualifying';
 
 import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import useIsLoggedIn from './hooks/useIsLoggedIn';
 import AccountSettings from './admin/account-settings';
+import AdminSeasons from './admin/admin-seasons';
 
 const PrivateRoutes = () => {
 	const location = useLocation();
@@ -90,7 +90,7 @@ const router = createHashRouter([
 				children: [
 					{
 						path: "seasons",
-						element: <EditQualifying />,
+						element: <AdminSeasons />,
 					},
 					{
 						path: "account",
