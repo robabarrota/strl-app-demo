@@ -37,8 +37,8 @@ const Header = () => {
 	}, [adminMenuOpen, clickedOutsideAdminMenu, setAdminMenuOpen])
 
 	useEffect(() => {
-		if (!navLinksOpen) setAdminMenuOpen(false)
-	}, [navLinksOpen, setAdminMenuOpen]);
+		if (!navLinksOpen || isLoggedIn) setAdminMenuOpen(false)
+	}, [navLinksOpen, isLoggedIn, setAdminMenuOpen]);
 
 	return (
 		<div 

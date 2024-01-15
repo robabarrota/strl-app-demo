@@ -105,7 +105,10 @@ const service = {
 
     logout: async(body) => await axios.post(`${apiBaseUrl}/logout`, body),
     
-    getActiveUser: async(body) => await axios.get(`${apiBaseUrl}/me`),
+    getActiveUser: async() => await axios.get(`${apiBaseUrl}/me`),
+
+    updateActiveUser: async(body) => await axios.post(`${apiBaseUrl}/me`, body),
+
 }
 
 export default service;

@@ -18,6 +18,7 @@ import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet, 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import useIsLoggedIn from './hooks/useIsLoggedIn';
+import AccountSettings from './admin/account-settings';
 
 const PrivateRoutes = () => {
 	const location = useLocation();
@@ -90,6 +91,10 @@ const router = createHashRouter([
 					{
 						path: "seasons",
 						element: <EditQualifying />,
+					},
+					{
+						path: "account",
+						element: <AccountSettings />,
 					}
 				]
 			},

@@ -116,3 +116,6 @@ export const setActiveUser = activeUser => ({ type: SET_ACTIVE_USER, payload: { 
 
 export const FETCH_ACTIVE_USER = `${prefix}/FETCH_ACTIVE_USER`;
 export const fetchActiveUser = () => ({ type: FETCH_ACTIVE_USER });
+
+export const UPDATE_ACTIVE_USER = `${prefix}/UPDATE_ACTIVE_USER`;
+export const updateActiveUser = (updateBody) => ({ type: UPDATE_ACTIVE_USER, payload: { updateBody }  });

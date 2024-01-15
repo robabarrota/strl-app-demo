@@ -573,6 +573,20 @@ const fetchActiveUser = (store, action) => {
 	}
 }
 
+const updateActiveUser = (store, action) => {
+	if (action.type === actions.UPDATE_ACTIVE_USER) {
+		return service
+			.updateActiveUser(action.payload.updateBody)
+			.then(() => {
+				store.dispatch(actions.fetchActiveUser());
+				toast.success('Update successful')
+			})
+			.catch((error) => {
+				toast.error('Unable to update account settings')
+			});
+	}
+}
+
 const effects = [
 	fetchTrackList, 
 	fetchParticipants, 
@@ -594,6 +608,7 @@ const effects = [
 	login,
 	logout,
 	fetchActiveUser,
+	updateActiveUser,
 ];
 
 export default effects;
