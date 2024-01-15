@@ -1,11 +1,10 @@
 import { cb } from '@/utils/utils';
 import './styles.scss';
 
-const blockName = 'edit-qualifying';
+const blockName = 'admin-seasons';
 const bem = cb(blockName);
 
-const EditQualifying = () => {
-	
+const AdminSeasons = () => {
 	
 	return (
 		<div>EditQualifying!</div>
@@ -13,4 +12,4 @@ const EditQualifying = () => {
 
 }
 
-export default EditQualifying;
+export default AdminSeasons;

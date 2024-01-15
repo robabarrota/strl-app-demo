@@ -109,6 +109,7 @@ const service = {
 
     updateActiveUser: async(body) => await axios.post(`${apiBaseUrl}/me`, body),
 
+    getSeasons: async() => await axios.get(`${apiBaseUrl}/seasons`),
 }
 
 export default service;
