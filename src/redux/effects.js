@@ -585,7 +585,28 @@ const updateActiveUser = (store, action) => {
 				toast.error('Unable to update account settings')
 			});
 	}
-}
+};
+
+const fetchSeasons = (store, action) => {
+	if (action.type === actions.FETCH_SEASONS) {
+		store.dispatch(actions.setSeasons({ loading: true }));
+		service
+			.getSeasons()
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasons({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setSeasons({ loading: false, error, fetched: true }));
+			});
+	}
+};
 
 const effects = [
 	fetchTrackList, 
@@ -609,6 +630,7 @@ const effects = [
 	logout,
 	fetchActiveUser,
 	updateActiveUser,
+	fetchSeasons
 ];
 
 export default effects;

@@ -22,8 +22,6 @@ export const getDriverTrackStats = state => getDomainsState(state).driverTrackSt
 export const getAllTracks = state => getDomainsState(state).allTracks;
 export const getSelectedTrack = state => getDomainsState(state).selectedTrack;
 export const getHistoricalDriverStats = state => getDomainsState(state).historicalDriverStats;
-export const getActiveUser = state => getDomainsState(state).activeUser;
-
 
 export const selectedDriverArchiveStats = createSelector(
     getArchiveStats,
@@ -80,3 +78,5 @@ export const getDriverPageData = createSelector(
     }
 );
 
+export const getActiveUser = state => getDomainsState(state).activeUser;
+export const getSeasons = state => getDomainsState(state).seasons;

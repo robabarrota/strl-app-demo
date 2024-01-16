@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import useIsLoggedIn from './hooks/useIsLoggedIn';
 import AccountSettings from './admin/account-settings';
 import AdminSeasons from './admin/admin-seasons';
+import AdminSeason from './admin/admin-season';
 
 const PrivateRoutes = () => {
 	const location = useLocation();
@@ -81,16 +82,20 @@ const router = createHashRouter([
 				element: <Penalties />,
 			},
 			{
-				path: "/auth/*",
+				path: "auth/*",
 				element: <AuthRoute />,
 			},
 			{
-				path: "/admin",
+				path: "admin",
 				element: <PrivateRoutes />,
 				children: [
 					{
 						path: "seasons",
 						element: <AdminSeasons />,
+					},
+					{
+						path: "season/:seasonId",
+						element: <AdminSeason />
 					},
 					{
 						path: "account",

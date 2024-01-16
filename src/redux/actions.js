@@ -120,3 +120,8 @@ export const fetchActiveUser = () => ({ type: FETCH_ACTIVE_USER });
 export const UPDATE_ACTIVE_USER = `${prefix}/UPDATE_ACTIVE_USER`;
 export const updateActiveUser = (updateBody) => ({ type: UPDATE_ACTIVE_USER, payload: { updateBody }  });
 
+export const FETCH_SEASONS = `${prefix}/FETCH_SEASONS`;
+export const fetchSeasons = () => ({ type: FETCH_SEASONS });
+
+export const SET_SEASONS = `${prefix}/SET_SEASONS`;
+export const setSeasons = seasons => ({ type: SET_SEASONS, payload: { seasons } });
