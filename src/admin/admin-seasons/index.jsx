@@ -13,7 +13,7 @@ const AdminSeasons = () => {
 	return (
 		<div className={blockName}>
 			{seasons.map(season => 
-				<NavLink to={`/admin/season/${season.id}`}>
+				<NavLink to={`/admin/season/${season.id}`} key={season.id}>
 					{() => (
 						<div>
 							Season {season.number}

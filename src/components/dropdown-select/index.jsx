@@ -6,8 +6,8 @@ import { cb } from '@/utils/utils';
 const blockName = 'dropdown-select';
 const bem = cb(blockName);
 
-const DropdownSelect = ({ options, value, onChange, ...props }) => {
-    const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
+const DropdownSelect = ({ options, value, onChange, selectKey, ...props }) => {
+    const selectedOption = useMemo(() => options.find((option) => selectKey ? option[selectKey] : option.value === value), [options, value, selectKey]);
     return (
         <div className={blockName}>
             <Select

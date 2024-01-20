@@ -12,12 +12,11 @@ const bem = cb(blockName);
 
 const AccountSettings = () => {
 	const dispatch = useDispatch();
+	const {content: user} = useSelectOrFetch(getActiveUser, fetchActiveUser);
 	const [showPassword, setShowPassword] = useState(false);
-	const [username, setUsername] = useState('');
+	const [username, setUsername] = useState(user?.username || '');
 	const [password, setPassword] = useState('');
 	const [confirmedPassword, setConfirmedPassword] = useState('');
-
-	const {content: user} = useSelectOrFetch(getActiveUser, fetchActiveUser);
 
 	useEffect(() => {
 		setUsername(user.username);
@@ -61,7 +60,7 @@ const AccountSettings = () => {
 						required 
 						autoFocus
 						value={username}
-						onChange={(e) => setUsername(e.target.value?.trim())}
+						onChange={(e) => setUsername(e?.target?.value?.trim() || '')}
 					/>
 				</div>
 				<div className={bem('input-group')}>
@@ -74,23 +73,23 @@ const AccountSettings = () => {
 						autoComplete="current-password" 
 						required
 						value={password}
-						onChange={(e) => setPassword(e.target.value?.trim())}
+						onChange={(e) => setPassword(e?.target?.value?.trim() || '')}
 					/>
 					<button className={bem('password-icon-container')} onClick={() => setShowPassword(current => !current)}>
 						{passwordIcon()}
 					</button>
 				</div>
 				<div className={bem('input-group')}>
-					<label className={bem('label')} htmlFor="current-password">Confirm Password</label>
+					<label className={bem('label')} htmlFor="confirmed-password">Confirm Password</label>
 					<input 
 						className={bem('input')} 
-						id="current-password" 
+						id="confirmed-password" 
 						name="password" 
 						type={showPassword ? "text": "password"} 
-						autoComplete="current-password" 
+						autoComplete="current-password"
 						required
 						value={confirmedPassword}
-						onChange={(e) => setConfirmedPassword(e.target.value?.trim())}
+						onChange={(e) => setConfirmedPassword(e?.target?.value?.trim() || '')}
 					/>
 					<button className={bem('password-icon-container')} onClick={() => setShowPassword(current => !current)}>
 						{passwordIcon()}

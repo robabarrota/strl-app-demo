@@ -22,6 +22,10 @@ const INITIAL_STATE = {
 	historicalDriverStats: { loading: false, content: [], error: null, fetched: false },
 	activeUser: { loading: false, content: {}, error: null, fetched: false },
 	seasons: { loading: false, content: [], error: null, fetched: false },
+	seasonDrivers: { loading: false, content: [], error: null, fetched: false },
+	seasonTracks: { loading: false, content: [], error: null, fetched: false },
+	drivers: { loading: false, content: [], error: null, fetched: false },
+	constructors: { loading: false, content: [], error: null, fetched: false },
 };
 
 const reducer = (state = INITIAL_STATE, action) => {
@@ -68,6 +72,15 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return { ...state, activeUser: { ...state.activeUser, ...action.payload.activeUser } };
 		case actions.SET_SEASONS:
 			return { ...state, seasons: { ...state.seasons, ...action.payload.seasons } };
+		case actions.SET_SEASON_DRIVERS:
+			return { ...state, seasonDrivers: { ...state.seasonDrivers, ...action.payload.seasonDrivers } };
+		case actions.SET_SEASON_TRACKS:
+			return { ...state, seasonTracks: { ...state.seasonTracks, ...action.payload.seasonTracks } };
+		case actions.SET_DRIVERS:
+			return { ...state, drivers: { ...state.drivers, ...action.payload.drivers } };
+		case actions.SET_CONSTRUCTORS:
+			return { ...state, constructors: { ...state.constructors, ...action.payload.constructors } };
+	
 		default:
 			return state;
 	}

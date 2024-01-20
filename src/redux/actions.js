@@ -125,3 +125,37 @@ export const fetchSeasons = () => ({ type: FETCH_SEASONS });
 
 export const SET_SEASONS = `${prefix}/SET_SEASONS`;
 export const setSeasons = seasons => ({ type: SET_SEASONS, payload: { seasons } });
+
+export const FETCH_SEASON_DRIVERS = `${prefix}/FETCH_SEASON_DRIVERS`;
+export const fetchSeasonDrivers = (seasonId) => ({ type: FETCH_SEASON_DRIVERS, payload: { seasonId } });
+
+export const SET_SEASON_DRIVERS = `${prefix}/SET_SEASON_DRIVERS`;
+export const setSeasonDrivers = seasonDrivers => ({ type: SET_SEASON_DRIVERS, payload: { seasonDrivers } });
+
+export const FETCH_SEASON_TRACKS = `${prefix}/FETCH_SEASON_TRACKS`;
+export const fetchSeasonTracks = (seasonId) => ({ type: FETCH_SEASON_TRACKS, payload: { seasonId } });
+
+export const SET_SEASON_TRACKS = `${prefix}/SET_SEASON_TRACKS`;
+export const setSeasonTracks = seasonTracks => ({ type: SET_SEASON_TRACKS, payload: { seasonTracks } });
+
+export const FETCH_DRIVERS = `${prefix}/FETCH_DRIVERS`;
+export const fetchDrivers = () => ({ type: FETCH_DRIVERS });
+
+export const SET_DRIVERS = `${prefix}/SET_DRIVERS`;
+export const setDrivers = drivers => ({ type: SET_DRIVERS, payload: { drivers } });
+
+export const FETCH_CONSTRUCTORS = `${prefix}/FETCH_CONSTRUCTORS`;
+export const fetchConstructors = () => ({ type: FETCH_CONSTRUCTORS });
+
+export const SET_CONSTRUCTORS = `${prefix}/SET_CONSTRUCTORS`;
+export const setConstructors = constructors => ({ type: SET_CONSTRUCTORS, payload: { constructors } });
+
+export const CREATE_SEASON_DRIVER = `${prefix}/CREATE_SEASON_DRIVER`;
+export const createSeasonDriver = seasonId => ({ type: CREATE_SEASON_DRIVER, payload: { seasonId } });
+
+export const DELETE_SEASON_DRIVER = `${prefix}/DELETE_SEASON_DRIVER`;
+export const deleteSeasonDriver = (seasonId, seasonDriverId) => ({ type: DELETE_SEASON_DRIVER, payload: { seasonId, seasonDriverId } });
+
+export const UPDATE_SEASON_DRIVER = `${prefix}/UPDATE_SEASON_DRIVER`;
+export const updateSeasonDriver = (seasonId, seasonDriverId, updateBody) => ({ type: UPDATE_SEASON_DRIVER, payload: { seasonId, seasonDriverId, updateBody } });
+

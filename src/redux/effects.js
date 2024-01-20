@@ -608,6 +608,129 @@ const fetchSeasons = (store, action) => {
 	}
 };
 
+const fetchSeasonDrivers = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_DRIVERS) {
+		store.dispatch(actions.setSeasonDrivers({ loading: true }));
+		service
+			.getSeasonDrivers(action.payload.seasonId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonDrivers({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setSeasonDrivers({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const fetchSeasonTracks = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_DRIVERS) {
+		store.dispatch(actions.setSeasonTracks({ loading: true }));
+		service
+			.getSeasonTracks(action.payload.seasonId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonTracks({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setSeasonTracks({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const fetchDrivers = (store, action) => {
+	if (action.type === actions.FETCH_DRIVERS) {
+		store.dispatch(actions.setDrivers({ loading: true }));
+		service
+			.getDrivers()
+			.then((response) => {
+				store.dispatch(
+					actions.setDrivers({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setDrivers({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const fetchConstructors = (store, action) => {
+	if (action.type === actions.FETCH_CONSTRUCTORS) {
+		store.dispatch(actions.setConstructors({ loading: true }));
+		service
+			.getConstructors()
+			.then((response) => {
+				store.dispatch(
+					actions.setConstructors({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true
+					}),
+				);
+			})
+			.catch((error) => {
+				store.dispatch(actions.setConstructors({ loading: false, error, fetched: true }));
+			});
+	}
+};
+
+const createSeasonDriver = (store, action) => {
+	if (action.type === actions.CREATE_SEASON_DRIVER) {
+		store.dispatch(actions.setSeasonDrivers({ loading: true }));
+		const {seasonId} = action.payload;
+		service
+			.createSeasonDriver(seasonId)
+			.then(() => store.dispatch(actions.fetchSeasonDrivers(seasonId)))
+				.catch((error) => {
+					store.dispatch(actions.setSeasonDrivers({ loading: false, error, fetched: true }));
+				});
+	}
+};
+
+const deleteSeasonDriver = (store, action) => {
+	if (action.type === actions.DELETE_SEASON_DRIVER) {
+		store.dispatch(actions.setSeasonDrivers({ loading: true }));
+		const {seasonId, seasonDriverId} = action.payload;
+		service
+			.deleteSeasonDriver(seasonId, seasonDriverId)
+			.then(() => store.dispatch(actions.fetchSeasonDrivers(seasonId)))
+				.catch((error) => {
+					store.dispatch(actions.setSeasonDrivers({ loading: false, error, fetched: true }));
+				});
+	}
+};
+
+const updateSeasonDriver = (store, action) => {
+	if (action.type === actions.UPDATE_SEASON_DRIVER) {
+		store.dispatch(actions.setSeasonDrivers({ loading: true }));
+		const {seasonId, seasonDriverId, updateBody} = action.payload;
+		service
+			.updateSeasonDriver(seasonId, seasonDriverId, updateBody)
+			.then(() => store.dispatch(actions.fetchSeasonDrivers(seasonId)))
+				.catch((error) => {
+					store.dispatch(actions.setSeasonDrivers({ loading: false, error, fetched: true }));
+				});
+	}
+};
+
 const effects = [
 	fetchTrackList, 
 	fetchParticipants, 
@@ -630,7 +753,14 @@ const effects = [
 	logout,
 	fetchActiveUser,
 	updateActiveUser,
-	fetchSeasons
+	fetchSeasons,
+	fetchSeasonDrivers,
+	fetchSeasonTracks,
+	fetchDrivers,
+	fetchConstructors,
+	createSeasonDriver,
+	deleteSeasonDriver,
+	updateSeasonDriver,
 ];
 
 export default effects;

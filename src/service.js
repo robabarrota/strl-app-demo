@@ -110,6 +110,20 @@ const service = {
     updateActiveUser: async(body) => await axios.post(`${apiBaseUrl}/me`, body),
 
     getSeasons: async() => await axios.get(`${apiBaseUrl}/seasons`),
+
+    getSeasonDrivers: async(seasonId) => await axios.get(`${apiBaseUrl}/season/${seasonId}/drivers`),
+    
+    getSeasonTracks: async(seasonId) => await axios.get(`${apiBaseUrl}/season/${seasonId}/tracks`),
+    
+    getDrivers: async() => await axios.get(`${apiBaseUrl}/drivers`),
+
+    getConstructors: async() => await axios.get(`${apiBaseUrl}/constructors`),
+
+    createSeasonDriver: async(seasonId) => await axios.post(`${apiBaseUrl}/season/${seasonId}/drivers`),
+    
+    deleteSeasonDriver: async(seasonId, seasonDriverId) => await axios.delete(`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`),
+    
+    updateSeasonDriver: async(seasonId, seasonDriverId, updateBody) => await axios.post(`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`, updateBody),
 }
 
 export default service;

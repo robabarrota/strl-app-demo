@@ -80,3 +80,7 @@ export const getDriverPageData = createSelector(
 
 export const getActiveUser = state => getDomainsState(state).activeUser;
 export const getSeasons = state => getDomainsState(state).seasons;
+export const getSeasonDrivers = state => getDomainsState(state).seasonDrivers;
+export const getSeasonTracks = state => getDomainsState(state).seasonTracks;
+export const getDrivers = state => getDomainsState(state).drivers;
+export const getConstructors = state => getDomainsState(state).constructors;
