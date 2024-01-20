@@ -1,10 +1,19 @@
+import React, { useMemo } from 'react';
 import './styles.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { getArchives, getDriverStats, getDriversPageData, getParticipants } from '@/redux/selectors';
-import { useMemo } from 'react';
+import {
+	getArchives,
+	getDriverStats,
+	getDriversPageData,
+	getParticipants,
+} from '@/redux/selectors';
 import { trackDetails } from '@/utils/constants';
 import { cb, getDriverImage } from '@/utils/utils';
-import { fetchArchives, fetchDriverStats, fetchParticipants } from '@/redux/actions';
+import {
+	fetchArchives,
+	fetchDriverStats,
+	fetchParticipants,
+} from '@/redux/actions';
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -25,12 +34,14 @@ const DriverCard = styled(Link)`
 	padding-top: 0;
 	margin-top: 40px;
 	padding-right: 10px;
-	transition: .1s all ease;
+	transition: 0.1s all ease;
 
-	&:hover, &:focus, &:active {
+	&:hover,
+	&:focus,
+	&:active {
 		padding-top: 10px;
 		margin-top: 30px;
-		border-color: ${props => props.$color};
+		border-color: ${(props) => props.$color};
 	}
 `;
 
@@ -54,29 +65,48 @@ const DriverNumber = styled.div`
 	font-size: 54px;
 	line-height: normal;
 	font-weight: 900;
-	color: ${props => props.$color};
+	color: ${(props) => props.$color};
 `;
 
 const DriverImage = styled.img`
 	display: inline-block;
 	height: 100%;
 	width: auto;
-    padding: 2px;
+	padding: 2px;
 `;
 
 const Drivers = () => {
 	const dispatch = useDispatch();
 
-	const { content: archives, loading: archivesLoading, error: archivesError, fetched: archivesFetched } = useSelector(getArchives);
-	const { loading: driverStatsLoading, fetched: driverStatsFetched, error: driverStatsError } = useSelector(getDriverStats);
-	const { loading: participantsLoading, fetched: participantsFetched, error: participantsError } = useSelector(getParticipants);
-	
-	if (!archivesFetched && !archivesLoading && !archivesError) dispatch(fetchArchives());
-	if (!driverStatsFetched && !driverStatsLoading && !driverStatsError) dispatch(fetchDriverStats());
-	if (!participantsFetched && !participantsLoading && !participantsError) dispatch(fetchParticipants());
-	
-	const isDataReady = useMemo(() => archivesFetched && !archivesLoading, [archivesFetched, archivesLoading]);
-	
+	const {
+		content: archives,
+		loading: archivesLoading,
+		error: archivesError,
+		fetched: archivesFetched,
+	} = useSelector(getArchives);
+	const {
+		loading: driverStatsLoading,
+		fetched: driverStatsFetched,
+		error: driverStatsError,
+	} = useSelector(getDriverStats);
+	const {
+		loading: participantsLoading,
+		fetched: participantsFetched,
+		error: participantsError,
+	} = useSelector(getParticipants);
+
+	if (!archivesFetched && !archivesLoading && !archivesError)
+		dispatch(fetchArchives());
+	if (!driverStatsFetched && !driverStatsLoading && !driverStatsError)
+		dispatch(fetchDriverStats());
+	if (!participantsFetched && !participantsLoading && !participantsError)
+		dispatch(fetchParticipants());
+
+	const isDataReady = useMemo(
+		() => archivesFetched && !archivesLoading,
+		[archivesFetched, archivesLoading]
+	);
+
 	const driverData = useSelector(getDriversPageData);
 
 	const seasonNumber = useMemo(() => archives.length, [archives]);
@@ -89,50 +119,60 @@ const Drivers = () => {
 				</HeaderContainer>
 
 				<div className={bem('card-container')}>
-					{driverData.map((driver, index) => {
-						return (
-							<DriverCard 
-								$color={driver.numberColour} 
-								key={`driver-${index + 1}`} 
-								to={`/driver/${driver.driver}`}
-							>
-								<div className={bem('standings-info')}>
-									<div className={bem('top-bar')}>
-										<p className={bem('rank')}>{index + 1}</p>
-										<div className={bem('points-container')}>
-											<p className={bem('points')}>{driver.total}</p>
-											<p className={bem('points-label')}>PTS</p>
-										</div>
+					{driverData.map((driver, index) => (
+						<DriverCard
+							$color={driver.numberColour}
+							key={`driver-${index + 1}`}
+							to={`/driver/${driver.driver}`}
+						>
+							<div className={bem('standings-info')}>
+								<div className={bem('top-bar')}>
+									<p className={bem('rank')}>{index + 1}</p>
+									<div className={bem('points-container')}>
+										<p className={bem('points')}>{driver.total}</p>
+										<p className={bem('points-label')}>PTS</p>
 									</div>
 								</div>
-								<div className={bem('driver-description')}>
-									<div className={bem('driver-description', 'name-container')}>
-										<div className={bem('driver-description', 'first-name')}>
-											{driver.firstName}
-										</div>
-										<div className={bem('driver-description', 'last-name')}>
-											{driver.lastName || ' '}
-										</div>
+							</div>
+							<div className={bem('driver-description')}>
+								<div className={bem('driver-description', 'name-container')}>
+									<div className={bem('driver-description', 'first-name')}>
+										{driver.firstName}
 									</div>
-									<CountryFlag>
-										<img src={trackDetails[driver.country]?.flag || trackDetails['Canada']?.flag} alt={`${driver.country} flag`} />
-									</CountryFlag>
+									<div className={bem('driver-description', 'last-name')}>
+										{driver.lastName || ' '}
+									</div>
 								</div>
+								<CountryFlag>
+									<img
+										src={
+											trackDetails[driver.country]?.flag ||
+											trackDetails.Canada?.flag
+										}
+										alt={`${driver.country} flag`}
+									/>
+								</CountryFlag>
+							</div>
 
-								<div className={bem('card-bottom')}>
-									<span className={bem('team-label')}>{driver.car}</span>
-									<div className={bem('image-container')}>
-										<DriverNumber $color={driver.numberColour}>{driver.number || 0}</DriverNumber>
-										<DriverImage $color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
-									</div>
+							<div className={bem('card-bottom')}>
+								<span className={bem('team-label')}>{driver.car}</span>
+								<div className={bem('image-container')}>
+									<DriverNumber $color={driver.numberColour}>
+										{driver.number || 0}
+									</DriverNumber>
+									<DriverImage
+										$color={driver.numberColour}
+										src={getDriverImage(driver.driver)}
+										alt={driver.driver}
+									/>
 								</div>
-							</DriverCard>
-						)
-					})}
+							</div>
+						</DriverCard>
+					))}
 				</div>
 			</div>
 		);
 	}
-}
+};
 
 export default Drivers;

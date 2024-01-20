@@ -4,13 +4,20 @@ import { fetchActiveUser } from '@/redux/actions';
 import { useMemo } from 'react';
 
 export default function useCheckUserPermission(permission) {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-	const { content: activeUser, loading: activeUserLoading, fetched: activeUserFetched } = useSelector(getActiveUser);
+	const {
+		content: activeUser,
+		loading: activeUserLoading,
+		fetched: activeUserFetched,
+	} = useSelector(getActiveUser);
 
 	if (!activeUserFetched && !activeUserLoading) dispatch(fetchActiveUser());
 
-    const hasPermission = useMemo(() => activeUser?.permissions?.includes(permission), [activeUser, permission])
+	const hasPermission = useMemo(
+		() => activeUser?.permissions?.includes(permission),
+		[activeUser, permission]
+	);
 
-    return hasPermission;
+	return hasPermission;
 }

@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
-import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-
+import {
+	createSearchParams,
+	useNavigate,
+	useSearchParams,
+} from 'react-router-dom';
 
 export default function useSortInUrlParams(defaultSortBy) {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-    const [sortBy, setSortBy] = useState(null);
-
+	const [sortBy, setSortBy] = useState(null);
 
 	useEffect(() => {
 		const sortKey = searchParams.get('sortBy');
@@ -14,39 +16,58 @@ export default function useSortInUrlParams(defaultSortBy) {
 		if (!sortKey) {
 			setSortBy(null);
 		} else {
-			setSortBy({key: sortKey || defaultSortBy.key, direction: sortDirection || defaultSortBy.direction});
+			setSortBy({
+				key: sortKey || defaultSortBy.key,
+				direction: sortDirection || defaultSortBy.direction,
+			});
 		}
-
 	}, [searchParams, defaultSortBy]);
 
-	const handleSort =	useCallback((toSortBy) => {
-		if (toSortBy?.key === sortBy?.key && toSortBy?.direction === sortBy?.direction) return;
-		
-		setSortBy(toSortBy);
-		const existingParamEntries= Array.from(searchParams.entries());
-		const existingParams = existingParamEntries.reduce((acc, a) => ((acc[a[0]] = acc[a[0]] || []).push(a[1]), acc), {});
+	const handleSort = useCallback(
+		(toSortBy) => {
+			if (
+				toSortBy?.key === sortBy?.key &&
+				toSortBy?.direction === sortBy?.direction
+			)
+				return;
 
-		if (!toSortBy) {
-			const view = searchParams.get('view');
+			setSortBy(toSortBy);
+			const existingParamEntries = Array.from(searchParams.entries());
+			const existingParams = existingParamEntries.reduce(
+				// eslint-disable-next-line no-return-assign, no-sequences
+				(acc, a) => ((acc[a[0]] = acc[a[0]] || []).push(a[1]), acc),
+				{}
+			);
 
-			delete existingParams.sortBy;
-			delete existingParams.order;
-			navigate({
-				search: `?${createSearchParams({
-					...existingParams,
-					...view && {view}
-				})}`,
-			}, { replace: true });
-		} else {
-			navigate({
-				search: `?${createSearchParams({
-					...existingParams,
-					sortBy: toSortBy.key,
-					order: toSortBy.direction,
-				})}`,
-			}, { replace: true });
-		}
-	}, [navigate, setSortBy, sortBy, searchParams]);
+			if (!toSortBy) {
+				const view = searchParams.get('view');
 
-    return [sortBy, handleSort];;
+				delete existingParams.sortBy;
+				delete existingParams.order;
+				navigate(
+					{
+						search: `?${createSearchParams({
+							...existingParams,
+							...(view && { view }),
+						})}`,
+					},
+					{ replace: true }
+				);
+			} else {
+				navigate(
+					{
+						search: `?${createSearchParams({
+							...existingParams,
+							sortBy: toSortBy.key,
+							order: toSortBy.direction,
+						})}`,
+					},
+					{ replace: true }
+				);
+			}
+		},
+		[navigate, setSortBy, sortBy, searchParams]
+	);
+
+	return [sortBy, handleSort];
 }

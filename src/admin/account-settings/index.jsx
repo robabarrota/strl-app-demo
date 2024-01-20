@@ -12,7 +12,7 @@ const bem = cb(blockName);
 
 const AccountSettings = () => {
 	const dispatch = useDispatch();
-	const {content: user} = useSelectOrFetch(getActiveUser, fetchActiveUser);
+	const { content: user } = useSelectOrFetch(getActiveUser, fetchActiveUser);
 	const [showPassword, setShowPassword] = useState(false);
 	const [username, setUsername] = useState(user?.username || '');
 	const [password, setPassword] = useState('');
@@ -23,82 +23,103 @@ const AccountSettings = () => {
 	}, [user, setUsername]);
 
 	const handleSubmit = () => {
-			if (password && password !== confirmedPassword) {
-				toast.error('Passwords must match');
-				return;
-			}
-			if (username || password) {
-				dispatch(
-					updateActiveUser({
-						...username && {username},
-						...password && {password}
-					})
-				);
-			}
+		if (password && password !== confirmedPassword) {
+			toast.error('Passwords must match');
+			return;
+		}
+		if (username || password) {
+			dispatch(
+				updateActiveUser({
+					...(username && { username }),
+					...(password && { password }),
+				})
+			);
+		}
 	};
 
-	const passwordIcon = () => showPassword ? <i className="fa-regular fa-eye-slash"></i>: <i className="fa-regular fa-eye"></i>;
+	const passwordIcon = () =>
+		showPassword ? (
+			<i className="fa-regular fa-eye-slash"></i>
+		) : (
+			<i className="fa-regular fa-eye"></i>
+		);
 
 	const handleKeyDown = (event) => {
 		if (event.key === 'Enter') {
 			handleSubmit();
 		}
 	};
-	
+
 	return (
 		<div className={blockName}>
 			<h1 className={bem('title')}>Edit Account</h1>
 			<div onKeyDown={handleKeyDown}>
 				<div className={bem('input-group')}>
-					<label className={bem('label')} htmlFor="username">Username</label>
-					<input 
-						className={bem('input')} 
-						id="username" 
-						name="username" 
-						type="text" 
-						autoComplete="username" 
-						required 
+					<label className={bem('label')} htmlFor="username">
+						Username
+					</label>
+					<input
+						className={bem('input')}
+						id="username"
+						name="username"
+						type="text"
+						autoComplete="username"
+						required
 						autoFocus
 						value={username}
 						onChange={(e) => setUsername(e?.target?.value?.trim() || '')}
 					/>
 				</div>
 				<div className={bem('input-group')}>
-					<label className={bem('label')} htmlFor="current-password">Password</label>
-					<input 
-						className={bem('input')} 
-						id="current-password" 
-						name="password" 
-						type={showPassword ? "text": "password"} 
-						autoComplete="current-password" 
+					<label className={bem('label')} htmlFor="current-password">
+						Password
+					</label>
+					<input
+						className={bem('input')}
+						id="current-password"
+						name="password"
+						type={showPassword ? 'text' : 'password'}
+						autoComplete="current-password"
 						required
 						value={password}
 						onChange={(e) => setPassword(e?.target?.value?.trim() || '')}
 					/>
-					<button className={bem('password-icon-container')} onClick={() => setShowPassword(current => !current)}>
+					<button
+						className={bem('password-icon-container')}
+						onClick={() => setShowPassword((current) => !current)}
+					>
 						{passwordIcon()}
 					</button>
 				</div>
 				<div className={bem('input-group')}>
-					<label className={bem('label')} htmlFor="confirmed-password">Confirm Password</label>
-					<input 
-						className={bem('input')} 
-						id="confirmed-password" 
-						name="password" 
-						type={showPassword ? "text": "password"} 
+					<label className={bem('label')} htmlFor="confirmed-password">
+						Confirm Password
+					</label>
+					<input
+						className={bem('input')}
+						id="confirmed-password"
+						name="password"
+						type={showPassword ? 'text' : 'password'}
 						autoComplete="current-password"
 						required
 						value={confirmedPassword}
-						onChange={(e) => setConfirmedPassword(e?.target?.value?.trim() || '')}
+						onChange={(e) =>
+							setConfirmedPassword(e?.target?.value?.trim() || '')
+						}
 					/>
-					<button className={bem('password-icon-container')} onClick={() => setShowPassword(current => !current)}>
+					<button
+						className={bem('password-icon-container')}
+						onClick={() => setShowPassword((current) => !current)}
+					>
 						{passwordIcon()}
 					</button>
 				</div>
-				<button className={bem('submit-button')} onClick={handleSubmit}>Save</button>
+				<button className={bem('submit-button')} onClick={handleSubmit}>
+					Save
+				</button>
 			</div>
 		</div>
 	);
-}
+};
 
 export default AccountSettings;

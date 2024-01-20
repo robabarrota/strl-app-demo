@@ -1,4 +1,14 @@
 import './App.scss';
+import {
+	Navigate,
+	ScrollRestoration,
+	createHashRouter,
+	RouterProvider,
+	Outlet,
+	useLocation,
+} from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import React from 'react';
 import Header from './header';
 import Qualifying from './qualifying/index';
 import Schedule from './schedule/index';
@@ -12,9 +22,6 @@ import Statistics from './statistics/index';
 import Drivers from './drivers/index';
 import Driver from './driver/index';
 import Auth from './auth';
-
-import { Navigate, ScrollRestoration, createHashRouter, RouterProvider, Outlet, useLocation } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import useIsLoggedIn from './hooks/useIsLoggedIn';
 import AccountSettings from './admin/account-settings';
@@ -24,17 +31,17 @@ import AdminSeason from './admin/admin-season';
 const PrivateRoutes = () => {
 	const location = useLocation();
 	const isLoggedIn = useIsLoggedIn();
-	return isLoggedIn
-		? <Outlet />
-		: <Navigate to="/auth/login" replace state={{ from: location }} />;
+	return isLoggedIn ? (
+		<Outlet />
+	) : (
+		<Navigate to="/auth/login" replace state={{ from: location }} />
+	);
 };
 
 const AuthRoute = () => {
 	const isLoggedIn = useIsLoggedIn();
 
-	return isLoggedIn
-		? <Navigate to="/admin/seasons" replace />
-		: <Auth />;
+	return isLoggedIn ? <Navigate to="/admin/seasons" replace /> : <Auth />;
 };
 
 const router = createHashRouter([
@@ -42,78 +49,77 @@ const router = createHashRouter([
 		element: <Layout />,
 		children: [
 			{
-				path: "schedule",
+				path: 'schedule',
 				element: <Schedule />,
 			},
 			{
-				path: "drivers",
+				path: 'drivers',
 				element: <Drivers />,
 			},
 			{
-				path: "driver/:driverName",
+				path: 'driver/:driverName',
 				element: <Driver />,
 			},
 			{
-				path: "race-results",
+				path: 'race-results',
 				element: <RaceResults />,
 			},
 			{
-				path: "qualifying",
+				path: 'qualifying',
 				element: <Qualifying />,
 			},
 			{
-				path: "standings",
+				path: 'standings',
 				element: <Standings />,
 			},
 			{
-				path: "medal-count",
+				path: 'medal-count',
 				element: <MedalCount />,
 			},
 			{
-				path: "statistics",
+				path: 'statistics',
 				element: <Statistics />,
 			},
 			{
-				path: "highlights",
+				path: 'highlights',
 				element: <Highlights />,
 			},
 			{
-				path: "penalties",
+				path: 'penalties',
 				element: <Penalties />,
 			},
 			{
-				path: "auth/*",
+				path: 'auth/*',
 				element: <AuthRoute />,
 			},
 			{
-				path: "admin",
+				path: 'admin',
 				element: <PrivateRoutes />,
 				children: [
 					{
-						path: "seasons",
+						path: 'seasons',
 						element: <AdminSeasons />,
 					},
 					{
-						path: "season/:seasonId",
-						element: <AdminSeason />
+						path: 'season/:seasonId',
+						element: <AdminSeason />,
 					},
 					{
-						path: "account",
+						path: 'account',
 						element: <AccountSettings />,
-					}
-				]
+					},
+				],
 			},
 			{
-				path: "/",
+				path: '/',
 				element: <Navigate replace to="/race-results" />,
 			},
 			{
-				path: "*",
+				path: '*',
 				element: <NotFound />,
 			},
-		]
+		],
 	},
-	
 ]);
 
 function Layout() {
@@ -121,7 +127,7 @@ function Layout() {
 		<>
 			<Header />
 			<div className="app">
-				<div className='app__content-card'>
+				<div className="app__content-card">
 					<Outlet />
 				</div>
 			</div>
@@ -129,9 +135,7 @@ function Layout() {
 			<ScrollRestoration />
 		</>
 	);
-  }
-const App = () => {
-	return <RouterProvider router={router} />
-};
+}
+const App = () => <RouterProvider router={router} />;
 
 export default App;

@@ -1,9 +1,17 @@
 import { useCallback, useEffect } from 'react';
-import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+	createSearchParams,
+	useNavigate,
+	useSearchParams,
+} from 'react-router-dom';
 
-
-export default function useDropdownInUrlParams(paramKey, value, onSelect, dropdownOptions) {
-    const navigate = useNavigate();
+export default function useDropdownInUrlParams(
+	paramKey,
+	value,
+	onSelect,
+	dropdownOptions
+) {
+	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
 	useEffect(() => {
@@ -11,37 +19,47 @@ export default function useDropdownInUrlParams(paramKey, value, onSelect, dropdo
 		const view = searchParams.get('view');
 		if (!selectedOptionLabel) {
 			if (value) {
-				navigate({
-					search: `?${createSearchParams({
-						...view && {view},
-						[paramKey]: value,
-					})}`,
-				}, { replace: true });
-
+				navigate(
+					{
+						search: `?${createSearchParams({
+							...(view && { view }),
+							[paramKey]: value,
+						})}`,
+					},
+					{ replace: true }
+				);
 			} else {
 				return;
 			}
-		} 
+		}
 
-		const selectedOption = dropdownOptions.find(({label}) => label === selectedOptionLabel)
+		const selectedOption = dropdownOptions.find(
+			({ label }) => label === selectedOptionLabel
+		);
 		if (!selectedOption) return;
 
 		onSelect(selectedOption);
 	}, [onSelect, searchParams, dropdownOptions, paramKey, value, navigate]);
 
-	const handleSelectedOptions = useCallback((option) => {
-		if (option === value) return;
-		onSelect(option);
+	const handleSelectedOptions = useCallback(
+		(option) => {
+			if (option === value) return;
+			onSelect(option);
 
-		const view = searchParams.get('view');
+			const view = searchParams.get('view');
 
-		navigate({
-			search: `?${createSearchParams({
-				...view && {view},
-				[paramKey]: option?.label,
-			})}`,
-		}, { replace: true });
-	}, [onSelect, navigate, value, searchParams, paramKey]);
+			navigate(
+				{
+					search: `?${createSearchParams({
+						...(view && { view }),
+						[paramKey]: option?.label,
+					})}`,
+				},
+				{ replace: true }
+			);
+		},
+		[onSelect, navigate, value, searchParams, paramKey]
+	);
 
-    return handleSelectedOptions;
+	return handleSelectedOptions;
 }

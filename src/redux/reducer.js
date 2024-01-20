@@ -11,15 +11,35 @@ const INITIAL_STATE = {
 	highlights: { loading: false, content: [], error: null, fetched: false },
 	driverPoints: { loading: false, content: [], error: null, fetched: false },
 	driverStats: { loading: false, content: [], error: null, fetched: false },
-	constructorPoints: { loading: false, content: [], error: null, fetched: false },
-	constructorStats: { loading: false, content: [], error: null, fetched: false },
+	constructorPoints: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
+	constructorStats: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
 	archives: { loading: false, content: [], error: null, fetched: false },
 	archiveStats: { loading: false, content: {}, error: null, fetched: false },
 	selectedSeason: { content: null },
-	driverTrackStats: { loading: false, content: {}, error: null, fetched: false },
+	driverTrackStats: {
+		loading: false,
+		content: {},
+		error: null,
+		fetched: false,
+	},
 	selectedTrack: { content: null },
 	allTracks: { content: [] },
-	historicalDriverStats: { loading: false, content: [], error: null, fetched: false },
+	historicalDriverStats: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
 	activeUser: { loading: false, content: {}, error: null, fetched: false },
 	seasons: { loading: false, content: [], error: null, fetched: false },
 	seasonDrivers: { loading: false, content: [], error: null, fetched: false },
@@ -28,59 +48,156 @@ const INITIAL_STATE = {
 	constructors: { loading: false, content: [], error: null, fetched: false },
 };
 
+// eslint-disable-next-line default-param-last
 const reducer = (state = INITIAL_STATE, action) => {
 	switch (action.type) {
 		case actions.SET_TRACK_LIST:
-			return { ...state, trackList: { ...state.trackList, ...action.payload.trackList } };
+			return {
+				...state,
+				trackList: { ...state.trackList, ...action.payload.trackList },
+			};
 		case actions.SET_PARTICIPANTS:
-			return { ...state, participants: { ...state.participants, ...action.payload.participants } };
+			return {
+				...state,
+				participants: { ...state.participants, ...action.payload.participants },
+			};
 		case actions.SET_QUALIFYING:
-			return { ...state, qualifying: { ...state.qualifying, ...action.payload.qualifying } };
+			return {
+				...state,
+				qualifying: { ...state.qualifying, ...action.payload.qualifying },
+			};
 		case actions.SET_RACE_RESULTS:
-			return { ...state, raceResults: { ...state.raceResults, ...action.payload.raceResults } };
+			return {
+				...state,
+				raceResults: { ...state.raceResults, ...action.payload.raceResults },
+			};
 		case actions.SET_FASTEST_LAPS:
-			return { ...state, fastestLaps: { ...state.fastestLaps, ...action.payload.fastestLaps } };
+			return {
+				...state,
+				fastestLaps: { ...state.fastestLaps, ...action.payload.fastestLaps },
+			};
 		case actions.SET_PENALTIES:
-			return { ...state, penalties: { ...state.penalties, ...action.payload.penalties } };
+			return {
+				...state,
+				penalties: { ...state.penalties, ...action.payload.penalties },
+			};
 		case actions.SET_MEDAL_COUNT:
-			return { ...state, medalCount: { ...state.medalCount, ...action.payload.medalCount } };
+			return {
+				...state,
+				medalCount: { ...state.medalCount, ...action.payload.medalCount },
+			};
 		case actions.SET_HIGHLIGHTS:
-			return { ...state, highlights: { ...state.highlights, ...action.payload.highlights } };
+			return {
+				...state,
+				highlights: { ...state.highlights, ...action.payload.highlights },
+			};
 		case actions.SET_DRIVER_POINTS:
-			return { ...state, driverPoints: { ...state.driverPoints, ...action.payload.driverPoints } };
+			return {
+				...state,
+				driverPoints: { ...state.driverPoints, ...action.payload.driverPoints },
+			};
 		case actions.SET_DRIVER_STATS:
-			return { ...state, driverStats: { ...state.driverStats, ...action.payload.driverStats } };
+			return {
+				...state,
+				driverStats: { ...state.driverStats, ...action.payload.driverStats },
+			};
 		case actions.SET_CONSTRUCTOR_POINTS:
-			return { ...state, constructorPoints: { ...state.constructorPoints, ...action.payload.constructorPoints } };
+			return {
+				...state,
+				constructorPoints: {
+					...state.constructorPoints,
+					...action.payload.constructorPoints,
+				},
+			};
 		case actions.SET_CONSTRUCTOR_STATS:
-			return { ...state, constructorStats: { ...state.constructorStats, ...action.payload.constructorStats } };
+			return {
+				...state,
+				constructorStats: {
+					...state.constructorStats,
+					...action.payload.constructorStats,
+				},
+			};
 		case actions.SET_ARCHIVES:
-			return { ...state, archives: { ...state.archives, ...action.payload.archives } };
+			return {
+				...state,
+				archives: { ...state.archives, ...action.payload.archives },
+			};
 		case actions.SET_ARCHIVE_STATS:
-			return { ...state, archiveStats: { ...state.archiveStats, ...action.payload.archiveStats } };
+			return {
+				...state,
+				archiveStats: { ...state.archiveStats, ...action.payload.archiveStats },
+			};
 		case actions.SET_SELECTED_SEASON:
-			return { ...state, selectedSeason: {...state.selectedSeason, ...action.payload.selectedSeason} };
+			return {
+				...state,
+				selectedSeason: {
+					...state.selectedSeason,
+					...action.payload.selectedSeason,
+				},
+			};
 		case actions.SET_DRIVER_TRACK_STATS:
-			return { ...state, driverTrackStats: { ...state.driverTrackStats, ...action.payload.driverTrackStats } };
+			return {
+				...state,
+				driverTrackStats: {
+					...state.driverTrackStats,
+					...action.payload.driverTrackStats,
+				},
+			};
 		case actions.SET_SELECTED_TRACK:
-			return { ...state, selectedTrack: {...state.selectedTrack, ...action.payload.selectedTrack} };
+			return {
+				...state,
+				selectedTrack: {
+					...state.selectedTrack,
+					...action.payload.selectedTrack,
+				},
+			};
 		case actions.SET_ALL_TRACKS:
-			return { ...state, allTracks: {...state.allTracks, ...action.payload.allTracks} };
+			return {
+				...state,
+				allTracks: { ...state.allTracks, ...action.payload.allTracks },
+			};
 		case actions.SET_HISTORICAL_DRIVER_STATS:
-			return { ...state, historicalDriverStats: { ...state.historicalDriverStats, ...action.payload.historicalDriverStats } };
+			return {
+				...state,
+				historicalDriverStats: {
+					...state.historicalDriverStats,
+					...action.payload.historicalDriverStats,
+				},
+			};
 		case actions.SET_ACTIVE_USER:
-			return { ...state, activeUser: { ...state.activeUser, ...action.payload.activeUser } };
+			return {
+				...state,
+				activeUser: { ...state.activeUser, ...action.payload.activeUser },
+			};
 		case actions.SET_SEASONS:
-			return { ...state, seasons: { ...state.seasons, ...action.payload.seasons } };
+			return {
+				...state,
+				seasons: { ...state.seasons, ...action.payload.seasons },
+			};
 		case actions.SET_SEASON_DRIVERS:
-			return { ...state, seasonDrivers: { ...state.seasonDrivers, ...action.payload.seasonDrivers } };
+			return {
+				...state,
+				seasonDrivers: {
+					...state.seasonDrivers,
+					...action.payload.seasonDrivers,
+				},
+			};
 		case actions.SET_SEASON_TRACKS:
-			return { ...state, seasonTracks: { ...state.seasonTracks, ...action.payload.seasonTracks } };
+			return {
+				...state,
+				seasonTracks: { ...state.seasonTracks, ...action.payload.seasonTracks },
+			};
 		case actions.SET_DRIVERS:
-			return { ...state, drivers: { ...state.drivers, ...action.payload.drivers } };
+			return {
+				...state,
+				drivers: { ...state.drivers, ...action.payload.drivers },
+			};
 		case actions.SET_CONSTRUCTORS:
-			return { ...state, constructors: { ...state.constructors, ...action.payload.constructors } };
-	
+			return {
+				...state,
+				constructors: { ...state.constructors, ...action.payload.constructors },
+			};
+
 		default:
 			return state;
 	}

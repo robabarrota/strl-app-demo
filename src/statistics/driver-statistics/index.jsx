@@ -5,7 +5,7 @@ import TableTooltip from '@/components/table-tooltip';
 import { tableSortFunction, round, nameSortFunction, cb } from '@/utils/utils';
 import ConstructorBadge from '@/components/constructor-badge';
 
-import { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 import useFormatDriverName from '@/hooks/useFormatDriverName';
 import useSortInUrlParams from '@/hooks/useSortInUrlParams';
 
@@ -14,140 +14,181 @@ const bem = cb(blockName);
 
 const defaultSortBy = {
 	key: 'total',
-	direction: 'desc'
+	direction: 'desc',
 };
 
 const statHeaders = [
-	{key: 'total', label: 'POINTS'},
-	{key: 'poles', label: 'POLES'},
-	{key: 'wins', label: 'WINS'},
-	{key: 'averageFinish', label: 'AVG FINISH'},
-	{key: 'averagePoints', label: 'AVG POINTS'},
-	{key: 'averageQualifying', label: 'AVG QUAL'},
-	{key: 'averageDifference', label: 'AVG DIFF'},
-	{key: 'dNFs', label: 'DNF\'s'},
-	{key: 'fastestLaps', label: 'FASTEST'},
-	{key: 'finishRate', label: 'FINISH %', formatCallback: (value) => Number(value/100).toLocaleString(undefined,{style: 'percent'})},
-	{key: 'totalPenalties', label: 'PENALTIES'},
-	{key: 'penaltiesPerRace', label: 'PENALTIES PER RACE'},
-	{key: 'racesMissed', label: 'DNS\'s'},
+	{ key: 'total', label: 'POINTS' },
+	{ key: 'poles', label: 'POLES' },
+	{ key: 'wins', label: 'WINS' },
+	{ key: 'averageFinish', label: 'AVG FINISH' },
+	{ key: 'averagePoints', label: 'AVG POINTS' },
+	{ key: 'averageQualifying', label: 'AVG QUAL' },
+	{ key: 'averageDifference', label: 'AVG DIFF' },
+	{ key: 'dNFs', label: "DNF's" },
+	{ key: 'fastestLaps', label: 'FASTEST' },
+	{
+		key: 'finishRate',
+		label: 'FINISH %',
+		formatCallback: (value) =>
+			Number(value / 100).toLocaleString(undefined, { style: 'percent' }),
+	},
+	{ key: 'totalPenalties', label: 'PENALTIES' },
+	{ key: 'penaltiesPerRace', label: 'PENALTIES PER RACE' },
+	{ key: 'racesMissed', label: "DNS's" },
 ];
 
-const DriverStatistics = ({show}) => {
+const DriverStatistics = ({ show }) => {
 	const [sortedArchiveStats, setSortedArchiveStats] = useState([]);
 	const formatDriverName = useFormatDriverName();
 
 	const archiveStats = useSelector(selectedDriverArchiveStats);
-	
+
 	const [sortBy, setSortBy] = useSortInUrlParams(defaultSortBy);
 
 	useEffect(() => {
 		const statsCopy = [...archiveStats];
 		if (sortBy === null) {
-			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, defaultSortBy, ['averageFinish', 'averageQualifying']))];
+			const sortedStats = [
+				...statsCopy.sort((a, b) =>
+					tableSortFunction(a, b, defaultSortBy, [
+						'averageFinish',
+						'averageQualifying',
+					])
+				),
+			];
 			setSortedArchiveStats(sortedStats);
-		}
-		else if (statHeaders.some((statHeader) => statHeader.key === sortBy.key)) {
-			const sortedStats =  [...statsCopy.sort((a, b) => tableSortFunction(a, b, sortBy, ['averageFinish', 'averageQualifying']))];
+		} else if (
+			statHeaders.some((statHeader) => statHeader.key === sortBy.key)
+		) {
+			const sortedStats = [
+				...statsCopy.sort((a, b) =>
+					tableSortFunction(a, b, sortBy, [
+						'averageFinish',
+						'averageQualifying',
+					])
+				),
+			];
 			setSortedArchiveStats(sortedStats);
-		} else if(sortBy.key === 'driver'){
-			const sortedStats =  [...statsCopy.sort((a, b) => nameSortFunction(a, b, sortBy))];
+		} else if (sortBy.key === 'driver') {
+			const sortedStats = [
+				...statsCopy.sort((a, b) => nameSortFunction(a, b, sortBy)),
+			];
 			setSortedArchiveStats(sortedStats);
 		}
 	}, [archiveStats, sortBy]);
 
-	const sortByKey = useCallback((key) => {
-		if (sortBy?.key === key) {
-			if (sortBy.direction === 'desc') return setSortBy({key, direction: 'asc'});
-			if (sortBy.direction === 'asc') return setSortBy(null);
-		}
-		return setSortBy({key, direction: 'desc'});
-	}, [sortBy, setSortBy]);
+	const sortByKey = useCallback(
+		(key) => {
+			if (sortBy?.key === key) {
+				if (sortBy.direction === 'desc')
+					return setSortBy({ key, direction: 'asc' });
+				if (sortBy.direction === 'asc') return setSortBy(null);
+			}
+			return setSortBy({ key, direction: 'desc' });
+		},
+		[sortBy, setSortBy]
+	);
 
-	const getSortIcon = useCallback((track) => {
-		if (sortBy?.key !== track) return <i className="fa-solid fa-sort"></i>;
-		if (sortBy?.direction === 'desc') return <i className="fa-solid fa-sort-down"></i>;
-		if (sortBy?.direction === 'asc') return <i className="fa-solid fa-sort-up"></i>;
-	}, [sortBy]);
+	const getSortIcon = useCallback(
+		(track) => {
+			if (sortBy?.key !== track) return <i className="fa-solid fa-sort"></i>;
+			if (sortBy?.direction === 'desc')
+				return <i className="fa-solid fa-sort-down"></i>;
+			if (sortBy?.direction === 'asc')
+				return <i className="fa-solid fa-sort-up"></i>;
+		},
+		[sortBy]
+	);
 
-	const renderDriverSubTable = useMemo(() => (
-		<div className={bem('end-subtable-container', 'left')}>
-			<table>
-				<thead>
-					<tr>
-						<th 
-							className={`${bem('table-header')} ${bem('table-header--sortable')}`}
-							onClick={() => sortByKey('driver')}
-						>
-							Driver {getSortIcon('driver')}
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					{sortedArchiveStats.map((row) => (
-						<tr key={row.driver} >
-							<td className={bem('table-cell')}>
-								<TableTooltip innerHtml={row.driver} customClass={bem('driver-label')}>
-									{formatDriverName(row.driver)} <ConstructorBadge constructor={row.car} />
-								</TableTooltip>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-		</div>
-	), [sortedArchiveStats, formatDriverName, sortByKey, getSortIcon]);
-
-	const renderResultsSubTable = useMemo(() => {
-		return (
-			<div className={bem('results-subtable-container')}>
+	const renderDriverSubTable = useMemo(
+		() => (
+			<div className={bem('end-subtable-container', 'left')}>
 				<table>
 					<thead>
 						<tr>
-							{statHeaders.map(stat => 
-								<th 
-									key={stat.key} 
-									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`} 
-									onClick={() => sortByKey(stat.key)}
-								>
-									{stat.label} {getSortIcon(stat.key)}
-								</th>
-							)}
+							<th
+								className={`${bem('table-header')} ${bem('table-header--sortable')}`}
+								onClick={() => sortByKey('driver')}
+							>
+								Driver {getSortIcon('driver')}
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						{sortedArchiveStats.map((row) => (
 							<tr key={row.driver}>
-								{statHeaders.map((stat, index) =>
-									<td
-										key={`${row.driver}-${index}`}
-										className={bem('table-cell')}
+								<td className={bem('table-cell')}>
+									<TableTooltip
+										innerHtml={row.driver}
+										customClass={bem('driver-label')}
 									>
-										<TableTooltip innerHtml={stat.label}>
-											{round(row[stat.key], {formatFn: stat.formatCallback})}
-										</TableTooltip>
-									</td>
-								)}
+										{formatDriverName(row.driver)}{' '}
+										<ConstructorBadge constructor={row.car} />
+									</TableTooltip>
+								</td>
 							</tr>
 						))}
 					</tbody>
 				</table>
 			</div>
-		)
-	}, [sortedArchiveStats, sortByKey, getSortIcon]);
+		),
+		[sortedArchiveStats, formatDriverName, sortByKey, getSortIcon]
+	);
+
+	const renderResultsSubTable = useMemo(
+		() => (
+			<div className={bem('results-subtable-container')}>
+				<table>
+					<thead>
+						<tr>
+							{statHeaders.map((stat) => (
+								<th
+									key={stat.key}
+									className={`${bem('table-header')} ${bem('table-header', 'sortable')}`}
+									onClick={() => sortByKey(stat.key)}
+								>
+									{stat.label} {getSortIcon(stat.key)}
+								</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{sortedArchiveStats.map((row) => (
+							<tr key={row.driver}>
+								{statHeaders.map((stat, index) => (
+									<td
+										key={`${row.driver}-${index}`}
+										className={bem('table-cell')}
+									>
+										<TableTooltip innerHtml={stat.label}>
+											{round(row[stat.key], { formatFn: stat.formatCallback })}
+										</TableTooltip>
+									</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+		),
+		[sortedArchiveStats, sortByKey, getSortIcon]
+	);
 
 	const isDataReady = !!archiveStats;
 
 	if (isDataReady) {
-		return show && (
-			<div className={blockName}>
-				<div className={bem('table-container')}>
-					{renderDriverSubTable}
-					{renderResultsSubTable}
+		return (
+			show && (
+				<div className={blockName}>
+					<div className={bem('table-container')}>
+						{renderDriverSubTable}
+						{renderResultsSubTable}
+					</div>
 				</div>
-			</div>
+			)
 		);
 	}
-}
+};
 
 export default DriverStatistics;

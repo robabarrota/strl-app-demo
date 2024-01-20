@@ -1,129 +1,150 @@
 import axios from 'axios';
-import { seasonSheetConfig } from './utils/constants';
 import { fetchGoogleSheetsData } from 'google-sheets-mapper';
+import { seasonSheetConfig } from './utils/constants';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 const service = {
-    getTrackList: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Track List' }],
-    }),
+	getTrackList: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Track List' }],
+		}),
 
-    getParticipants: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Participants' }],
-    }),
-    
-    getQualifying: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Qualifying' }],
-    }),
+	getParticipants: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Participants' }],
+		}),
 
-    getRaceResults: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Race Results' }],
-    }),
-    
-    getFastestLaps: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Fastest Lap' }],
-    }),
-    
-    getPenalties: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Penalties' }],
-    }),
+	getQualifying: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Qualifying' }],
+		}),
 
-    getMedalCount: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Medal Count' }],
-    }),
+	getRaceResults: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Race Results' }],
+		}),
 
-    getHighlights: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Highlights' }],
-    }),
+	getFastestLaps: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Fastest Lap' }],
+		}),
 
-    getDriverPoints: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Driver Points' }],
-    }),
+	getPenalties: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Penalties' }],
+		}),
 
-    getDriverStats: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Driver Stats' }],
-    }),
+	getMedalCount: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Medal Count' }],
+		}),
 
-    getConstructorPoints: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Constructor Points' }],
-    }),
+	getHighlights: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Highlights' }],
+		}),
 
-    getConstructorStats: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Constructor Stats' }],
-    }),
+	getDriverPoints: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Driver Points' }],
+		}),
 
-    getArchives: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Archives' }],
-    }),
+	getDriverStats: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Driver Stats' }],
+		}),
 
-    getArchiveStats: async (sheetId) => await fetchGoogleSheetsData({
-        apiKey: seasonSheetConfig.apiKey,
-        sheetId,
-        sheetsOptions: [
-            { id: 'Driver Stats' },
-            { id: 'Constructor Stats' }
-        ],
-    }),
+	getConstructorPoints: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Constructor Points' }],
+		}),
 
-    getDriverTrackStats: async () => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [
-            { id: 'Driver Track Stats - Total Races' },
-            { id: 'Driver Track Stats - Average Finish' },
-            { id: 'Driver Track Stats - Avg Qualifying' },
-            { id: 'Driver Track Stats - DNFs' },
-            { id: 'Driver Track Stats - Fastest Laps' },
-            { id: 'Driver Track Stats - Poles' },
-            { id: 'Driver Track Stats - Total Penalties' },
-            { id: 'Driver Track Stats - Wins' },
-        ],
-    }),
+	getConstructorStats: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Constructor Stats' }],
+		}),
 
-    getHistoricalDriverStats: async() => await fetchGoogleSheetsData({
-        ...seasonSheetConfig,
-        sheetsOptions: [{ id: 'Total Driver Stats' }],
-    }),
+	getArchives: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Archives' }],
+		}),
 
-    signup: async(body) => await axios.post(`${apiBaseUrl}/signup`, body),
-    
-    login: async(body) => await axios.post(`${apiBaseUrl}/login`, body),
+	getArchiveStats: async (sheetId) =>
+		fetchGoogleSheetsData({
+			apiKey: seasonSheetConfig.apiKey,
+			sheetId,
+			sheetsOptions: [{ id: 'Driver Stats' }, { id: 'Constructor Stats' }],
+		}),
 
-    logout: async(body) => await axios.post(`${apiBaseUrl}/logout`, body),
-    
-    getActiveUser: async() => await axios.get(`${apiBaseUrl}/me`),
+	getDriverTrackStats: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [
+				{ id: 'Driver Track Stats - Total Races' },
+				{ id: 'Driver Track Stats - Average Finish' },
+				{ id: 'Driver Track Stats - Avg Qualifying' },
+				{ id: 'Driver Track Stats - DNFs' },
+				{ id: 'Driver Track Stats - Fastest Laps' },
+				{ id: 'Driver Track Stats - Poles' },
+				{ id: 'Driver Track Stats - Total Penalties' },
+				{ id: 'Driver Track Stats - Wins' },
+			],
+		}),
 
-    updateActiveUser: async(body) => await axios.post(`${apiBaseUrl}/me`, body),
+	getHistoricalDriverStats: async () =>
+		fetchGoogleSheetsData({
+			...seasonSheetConfig,
+			sheetsOptions: [{ id: 'Total Driver Stats' }],
+		}),
 
-    getSeasons: async() => await axios.get(`${apiBaseUrl}/seasons`),
+	signup: async (body) => axios.post(`${apiBaseUrl}/signup`, body),
 
-    getSeasonDrivers: async(seasonId) => await axios.get(`${apiBaseUrl}/season/${seasonId}/drivers`),
-    
-    getSeasonTracks: async(seasonId) => await axios.get(`${apiBaseUrl}/season/${seasonId}/tracks`),
-    
-    getDrivers: async() => await axios.get(`${apiBaseUrl}/drivers`),
+	login: async (body) => axios.post(`${apiBaseUrl}/login`, body),
 
-    getConstructors: async() => await axios.get(`${apiBaseUrl}/constructors`),
+	logout: async (body) => axios.post(`${apiBaseUrl}/logout`, body),
 
-    createSeasonDriver: async(seasonId) => await axios.post(`${apiBaseUrl}/season/${seasonId}/drivers`),
-    
-    deleteSeasonDriver: async(seasonId, seasonDriverId) => await axios.delete(`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`),
-    
-    updateSeasonDriver: async(seasonId, seasonDriverId, updateBody) => await axios.post(`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`, updateBody),
-}
+	getActiveUser: async () => axios.get(`${apiBaseUrl}/me`),
+
+	updateActiveUser: async (body) => axios.post(`${apiBaseUrl}/me`, body),
+
+	getSeasons: async () => axios.get(`${apiBaseUrl}/seasons`),
+
+	getSeasonDrivers: async (seasonId) =>
+		axios.get(`${apiBaseUrl}/season/${seasonId}/drivers`),
+
+	getSeasonTracks: async (seasonId) =>
+		axios.get(`${apiBaseUrl}/season/${seasonId}/tracks`),
+
+	getDrivers: async () => axios.get(`${apiBaseUrl}/drivers`),
+
+	getConstructors: async () => axios.get(`${apiBaseUrl}/constructors`),
+
+	createSeasonDriver: async (seasonId) =>
+		axios.post(`${apiBaseUrl}/season/${seasonId}/drivers`),
+
+	deleteSeasonDriver: async (seasonId, seasonDriverId) =>
+		axios.delete(`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`),
+
+	updateSeasonDriver: async (seasonId, seasonDriverId, updateBody) =>
+		axios.post(
+			`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`,
+			updateBody
+		),
+};
 
 export default service;

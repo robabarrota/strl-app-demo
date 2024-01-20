@@ -3,15 +3,20 @@ import { getActiveUser } from '@/redux/selectors';
 import { fetchActiveUser } from '@/redux/actions';
 
 export default function useIsLoggedIn() {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-	const { content: activeUser, loading: activeUserLoading, fetched: activeUserFetched, error: activeUserError } = useSelector(getActiveUser);
+	const {
+		content: activeUser,
+		loading: activeUserLoading,
+		fetched: activeUserFetched,
+		error: activeUserError,
+	} = useSelector(getActiveUser);
 
 	if (!activeUserFetched && !activeUserLoading) dispatch(fetchActiveUser());
 
-    if (!!activeUserError || !activeUser) {
-        return false;
-    }
+	if (!!activeUserError || !activeUser) {
+		return false;
+	}
 
-    return true;
+	return true;
 }
