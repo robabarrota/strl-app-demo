@@ -19,6 +19,7 @@ import {
 import DropdownSelect from '@/components/dropdown-select';
 import useCheckUserPermission from '@/hooks/useCheckUserPermission';
 import { useDispatch } from 'react-redux';
+import Loader from '@/components/loader';
 
 const blockName = 'admin-season-drivers';
 const bem = cb(blockName);
@@ -37,7 +38,7 @@ const AdminSeasonDrivers = ({ show }) => {
 	);
 	const { content: constructors, loading: constructorsLoading } =
 		useSelectOrFetch(getConstructors, fetchConstructors);
-	const { content: seasons } = useSelectOrFetch(
+	const { content: seasons, loading: seasonsLoading } = useSelectOrFetch(
 		getConstructors,
 		fetchConstructors
 	);
@@ -115,6 +116,18 @@ const AdminSeasonDrivers = ({ show }) => {
 								/>
 							</td>
 							<td>
+								<input
+									className={bem('primary-check')}
+									type="checkbox"
+									checked={seasonDriver.isPrimaryDriver}
+									onChange={() =>
+										changeSeasonDriver(seasonDriver.id, {
+											isPrimaryDriver: !seasonDriver.isPrimaryDriver,
+										})
+									}
+								/>
+							</td>
+							<td>
 								<button
 									className={bem('delete-button')}
 									onClick={() => removeSeasonDriver(seasonDriver.id)}
@@ -145,6 +158,13 @@ const AdminSeasonDrivers = ({ show }) => {
 								{seasonDriver.constructor.name}
 							</div>
 						</td>
+						<td>
+							<div className={bem('label')}>
+								{seasonDriver.isPrimaryDriver && (
+									<i className="fa-solid fa-check"></i>
+								)}
+							</div>
+						</td>
 					</tr>
 				))
 			),
@@ -163,6 +183,10 @@ const AdminSeasonDrivers = ({ show }) => {
 
 	if (!show) return null;
 
+	if (driversLoading || constructorsLoading || seasonsLoading) {
+		return <Loader />;
+	}
+
 	return (
 		<div className={blockName}>
 			{
@@ -171,7 +195,8 @@ const AdminSeasonDrivers = ({ show }) => {
 						<tr>
 							<th className={bem('header')}>Driver</th>
 							<th className={bem('header')}>Constructor</th>
-							<th></th>
+							<th className={bem('header')}>Primary Driver</th>
+							{canEdit && <th></th>}
 						</tr>
 					</thead>
 					<tbody>{renderRowElements}</tbody>

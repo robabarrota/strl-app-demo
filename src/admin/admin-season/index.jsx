@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { cb } from '@/utils/utils';
 import './styles.scss';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import useTabsInUrlParams from '@/hooks/useTabsInUrlParams';
 import Tabs from '@/components/tabs';
 import AdminSeasonDrivers from './admin-season-drivers';
@@ -39,7 +39,12 @@ const AdminSeason = () => {
 
 	return (
 		<div className={blockName}>
-			<h1 className={bem('title')}>Season {seasonId}</h1>
+			<div className={bem('title-container')}>
+				<Link to="/admin/seasons" className={bem('back-button')}>
+					<i className="fa-solid fa-chevron-left"></i>
+				</Link>
+				<h1 className={bem('title')}>Season {seasonId}</h1>
+			</div>
 			<Tabs tabs={tabs} activeTabIndex={activeTabIndex} onChange={onChange} />
 
 			{renderSeasonDrivers}
