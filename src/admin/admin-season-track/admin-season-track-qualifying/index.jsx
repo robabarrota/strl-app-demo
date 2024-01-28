@@ -120,7 +120,7 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 
 			setSortedLocalQualifying(newQualifyingOrder);
 
-			if (sortedLocalQualifying?.length)
+			if (newQualifyingOrder?.length)
 				updateQualifyingResults(newQualifyingOrder);
 		},
 		[sortedLocalQualifying, setSortedLocalQualifying, updateQualifyingResults]
@@ -153,7 +153,7 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 
 			setSortedLocalQualifying(newQualifyingOrder);
 
-			if (sortedLocalQualifying?.length)
+			if (newQualifyingOrder?.length)
 				updateQualifyingResults(newQualifyingOrder);
 		},
 		[sortedLocalQualifying, setSortedLocalQualifying, updateQualifyingResults]
@@ -227,7 +227,7 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 										toggleDriverFlag(qualifyingResult.seasonDriverId, 'dnf')
 									}
 								>
-									DNF
+									<i className="fa-solid fa-person-circle-xmark"></i>
 								</FlagButton>
 							</div>
 						</td>
@@ -245,7 +245,7 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 										qualifyingResult.dsq
 									}
 								>
-									DSQ
+									<i className="fa-solid fa-person-circle-minus"></i>
 								</FlagButton>
 							</div>
 						</td>
@@ -263,7 +263,7 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 										qualifyingResult.dsq
 									}
 								>
-									DNS
+									<i className="fa-solid fa-person-circle-question"></i>
 								</FlagButton>
 							</div>
 						</td>
@@ -290,17 +290,23 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 					</td>
 					<td>
 						<div className={bem('flag-check')}>
-							{qualifyingResult.dnf ? 'DNF' : null}
+							{qualifyingResult.dnf ? (
+								<i className="fa-solid fa-person-circle-xmark"></i>
+							) : null}
 						</div>
 					</td>
 					<td>
 						<div className={bem('flag-check')}>
-							{qualifyingResult.dsq ? 'DSQ' : null}
+							{qualifyingResult.dsq ? (
+								<i className="fa-solid fa-person-circle-minus"></i>
+							) : null}
 						</div>
 					</td>
 					<td>
 						<div className={bem('flag-check')}>
-							{qualifyingResult.dns ? 'DNS' : null}
+							{qualifyingResult.dns ? (
+								<i className="fa-solid fa-person-circle-question"></i>
+							) : null}
 						</div>
 					</td>
 				</tr>

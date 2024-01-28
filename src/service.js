@@ -178,6 +178,12 @@ const service = {
 			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/qualifying-results`,
 			body
 		),
+
+	updateSeasonTrackRaceResults: async (seasonId, seasonTrackId, body) =>
+		axios.post(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/race-results`,
+			body
+		),
 };
 
 export default service;

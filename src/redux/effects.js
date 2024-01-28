@@ -975,6 +975,25 @@ const updateSeasonTrackQualifyingResults = (store, action) => {
 	}
 };
 
+const updateSeasonTrackRaceResults = (store, action) => {
+	if (action.type === actions.UPDATE_SEASON_TRACK_RACE_RESULTS) {
+		const { seasonId, seasonTrackId, results } = action.payload;
+		service
+			.updateSeasonTrackRaceResults(seasonId, seasonTrackId, results)
+			.then(() => {
+				store.dispatch(
+					actions.fetchSeasonTrackRaceResults(seasonId, seasonTrackId)
+				);
+			})
+			.catch(() => {
+				toast.error('There was a problem updating race results');
+				store.dispatch(
+					actions.fetchSeasonTrackRaceResults(seasonId, seasonTrackId)
+				);
+			});
+	}
+};
+
 const effects = [
 	fetchTrackList,
 	fetchParticipants,
@@ -1013,6 +1032,7 @@ const effects = [
 	fetchSeasonTrackQualifyingResults,
 	fetchSeasonTrackRaceResults,
 	updateSeasonTrackQualifyingResults,
+	updateSeasonTrackRaceResults,
 ];
 
 export default effects;

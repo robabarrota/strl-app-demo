@@ -322,6 +322,16 @@ export const updateSeasonTrackQualifyingResults = (
 	payload: { seasonId, seasonTrackId, results },
 });
 
+export const UPDATE_SEASON_TRACK_RACE_RESULTS = `${prefix}/UPDATE_SEASON_TRACK_RACE_RESULTS`;
+export const updateSeasonTrackRaceResults = (
+	seasonId,
+	seasonTrackId,
+	results
+) => ({
+	type: UPDATE_SEASON_TRACK_RACE_RESULTS,
+	payload: { seasonId, seasonTrackId, results },
+});
+
 export const FETCH_SEASON_TRACK = `${prefix}/FETCH_SEASON_TRACK`;
 export const fetchSeasonTrack = (seasonId, seasonTrackId) => ({
 	type: FETCH_SEASON_TRACK,
