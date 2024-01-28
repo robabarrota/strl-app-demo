@@ -14,6 +14,8 @@ import { debounce } from 'lodash';
 import useIsMobile from '@/hooks/useIsMobile';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import useCheckUserPermission from '@/hooks/useCheckUserPermission';
+import useIsActiveSeason from '@/hooks/useIsActiveSeason';
 
 const blockName = 'admin-season-track-qualifying';
 const bem = cb(blockName);
@@ -47,6 +49,12 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 	const isMobile = useIsMobile();
 	const dispatch = useDispatch();
 	const [sortedLocalQualifying, setSortedLocalQualifying] = useState([]);
+
+	const isActiveSeason = useIsActiveSeason(seasonId);
+
+	const canEdit = useCheckUserPermission(
+		isActiveSeason ? 'edit-season' : 'edit-history'
+	);
 
 	const { content: qualifyingResults } = useSelectOrFetch(
 		getSeasonTrackQualifyingResults,
@@ -181,6 +189,126 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 		return 'black';
 	};
 
+	const renderTableBody = useCallback(
+		(qualifyingResult, index) => {
+			if (canEdit) {
+				return (
+					<DraggableArea
+						key={`${qualifyingResult.seasonDriverId}-area`}
+						accept="qualifying"
+						dropCallback={({ item }) => updateQualifyingOrder(item, index + 1)}
+						Tag="tr"
+						customClass={`${bem('label')} ${getRowClass(qualifyingResult)}`}
+					>
+						<td className={getClassFlagMod(qualifyingResult, 'label')}>
+							{qualifyingResult.position}
+						</td>
+						<DraggableItem
+							key={`${qualifyingResult.seasonDriverId}-item`}
+							type="qualifying"
+							item={qualifyingResult.seasonDriverId}
+							Tag="td"
+							customClass={getClassFlagMod(qualifyingResult, 'label')}
+						>
+							{qualifyingResult.firstName} {isMobile && <br />}
+							{qualifyingResult.lastName}
+						</DraggableItem>
+						<td>
+							<div className={bem('button-container')}>
+								<FlagButton
+									$color={getButtonColor(qualifyingResult)}
+									$isActive={!!qualifyingResult.dnf}
+									$outOfRace={
+										qualifyingResult.dnf ||
+										qualifyingResult.dns ||
+										qualifyingResult.dsq
+									}
+									onClick={() =>
+										toggleDriverFlag(qualifyingResult.seasonDriverId, 'dnf')
+									}
+								>
+									DNF
+								</FlagButton>
+							</div>
+						</td>
+						<td>
+							<div className={bem('button-container')}>
+								<FlagButton
+									onClick={() =>
+										toggleDriverFlag(qualifyingResult.seasonDriverId, 'dsq')
+									}
+									$color={getButtonColor(qualifyingResult)}
+									$isActive={!!qualifyingResult.dsq}
+									$outOfRace={
+										qualifyingResult.dnf ||
+										qualifyingResult.dns ||
+										qualifyingResult.dsq
+									}
+								>
+									DSQ
+								</FlagButton>
+							</div>
+						</td>
+						<td>
+							<div className={bem('button-container')}>
+								<FlagButton
+									onClick={() =>
+										toggleDriverFlag(qualifyingResult.seasonDriverId, 'dns')
+									}
+									$color={getButtonColor(qualifyingResult)}
+									$isActive={!!qualifyingResult.dns}
+									$outOfRace={
+										qualifyingResult.dnf ||
+										qualifyingResult.dns ||
+										qualifyingResult.dsq
+									}
+								>
+									DNS
+								</FlagButton>
+							</div>
+						</td>
+					</DraggableArea>
+				);
+			}
+
+			return (
+				<tr
+					key={`${qualifyingResult.seasonDriverId}-area`}
+					accept="qualifying"
+					className={`${bem('label')} ${getRowClass(qualifyingResult)}`}
+				>
+					<td className={getClassFlagMod(qualifyingResult, 'label')}>
+						{qualifyingResult.position}
+					</td>
+					<td
+						key={`${qualifyingResult.seasonDriverId}-item`}
+						type="qualifying"
+						className={getClassFlagMod(qualifyingResult, 'label')}
+					>
+						{qualifyingResult.firstName} {isMobile && <br />}
+						{qualifyingResult.lastName}
+					</td>
+					<td>
+						<div className={bem('flag-check')}>
+							{qualifyingResult.dnf ? 'DNF' : null}
+						</div>
+					</td>
+					<td>
+						<div className={bem('flag-check')}>
+							{qualifyingResult.dsq ? 'DSQ' : null}
+						</div>
+					</td>
+					<td>
+						<div className={bem('flag-check')}>
+							{qualifyingResult.dns ? 'DNS' : null}
+						</div>
+					</td>
+				</tr>
+			);
+		},
+		[updateQualifyingOrder]
+	);
+
 	if (!show) return null;
 	return (
 		<div className={blockName}>
@@ -189,91 +317,15 @@ const AdminSeasonTrackQualifying = ({ show }) => {
 					<tr>
 						<th className={bem('header')}>Position</th>
 						<th className={bem('header')}>Driver</th>
-						<th></th>
-						<th></th>
-						<th></th>
+						<th>DNF</th>
+						<th>DSQ</th>
+						<th>DNS</th>
 					</tr>
 				</thead>
 				<tbody>
-					{sortedLocalQualifying.map((qualifyingResult, index) => (
-						<DraggableArea
-							key={`${qualifyingResult.seasonDriverId}-area`}
-							accept="qualifying"
-							dropCallback={({ item }) =>
-								updateQualifyingOrder(item, index + 1)
-							}
-							Tag="tr"
-							customClass={`${bem('label')} ${getRowClass(qualifyingResult)}`}
-						>
-							<td className={getClassFlagMod(qualifyingResult, 'label')}>
-								{qualifyingResult.position}
-							</td>
-							<DraggableItem
-								key={`${qualifyingResult.seasonDriverId}-item`}
-								type="qualifying"
-								item={qualifyingResult.seasonDriverId}
-								Tag="td"
-								customClass={getClassFlagMod(qualifyingResult, 'label')}
-							>
-								{qualifyingResult.firstName} {isMobile && <br />}
-								{qualifyingResult.lastName}
-							</DraggableItem>
-							<td>
-								<div className={bem('button-container')}>
-									<FlagButton
-										$color={getButtonColor(qualifyingResult)}
-										$isActive={!!qualifyingResult.dnf}
-										$outOfRace={
-											qualifyingResult.dnf ||
-											qualifyingResult.dns ||
-											qualifyingResult.dsq
-										}
-										onClick={() =>
-											toggleDriverFlag(qualifyingResult.seasonDriverId, 'dnf')
-										}
-									>
-										DNF
-									</FlagButton>
-								</div>
-							</td>
-							<td>
-								<div className={bem('button-container')}>
-									<FlagButton
-										onClick={() =>
-											toggleDriverFlag(qualifyingResult.seasonDriverId, 'dsq')
-										}
-										$color={getButtonColor(qualifyingResult)}
-										$isActive={!!qualifyingResult.dsq}
-										$outOfRace={
-											qualifyingResult.dnf ||
-											qualifyingResult.dns ||
-											qualifyingResult.dsq
-										}
-									>
-										DSQ
-									</FlagButton>
-								</div>
-							</td>
-							<td>
-								<div className={bem('button-container')}>
-									<FlagButton
-										onClick={() =>
-											toggleDriverFlag(qualifyingResult.seasonDriverId, 'dns')
-										}
-										$color={getButtonColor(qualifyingResult)}
-										$isActive={!!qualifyingResult.dns}
-										$outOfRace={
-											qualifyingResult.dnf ||
-											qualifyingResult.dns ||
-											qualifyingResult.dsq
-										}
-									>
-										DNS
-									</FlagButton>
-								</div>
-							</td>
-						</DraggableArea>
-					))}
+					{sortedLocalQualifying.map((qualifyingResult, index) =>
+						renderTableBody(qualifyingResult, index)
+					)}
 				</tbody>
 			</table>
 		</div>
