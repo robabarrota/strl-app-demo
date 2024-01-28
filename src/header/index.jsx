@@ -2,11 +2,12 @@ import './styles.scss';
 import { Link, NavLink } from 'react-router-dom';
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { cb } from '@/utils/utils';
-import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '@/redux/actions';
+import { useDispatch } from 'react-redux';
+import { fetchActiveUser, logout } from '@/redux/actions';
 import useIsLoggedIn from '@/hooks/useIsLoggedIn';
 import { getActiveUser } from '@/redux/selectors';
 import useIsOutsideClick from '@/hooks/useIsOutsideClick';
+import useSelectOrFetch from '@/hooks/useSelectOrFetch';
 
 const blockName = 'header';
 const bem = cb(blockName);
@@ -23,7 +24,10 @@ const Header = () => {
 		(res) => adminMenuOpen && setAdminMenuOpen(!res)
 	);
 
-	const { content: activeUser } = useSelector(getActiveUser);
+	const { content: activeUser } = useSelectOrFetch(
+		getActiveUser,
+		fetchActiveUser
+	);
 
 	const dispatch = useDispatch();
 

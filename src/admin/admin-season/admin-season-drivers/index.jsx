@@ -7,6 +7,7 @@ import {
 	getConstructors,
 	getDrivers,
 	getSeasonDrivers,
+	getSeasons,
 } from '@/redux/selectors';
 import {
 	createSeasonDriver,
@@ -14,6 +15,7 @@ import {
 	fetchConstructors,
 	fetchDrivers,
 	fetchSeasonDrivers,
+	fetchSeasons,
 	updateSeasonDriver,
 } from '@/redux/actions';
 import DropdownSelect from '@/components/dropdown-select';
@@ -39,13 +41,16 @@ const AdminSeasonDrivers = ({ show }) => {
 	const { content: constructors, loading: constructorsLoading } =
 		useSelectOrFetch(getConstructors, fetchConstructors);
 	const { content: seasons, loading: seasonsLoading } = useSelectOrFetch(
-		getConstructors,
-		fetchConstructors
+		getSeasons,
+		fetchSeasons
 	);
 
 	const isActiveSeason = useMemo(
-		() => seasons?.find(({ id }) => id === +seasonId)?.isActive || false,
-		[seasons, seasonId]
+		() =>
+			seasonsLoading
+				? false
+				: seasons?.find(({ id }) => id === +seasonId)?.isActive || false,
+		[seasons, seasonId, seasonsLoading]
 	);
 
 	const canEdit = useCheckUserPermission(

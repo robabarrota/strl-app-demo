@@ -153,6 +153,28 @@ const nth = (n) => {
 	return n + suffix;
 };
 
+const sortPositions = (a, b) => {
+	if (a.dnf && b.dns) return -1;
+	if (a.dnf && b.dsq) return -1;
+	if (a.dns && b.dnf) return 1;
+	if (a.dns && b.dsq) return 1;
+	if (a.dsq && b.dnf) return 1;
+	if (a.dsq && b.dns) return -1;
+
+	if (a.dnf !== b.dnf || a.dns !== b.dns || a.dsq !== b.dsq) {
+		if (a.dnf || a.dsq || a.dns) return 1;
+		if (b.dnf || b.dsq || b.dns) return -1;
+	}
+
+	if (a.position < b.position) {
+		return -1;
+	}
+	if (a.position > b.position) {
+		return 1;
+	}
+	return 0;
+};
+
 export {
 	round,
 	getCarColor,
@@ -164,4 +186,5 @@ export {
 	nameSortFunction,
 	nth,
 	cb,
+	sortPositions,
 };

@@ -1,6 +1,6 @@
 import './styles.scss';
 import { cb } from '@/utils/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { fetchActiveUser, updateActiveUser } from '@/redux/actions';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -22,7 +22,7 @@ const AccountSettings = () => {
 		setUsername(user.username);
 	}, [user, setUsername]);
 
-	const handleSubmit = () => {
+	const handleSubmit = useCallback(() => {
 		if (password && password !== confirmedPassword) {
 			toast.error('Passwords must match');
 			return;
@@ -35,7 +35,7 @@ const AccountSettings = () => {
 				})
 			);
 		}
-	};
+	}, [dispatch, updateActiveUser]);
 
 	const passwordIcon = () =>
 		showPassword ? (
@@ -44,11 +44,14 @@ const AccountSettings = () => {
 			<i className="fa-regular fa-eye"></i>
 		);
 
-	const handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
-			handleSubmit();
-		}
-	};
+	const handleKeyDown = useCallback(
+		(event) => {
+			if (event.key === 'Enter') {
+				handleSubmit();
+			}
+		},
+		[handleSubmit]
+	);
 
 	return (
 		<div className={blockName}>
@@ -66,8 +69,8 @@ const AccountSettings = () => {
 						autoComplete="username"
 						required
 						autoFocus
-						value={username}
-						onChange={(e) => setUsername(e?.target?.value?.trim() || '')}
+						value={username || ''}
+						onChange={(e) => setUsername(e?.target?.value?.trim())}
 					/>
 				</div>
 				<div className={bem('input-group')}>
@@ -81,7 +84,7 @@ const AccountSettings = () => {
 						type={showPassword ? 'text' : 'password'}
 						autoComplete="current-password"
 						required
-						value={password}
+						value={password || ''}
 						onChange={(e) => setPassword(e?.target?.value?.trim() || '')}
 					/>
 					<button
@@ -102,7 +105,7 @@ const AccountSettings = () => {
 						type={showPassword ? 'text' : 'password'}
 						autoComplete="current-password"
 						required
-						value={confirmedPassword}
+						value={confirmedPassword || ''}
 						onChange={(e) =>
 							setConfirmedPassword(e?.target?.value?.trim() || '')
 						}

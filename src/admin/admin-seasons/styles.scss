@@ -1,5 +1,84 @@
 @import '../../variables';
 
 .admin-seasons {
-    
+	&__season-title {
+        font-family: 'F1Black';
+        font-size: 42px;
+        line-height: 48px;
+        margin: 0;
+		padding-bottom: 15px;
+		border-bottom: 1px solid #949498;
+		margin-bottom: 15px;
+		padding-top: 10px;
+    }
+
+	&__driver-description {
+        padding-bottom: 10px;
+        border-bottom: 1px solid #949498;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center!important;
+		height: 39px;
+
+		&--first-name {
+			font-family: strl-font;
+			font-size: 12px;
+			line-height: 15px;
+			letter-spacing: .5px;
+			font-weight: 400;
+			color: #15151e;
+			height: 15px;
+		}
+
+		&--last-name {
+			font-family: 'F1BoldRegular';
+			font-size: 18px;
+			line-height: 24px;
+			height: 24px;
+		}
+	}
+
+	&__constructor-description {
+        display: flex;
+        justify-content: space-between;
+        align-items: center!important;
+		height: 39px;
+
+		&--name {
+			font-family: strl-font;
+			font-size: 18px;
+			line-height: 39px;
+			letter-spacing: .5px;
+			font-weight: 400;
+			color: #15151e;
+			height: 15px;
+		}
+
+		&--abbreviation {
+			font-family: 'F1BoldRegular';
+			font-size: 18px;
+			line-height: 24px;
+			height: 24px;
+		}
+	}
+
+    &__title {
+        margin-left: 18px;
+        margin-bottom: 0;
+    }
+
+    &__card-container {
+        padding: 0 10px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        column-gap: 20px;
+    }
+
+	&__icon {
+		height: 100%;
+	}
+	&__trophy-icon {
+		color: #C9B037;
+	}
 }

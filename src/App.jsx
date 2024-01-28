@@ -9,6 +9,9 @@ import {
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { TouchBackend } from 'react-dnd-touch-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Header from './header';
 import Qualifying from './qualifying/index';
 import Schedule from './schedule/index';
@@ -27,6 +30,8 @@ import useIsLoggedIn from './hooks/useIsLoggedIn';
 import AccountSettings from './admin/account-settings';
 import AdminSeasons from './admin/admin-seasons';
 import AdminSeason from './admin/admin-season';
+import AdminSeasonTrack from './admin/admin-season-track';
+import useIsMobile from './hooks/useIsMobile';
 
 const PrivateRoutes = () => {
 	const location = useLocation();
@@ -105,6 +110,10 @@ const router = createHashRouter([
 						element: <AdminSeason />,
 					},
 					{
+						path: 'season/:seasonId/race/:raceId',
+						element: <AdminSeasonTrack />,
+					},
+					{
 						path: 'account',
 						element: <AccountSettings />,
 					},
@@ -123,12 +132,15 @@ const router = createHashRouter([
 ]);
 
 function Layout() {
+	const isMobile = useIsMobile();
 	return (
 		<>
 			<Header />
 			<div className="app">
 				<div className="app__content-card">
-					<Outlet />
+					<DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+						<Outlet />
+					</DndProvider>
 				</div>
 			</div>
 			<ToastContainer position="bottom-left" />

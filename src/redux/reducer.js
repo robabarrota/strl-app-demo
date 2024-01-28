@@ -46,6 +46,20 @@ const INITIAL_STATE = {
 	seasonTracks: { loading: false, content: [], error: null, fetched: false },
 	drivers: { loading: false, content: [], error: null, fetched: false },
 	constructors: { loading: false, content: [], error: null, fetched: false },
+	tracks: { loading: false, content: [], error: null, fetched: false },
+	seasonTrack: { loading: false, content: [], error: null, fetched: false },
+	seasonTrackQualifyingResults: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
+	seasonTrackRaceResults: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
 };
 
 // eslint-disable-next-line default-param-last
@@ -196,6 +210,32 @@ const reducer = (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				constructors: { ...state.constructors, ...action.payload.constructors },
+			};
+		case actions.SET_TRACKS:
+			return {
+				...state,
+				tracks: { ...state.tracks, ...action.payload.tracks },
+			};
+		case actions.SET_SEASON_TRACK:
+			return {
+				...state,
+				seasonTrack: { ...state.seasonTrack, ...action.payload.seasonTrack },
+			};
+		case actions.SET_SEASON_TRACK_QUALIFYING_RESULTS:
+			return {
+				...state,
+				seasonTrackQualifyingResults: {
+					...state.seasonTrackQualifyingResults,
+					...action.payload.seasonTrackQualifyingResults,
+				},
+			};
+		case actions.SET_SEASON_TRACK_RACE_RESULTS:
+			return {
+				...state,
+				seasonTrackRaceResults: {
+					...state.seasonTrackRaceResults,
+					...action.payload.seasonTrackRaceResults,
+				},
 			};
 
 		default:

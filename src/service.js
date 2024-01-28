@@ -145,6 +145,39 @@ const service = {
 			`${apiBaseUrl}/season/${seasonId}/drivers/${seasonDriverId}`,
 			updateBody
 		),
+
+	getTracks: async () => axios.get(`${apiBaseUrl}/tracks`),
+
+	createSeasonTrack: async (seasonId) =>
+		axios.post(`${apiBaseUrl}/season/${seasonId}/tracks`),
+
+	deleteSeasonTrack: async (seasonId, seasonTrackId) =>
+		axios.delete(`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}`),
+
+	updateSeasonTrack: async (seasonId, seasonTrackId, updateBody) =>
+		axios.post(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}`,
+			updateBody
+		),
+
+	getSeasonTrack: async (seasonId, seasonTrackId) =>
+		axios.get(`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}`),
+
+	getSeasonTrackQualifyingResults: async (seasonId, seasonTrackId) =>
+		axios.get(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/qualifying-results`
+		),
+
+	getSeasonTrackRaceResults: async (seasonId, seasonTrackId) =>
+		axios.get(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/race-results`
+		),
+
+	updateSeasonTrackQualifyingResults: async (seasonId, seasonTrackId, body) =>
+		axios.post(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/qualifying-results`,
+			body
+		),
 };
 
 export default service;

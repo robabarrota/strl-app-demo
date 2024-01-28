@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function useSelectOrFetch(selector, action, actionParams = []) {
-	const dispatch = useDispatch(selector);
-	const [prevParams, setPrevParams] = useState(actionParams);
-
-	const paramsChanged = prevParams === actionParams;
+	const dispatch = useDispatch();
 
 	const data = useSelector(selector);
-	if ((paramsChanged || !data.fetched) && !data.loading) {
-		dispatch(action(...actionParams));
-		setPrevParams(actionParams);
-	}
+
+	useEffect(() => {
+		if (!data.loading) {
+			dispatch(action(...actionParams));
+		}
+	}, []);
 
 	return data;
 }

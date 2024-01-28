@@ -93,5 +93,11 @@ export const getActiveUser = (state) => getDomainsState(state).activeUser;
 export const getSeasons = (state) => getDomainsState(state).seasons;
 export const getSeasonDrivers = (state) => getDomainsState(state).seasonDrivers;
 export const getSeasonTracks = (state) => getDomainsState(state).seasonTracks;
+export const getSeasonTrack = (state) => getDomainsState(state).seasonTrack;
 export const getDrivers = (state) => getDomainsState(state).drivers;
 export const getConstructors = (state) => getDomainsState(state).constructors;
+export const getTracks = (state) => getDomainsState(state).tracks;
+export const getSeasonTrackQualifyingResults = (state) =>
+	getDomainsState(state).seasonTrackQualifyingResults;
+export const getSeasonTrackRaceResults = (state) =>
+	getDomainsState(state).seasonTrackRaceResults;

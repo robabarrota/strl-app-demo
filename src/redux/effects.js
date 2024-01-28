@@ -695,7 +695,7 @@ const fetchSeasonDrivers = (store, action) => {
 };
 
 const fetchSeasonTracks = (store, action) => {
-	if (action.type === actions.FETCH_SEASON_DRIVERS) {
+	if (action.type === actions.FETCH_SEASON_TRACKS) {
 		store.dispatch(actions.setSeasonTracks({ loading: true }));
 		service
 			.getSeasonTracks(action.payload.seasonId)
@@ -808,6 +808,173 @@ const updateSeasonDriver = (store, action) => {
 	}
 };
 
+const fetchTracks = (store, action) => {
+	if (action.type === actions.FETCH_TRACKS) {
+		store.dispatch(actions.setTracks({ loading: true }));
+		service
+			.getTracks()
+			.then((response) => {
+				store.dispatch(
+					actions.setTracks({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true,
+					})
+				);
+			})
+			.catch((error) => {
+				store.dispatch(
+					actions.setTracks({ loading: false, error, fetched: true })
+				);
+			});
+	}
+};
+
+const createSeasonTrack = (store, action) => {
+	if (action.type === actions.CREATE_SEASON_TRACK) {
+		store.dispatch(actions.setSeasonTracks({ loading: true }));
+		const { seasonId } = action.payload;
+		service
+			.createSeasonTrack(seasonId)
+			.then(() => store.dispatch(actions.fetchSeasonTracks(seasonId)))
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTracks({ loading: false, error, fetched: true })
+				);
+			});
+	}
+};
+
+const deleteSeasonTrack = (store, action) => {
+	if (action.type === actions.DELETE_SEASON_TRACK) {
+		store.dispatch(actions.setSeasonTracks({ loading: true }));
+		const { seasonId, seasonTrackId } = action.payload;
+		service
+			.deleteSeasonTrack(seasonId, seasonTrackId)
+			.then(() => store.dispatch(actions.fetchSeasonTracks(seasonId)))
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTracks({ loading: false, error, fetched: true })
+				);
+			});
+	}
+};
+
+const updateSeasonTrack = (store, action) => {
+	if (action.type === actions.UPDATE_SEASON_TRACK) {
+		store.dispatch(actions.setSeasonTracks({ loading: true }));
+		const { seasonId, seasonTrackId, updateBody } = action.payload;
+		service
+			.updateSeasonTrack(seasonId, seasonTrackId, updateBody)
+			.then(() => store.dispatch(actions.fetchSeasonTracks(seasonId)))
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTracks({ loading: false, error, fetched: true })
+				);
+			});
+	}
+};
+
+const fetchSeasonTrack = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_TRACK) {
+		store.dispatch(actions.setSeasonTrack({ loading: true }));
+		const { seasonId, seasonTrackId } = action.payload;
+		service
+			.getSeasonTrack(seasonId, seasonTrackId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonTrack({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true,
+					})
+				);
+			})
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTrack({ loading: false, error, fetched: true })
+				);
+			});
+	}
+};
+
+const fetchSeasonTrackQualifyingResults = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_TRACK_QUALIFYING_RESULTS) {
+		store.dispatch(actions.setSeasonTrackQualifyingResults({ loading: true }));
+		const { seasonId, seasonTrackId } = action.payload;
+		service
+			.getSeasonTrackQualifyingResults(seasonId, seasonTrackId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonTrackQualifyingResults({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true,
+					})
+				);
+			})
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTrackQualifyingResults({
+						loading: false,
+						error,
+						fetched: true,
+					})
+				);
+			});
+	}
+};
+
+const fetchSeasonTrackRaceResults = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_TRACK_RACE_RESULTS) {
+		store.dispatch(actions.setSeasonTrackRaceResults({ loading: true }));
+		const { seasonId, seasonTrackId } = action.payload;
+		service
+			.getSeasonTrackRaceResults(seasonId, seasonTrackId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonTrackRaceResults({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true,
+					})
+				);
+			})
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTrackRaceResults({
+						loading: false,
+						error,
+						fetched: true,
+					})
+				);
+			});
+	}
+};
+
+const updateSeasonTrackQualifyingResults = (store, action) => {
+	if (action.type === actions.UPDATE_SEASON_TRACK_QUALIFYING_RESULTS) {
+		const { seasonId, seasonTrackId, results } = action.payload;
+		service
+			.updateSeasonTrackQualifyingResults(seasonId, seasonTrackId, results)
+			.then(() => {
+				store.dispatch(
+					actions.fetchSeasonTrackQualifyingResults(seasonId, seasonTrackId)
+				);
+			})
+			.catch(() => {
+				toast.error('There was a problem updating qualifying results');
+				store.dispatch(
+					actions.fetchSeasonTrackQualifyingResults(seasonId, seasonTrackId)
+				);
+			});
+	}
+};
+
 const effects = [
 	fetchTrackList,
 	fetchParticipants,
@@ -838,6 +1005,14 @@ const effects = [
 	createSeasonDriver,
 	deleteSeasonDriver,
 	updateSeasonDriver,
+	fetchTracks,
+	createSeasonTrack,
+	deleteSeasonTrack,
+	updateSeasonTrack,
+	fetchSeasonTrack,
+	fetchSeasonTrackQualifyingResults,
+	fetchSeasonTrackRaceResults,
+	updateSeasonTrackQualifyingResults,
 ];
 
 export default effects;

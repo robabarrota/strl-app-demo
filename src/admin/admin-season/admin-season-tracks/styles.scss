@@ -1,5 +1,50 @@
 @import '../../../variables';
 
 .admin-season-tracks {
-    
+    &__header {
+       padding: 0 6px;
+    }
+
+    &__input-dropdown {
+       padding: 6px;
+    }
+
+    &__delete-button, &__delete-button:focus, &__delete-button:active {
+        border-radius: 8px;
+        height: 30px;
+        width: 30px;
+        border: #d0d0d0 solid 2px;
+        margin-right: 6px;
+    }
+
+    &__add-button, &__add-button:focus, &__add-button:active {
+        border-radius: 8px;
+        height: 30px;
+        width: 30px;
+        border: #d0d0d0 solid 2px;
+        margin: 6px;
+    }
+
+    &__label {
+        padding: 14px;
+    }
+
+	&__primary-check {
+		margin-left: 14px;
+	}
+
+	&__date-picker {
+		margin-left: 14px;
+		padding: 4px;
+	}
+
+	&__manage-season-button, &__manage-season-button:focus, &__manage-season-button:active {
+		border-radius: 8px;
+		border: #d0d0d0 solid 2px;
+		width: 30px;
+		display: flex;
+		height: 30px;
+		align-items: center;
+		justify-content: center;
+    }
 }

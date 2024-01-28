@@ -258,3 +258,78 @@ export const updateSeasonDriver = (seasonId, seasonDriverId, updateBody) => ({
 	type: UPDATE_SEASON_DRIVER,
 	payload: { seasonId, seasonDriverId, updateBody },
 });
+
+export const FETCH_TRACKS = `${prefix}/FETCH_TRACKS`;
+export const fetchTracks = () => ({ type: FETCH_TRACKS });
+
+export const SET_TRACKS = `${prefix}/SET_TRACKS`;
+export const setTracks = (tracks) => ({
+	type: SET_TRACKS,
+	payload: { tracks },
+});
+
+export const CREATE_SEASON_TRACK = `${prefix}/CREATE_SEASON_TRACK`;
+export const createSeasonTrack = (seasonId) => ({
+	type: CREATE_SEASON_TRACK,
+	payload: { seasonId },
+});
+
+export const DELETE_SEASON_TRACK = `${prefix}/DELETE_SEASON_TRACK`;
+export const deleteSeasonTrack = (seasonId, seasonTrackId) => ({
+	type: DELETE_SEASON_TRACK,
+	payload: { seasonId, seasonTrackId },
+});
+
+export const UPDATE_SEASON_TRACK = `${prefix}/UPDATE_SEASON_TRACK`;
+export const updateSeasonTrack = (seasonId, seasonTrackId, updateBody) => ({
+	type: UPDATE_SEASON_TRACK,
+	payload: { seasonId, seasonTrackId, updateBody },
+});
+
+export const FETCH_SEASON_TRACK_QUALIFYING_RESULTS = `${prefix}/FETCH_SEASON_TRACK_QUALIFYING_RESULTS`;
+export const fetchSeasonTrackQualifyingResults = (seasonId, seasonTrackId) => ({
+	type: FETCH_SEASON_TRACK_QUALIFYING_RESULTS,
+	payload: { seasonId, seasonTrackId },
+});
+
+export const SET_SEASON_TRACK_QUALIFYING_RESULTS = `${prefix}/SET_SEASON_TRACK_QUALIFYING_RESULTS`;
+export const setSeasonTrackQualifyingResults = (
+	seasonTrackQualifyingResults
+) => ({
+	type: SET_SEASON_TRACK_QUALIFYING_RESULTS,
+	payload: { seasonTrackQualifyingResults },
+});
+
+export const FETCH_SEASON_TRACK_RACE_RESULTS = `${prefix}/FETCH_SEASON_TRACK_RACE_RESULTS`;
+export const fetchSeasonTrackRaceResults = (seasonId, seasonTrackId) => ({
+	type: FETCH_SEASON_TRACK_RACE_RESULTS,
+	payload: { seasonId, seasonTrackId },
+});
+
+export const SET_SEASON_TRACK_RACE_RESULTS = `${prefix}/SET_SEASON_TRACK_RACE_RESULTS`;
+export const setSeasonTrackRaceResults = (seasonTrackRaceResults) => ({
+	type: SET_SEASON_TRACK_RACE_RESULTS,
+	payload: { seasonTrackRaceResults },
+});
+
+export const UPDATE_SEASON_TRACK_QUALIFYING_RESULTS = `${prefix}/UPDATE_SEASON_TRACK_QUALIFYING_RESULTS`;
+export const updateSeasonTrackQualifyingResults = (
+	seasonId,
+	seasonTrackId,
+	results
+) => ({
+	type: UPDATE_SEASON_TRACK_QUALIFYING_RESULTS,
+	payload: { seasonId, seasonTrackId, results },
+});
+
+export const FETCH_SEASON_TRACK = `${prefix}/FETCH_SEASON_TRACK`;
+export const fetchSeasonTrack = (seasonId, seasonTrackId) => ({
+	type: FETCH_SEASON_TRACK,
+	payload: { seasonId, seasonTrackId },
+});
+
+export const SET_SEASON_TRACK = `${prefix}/SET_SEASON_TRACK`;
+export const setSeasonTrack = (seasonTrack) => ({
+	type: SET_SEASON_TRACK,
+	payload: { seasonTrack },
+});
