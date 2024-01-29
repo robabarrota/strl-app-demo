@@ -143,6 +143,7 @@ const AdminSeasonTrackRace = ({ show }) => {
 							newDriverQual[flag] = false;
 						}
 					}
+					newDriverQual.fastestLap = false;
 					return newDriverQual;
 				})
 				.sort(sortPositions)
@@ -163,9 +164,15 @@ const AdminSeasonTrackRace = ({ show }) => {
 			const newRaceData = sortedLocalRace.map((row) => ({
 				...row,
 				fastestLap:
-					row.seasonDriverId === seasonDriverId ? !row.fastestLap : false,
+					row.seasonDriverId === seasonDriverId &&
+					!row.dnf &&
+					!row.dns &&
+					!row.dsq
+						? !row.fastestLap
+						: false,
 			}));
 
+			setSortedLocalRace(newRaceData);
 			if (sortedLocalRace?.length) updateRaceResults(newRaceData);
 		},
 		[sortedLocalRace, setSortedLocalRace, updateRaceResults]
