@@ -184,6 +184,11 @@ const service = {
 			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/race-results`,
 			body
 		),
+
+	getSeasonTrackIncidents: async (seasonId, seasonTrackId) =>
+		axios.get(
+			`${apiBaseUrl}/season/${seasonId}/tracks/${seasonTrackId}/incidents`
+		),
 };
 
 export default service;

@@ -9,7 +9,7 @@ import { getSeasonTrack } from '@/redux/selectors';
 import { fetchSeasonTrack } from '@/redux/actions';
 import AdminSeasonTrackQualifying from './admin-season-track-qualifying';
 import AdminSeasonTrackRace from './admin-season-track-race';
-import AdminSeasonTrackPenalties from './admin-season-track-penalties';
+import AdminSeasonTrackIncidents from './admin-season-track-incidents';
 
 const blockName = 'admin-season-track';
 const bem = cb(blockName);
@@ -49,8 +49,8 @@ const AdminSeasonTrack = () => {
 		() => <AdminSeasonTrackRace show={activeTabIndex === 1} />,
 		[activeTabIndex]
 	);
-	const renderPenalties = useMemo(
-		() => <AdminSeasonTrackPenalties show={activeTabIndex === 2} />,
+	const renderIncidents = useMemo(
+		() => <AdminSeasonTrackIncidents show={activeTabIndex === 2} />,
 		[activeTabIndex]
 	);
 
@@ -71,7 +71,7 @@ const AdminSeasonTrack = () => {
 
 			{renderQualifying}
 			{renderRace}
-			{renderPenalties}
+			{renderIncidents}
 		</div>
 	);
 };

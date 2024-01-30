@@ -101,3 +101,5 @@ export const getSeasonTrackQualifyingResults = (state) =>
 	getDomainsState(state).seasonTrackQualifyingResults;
 export const getSeasonTrackRaceResults = (state) =>
 	getDomainsState(state).seasonTrackRaceResults;
+export const getSeasonTrackIncidents = (state) =>
+	getDomainsState(state).incidents;

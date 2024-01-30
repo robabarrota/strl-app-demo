@@ -994,6 +994,34 @@ const updateSeasonTrackRaceResults = (store, action) => {
 	}
 };
 
+const fetchSeasonTrackIncidents = (store, action) => {
+	if (action.type === actions.FETCH_SEASON_TRACK_INCIDENTS) {
+		store.dispatch(actions.setSeasonTrackIncidents({ loading: true }));
+		const { seasonId, seasonTrackId } = action.payload;
+		service
+			.getSeasonTrackIncidents(seasonId, seasonTrackId)
+			.then((response) => {
+				store.dispatch(
+					actions.setSeasonTrackIncidents({
+						loading: false,
+						content: response.data,
+						error: null,
+						fetched: true,
+					})
+				);
+			})
+			.catch((error) => {
+				store.dispatch(
+					actions.setSeasonTrackIncidents({
+						loading: false,
+						error,
+						fetched: true,
+					})
+				);
+			});
+	}
+};
+
 const effects = [
 	fetchTrackList,
 	fetchParticipants,
@@ -1033,6 +1061,7 @@ const effects = [
 	fetchSeasonTrackRaceResults,
 	updateSeasonTrackQualifyingResults,
 	updateSeasonTrackRaceResults,
+	fetchSeasonTrackIncidents,
 ];
 
 export default effects;

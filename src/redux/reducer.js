@@ -60,6 +60,12 @@ const INITIAL_STATE = {
 		error: null,
 		fetched: false,
 	},
+	incidents: {
+		loading: false,
+		content: [],
+		error: null,
+		fetched: false,
+	},
 };
 
 // eslint-disable-next-line default-param-last
@@ -235,6 +241,14 @@ const reducer = (state = INITIAL_STATE, action) => {
 				seasonTrackRaceResults: {
 					...state.seasonTrackRaceResults,
 					...action.payload.seasonTrackRaceResults,
+				},
+			};
+		case actions.SET_SEASON_TRACK_INCIDENTS:
+			return {
+				...state,
+				incidents: {
+					...state.incidents,
+					...action.payload.incidents,
 				},
 			};
 

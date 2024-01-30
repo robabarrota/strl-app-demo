@@ -343,3 +343,15 @@ export const setSeasonTrack = (seasonTrack) => ({
 	type: SET_SEASON_TRACK,
 	payload: { seasonTrack },
 });
+
+export const FETCH_SEASON_TRACK_INCIDENTS = `${prefix}/FETCH_SEASON_TRACK_INCIDENTS`;
+export const fetchSeasonTrackIncidents = (seasonId, seasonTrackId) => ({
+	type: FETCH_SEASON_TRACK_INCIDENTS,
+	payload: { seasonId, seasonTrackId },
+});
+
+export const SET_SEASON_TRACK_INCIDENTS = `${prefix}/SET_SEASON_TRACK_INCIDENTS`;
+export const setSeasonTrackIncidents = (seasonTrackIncidents) => ({
+	type: SET_SEASON_TRACK_INCIDENTS,
+	payload: { seasonTrackIncidents },
+});
