@@ -4,4 +4,7 @@
     "editor.indentSize": 4,
     "editor.detectIndentation": false,
 	"editor.insertSpaces": false,
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
 }

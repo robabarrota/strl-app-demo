@@ -552,15 +552,8 @@ const login = (store, action) => {
 		store.dispatch(actions.setActiveUser({ loading: true }));
 		return service
 			.login(action.payload.loginBody)
-			.then((response) => {
-				store.dispatch(
-					actions.setActiveUser({
-						loading: false,
-						content: response.data,
-						error: null,
-						fetched: true,
-					})
-				);
+			.then(() => {
+				store.dispatch(actions.fetchActiveUser());
 			})
 			.catch((error) => {
 				toast.error('Invalid username or password');

@@ -77,7 +77,7 @@ const AdminSeasonTrackRace = ({ show }) => {
 			if (orderChanged) {
 				dispatch(updateSeasonTrackRaceResults(seasonId, raceId, sorted));
 			}
-		}, 3000),
+		}, 1000),
 		[raceResults]
 	);
 

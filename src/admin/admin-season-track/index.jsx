@@ -17,15 +17,15 @@ const bem = cb(blockName);
 const tabs = [
 	{
 		label: 'Qualifying',
-		icon: '/strl-app/qualifying-icon.png',
+		icon: '/qualifying-icon.png',
 	},
 	{
 		label: 'Race',
-		icon: '/strl-app/race-icon.png',
+		icon: '/race-icon.png',
 	},
 	{
 		label: 'Penalties',
-		icon: '/strl-app/penalty-icon.png',
+		icon: '/penalty-icon.png',
 	},
 ];
 const AdminSeasonTrack = () => {

@@ -95,7 +95,7 @@ const AdminSeasons = () => {
 								<i className={`fa-solid fa-medal ${bem('trophy-icon')}`} />
 								<img
 									className={bem('icon')}
-									src="/strl-app/driver-icon.png"
+									src="/driver-icon.png"
 									alt={'icon'}
 								/>
 							</IconContainer>
@@ -113,7 +113,7 @@ const AdminSeasons = () => {
 								<i className={`fa-solid fa-medal ${bem('trophy-icon')}`} />
 								<img
 									className={bem('icon')}
-									src="/strl-app/constructor-icon.png"
+									src="/constructor-icon.png"
 									alt={'icon'}
 								/>
 							</IconContainer>
