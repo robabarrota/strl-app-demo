@@ -35,7 +35,7 @@ const Background = styled.div`
 			rgba(255, 255, 255, 0.1) 0%,
 			rgba(255, 255, 255, 0.04) 100%
 		),
-		url('/strl-app/driver-background-image.png');
+		url('/driver-background-image.png');
 	padding: 2px;
 	background-repeat: repeat;
 	background-size: 13%;

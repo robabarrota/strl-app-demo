@@ -5,7 +5,6 @@ import eslint from 'vite-plugin-eslint';
 import { resolve } from 'path';
 
 export default defineConfig(() => ({
-	base: '/strl-app/',
 	build: {
 		outDir: 'build',
 	},

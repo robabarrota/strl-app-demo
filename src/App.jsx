@@ -2,7 +2,7 @@ import './App.scss';
 import {
 	Navigate,
 	ScrollRestoration,
-	createHashRouter,
+	createBrowserRouter,
 	RouterProvider,
 	Outlet,
 	useLocation,
@@ -49,7 +49,7 @@ const AuthRoute = () => {
 	return isLoggedIn ? <Navigate to="/admin/seasons" replace /> : <Auth />;
 };
 
-const router = createHashRouter([
+const router = createBrowserRouter([
 	{
 		element: <Layout />,
 		children: [
