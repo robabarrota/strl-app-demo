@@ -96,14 +96,6 @@ const Header = () => {
 							</div>
 						)}
 					</NavLink>
-					<NavLink className={bem('nav-link')} to="/highlights" onClick={closeHeader}>
-						{({ isActive }) => (
-							<div className={labelClass(isActive)}>
-								<span className={bem('nav-link-text')}>Highlights</span>
-								<i className={"fa-solid fa-chevron-right header__chevron"}></i>
-							</div>
-						)}
-					</NavLink>
 				</div>
 			</div>
 		</div>

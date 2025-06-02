@@ -123,7 +123,7 @@ const Drivers = () => {
 									<span className={bem('team-label')}>{driver.car}</span>
 									<div className={bem('image-container')}>
 										<DriverNumber $color={driver.numberColour}>{driver.number || 0}</DriverNumber>
-										<DriverImage $color={driver.numberColour} src={getDriverImage(driver.driver)} alt={driver.driver} />
+										<DriverImage $color={driver.numberColour} src={getDriverImage('')} alt={driver.driver} />
 									</div>
 								</div>
 							</DriverCard>

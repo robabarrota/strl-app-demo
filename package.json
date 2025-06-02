@@ -1,8 +1,8 @@
 {
-  "name": "strl-app",
+  "name": "strl-app-demo",
   "version": "0.1.1",
   "private": true,
-  "homepage": "https://robabarrota.github.io/strl-app",
+  "homepage": "https://robabarrota.github.io/strl-app-demo",
   "engines": {
     "npm": ">=9.0.0",
     "node": ">=18.0.0"
