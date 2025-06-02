@@ -5,7 +5,7 @@ import { resolve } from 'path';
 
 export default defineConfig(() => {
   return {
-    base: '/',
+    base: '/strl-app-demo',
     plugins: [react(), eslint()],
     resolve: {
       alias: [
