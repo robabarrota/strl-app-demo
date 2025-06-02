@@ -6,9 +6,6 @@ import { resolve } from 'path';
 export default defineConfig(() => {
   return {
     base: '/',
-    build: {
-      outDir: 'build',
-    },
     plugins: [react(), eslint()],
     resolve: {
       alias: [
